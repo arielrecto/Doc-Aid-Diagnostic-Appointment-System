@@ -1,0 +1,42 @@
+number of user types
+    - admin
+    - patient
+    - employee
+
+
+--Business process--
+    user can select a services and set a appointment then need to pay more or less 50%
+    to approved the appointment then employee can view all appointment today that can
+    assist the patient to designated room to his/her appointment schedule then that transaction
+    only by admin and user not include the employee.
+
+
+
+
+---patient---
+    - user patient create account
+    - user select services
+    - user set appointment to selected service
+    - user must paid down payment to serve set the appointment 50% of selected services
+    - user can set time extent the session time but need additional payment
+    - user can reschedule the appointment
+    - user can modify his/her medical profile
+    - upload payment receipt to approve the appointment
+
+
+
+--admin--
+    - can create a services
+    - can set a down payment percent per services to 50%
+    - can accept & decline appointment schedule
+    - modify all appointments of users
+    - modify user details
+    - can view all overall transaction of user and employees
+    - can create employee account
+    - upload result and attach to email sent to dedicated user
+    - can view appointment CRUD
+
+--employee--
+    - view appointment
+
+
