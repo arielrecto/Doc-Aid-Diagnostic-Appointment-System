@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Service;
 use App\Models\User;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
@@ -17,8 +18,11 @@ return new class extends Migration
             $table->string('date');
             $table->string('time');
             $table->string('type');
+            $table->foreignIdFor(Service::class);
             $table->boolean('is_approved')->default(false);
+            $table->string('receipt_image');
             $table->foreignIdFor(User::class);
+            $table->string('status');
             $table->timestamps();
         });
     }

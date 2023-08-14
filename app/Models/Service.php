@@ -12,11 +12,17 @@ class Service extends Model
     protected $fillable = [
         'name',
         'price',
+        'image',
         'description',
+        'init_payment'
     ];
 
 
     public function appointments (){
-        return $this->belongsToMany(Appointment::class);
+        return $this->hasMany(Appointment::class);
+    }
+    public static function total() {
+        $total = Service::get()->count();
+        return $total;
     }
 }

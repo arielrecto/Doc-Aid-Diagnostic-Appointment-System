@@ -38,17 +38,22 @@
     <!-- quill editor -->
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 </head>
+<style>
+    .fc-bg-event {
+        background-color: '#04ABA3',
+    }
+</style>
 
 <body class="font-sans antialiased">
     <div class="min-h-screen bg-gray-100">
         <!-- Page Heading -->
-        @if (isset($header))
+        {{-- @if (isset($header))
             <header class="bg-white shadow">
                 <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                     {{ $header }}
                 </div>
             </header>
-        @endif
+        @endif --}}
 
         <!-- Page Content -->
         <main>
