@@ -32,7 +32,6 @@ class ServiceController extends Controller
      */
     public function store(Request $request)
     {
-
         $data = $request->validate([
             'image' => 'required',
             'name' => 'required',
@@ -50,7 +49,8 @@ class ServiceController extends Controller
             'description' => $request->description,
             'price' => $request->price,
             'init_payment' => $request->initPayment,
-            'image' => $imageUploader->getURL()
+            'image' => $imageUploader->getURL(),
+            'time_slot' => $request->timeSlot
            ]);
 
 

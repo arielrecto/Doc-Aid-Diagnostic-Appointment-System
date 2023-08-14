@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('price');
             $table->string('description');
             $table->string('init_payment');
+            $table->json('time_slot');
             $table->timestamps();
         });
     }

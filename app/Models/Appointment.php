@@ -27,7 +27,7 @@ class Appointment extends Model
         return $this->belongsTo(Service::class);
     }
     public static function today(){
-        $appointments  = Appointment::with('service')->where('date',now()->format('Y-m-d'))->get();
+        $appointments  = Appointment::with('service')->where('date',now('GMT+8')->format('Y-m-d'))->get();
         return $appointments;
     }
 }

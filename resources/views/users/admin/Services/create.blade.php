@@ -18,7 +18,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
-                        <span>{{Session::get('message')}}</span>
+                        <span>{{ Session::get('message') }}</span>
                     </div>
                 @endif
                 <div class="w-full bg-base-100 rounded-lg shadow-sm hover:shadow-lg duration-700 h-full mb-2">
@@ -28,7 +28,7 @@
                             @csrf
                             <div class="w-1/3 h-full">
                                 <div class="w-full h-full flex flex-col gap-2">
-                                    <div class="flex items-center justify-center w-full h-full">
+                                    <div class="flex items-center justify-center w-full h-[41rem]">
                                         <template x-if="image === null">
                                             <label for="dropzone-file"
                                                 class="flex flex-col items-center justify-center w-full h-full border-2
@@ -124,13 +124,50 @@
                                                 </div>
                                             @endif
                                         </div>
+                                    </div>
+                                    <div class="flex flex-col gap-2 w-full py-2">
+                                        <h1 class="p-2 w-full text-center text-base capitalized text-gray-500">
+                                            Set Service Time
+                                        </h1>
+                                        <div class="grid grid-cols-2 grid-flow-row gap-2">
+                                            <div class="flex flex-col gap-2">
+                                                <label for="" class="text-sm text-gray-500 p-2">Start</label>
+                                                <input type="time" placeholder="Type here" id="start"
+                                                    class="input input-bordered input-accent w-full" />
+                                            </div>
+                                            <div class="flex flex-col gap-2">
+                                                <label for="" class="text-sm text-gray-500 p-2">End</label>
+                                                <input type="time" placeholder="Type here" id="end"
+                                                    class="input input-bordered input-accent w-full"
+                                                    @change="setTimeItervalForm" />
+                                            </div>
+                                        </div>
+                                        <template x-for="(timeInterval, index) in timeIntervals"
+                                            :key="index">
+                                            <div class="grid grid-cols-2 grid-flow-row gap-2 p-2">
+                                                <h1 class="min-w-full">
+                                                    <span x-text="timeInterval.duration"></span>
+                                                </h1>
 
+                                                <template x-if="timeInterval.slot === 'break'">
+                                                    <input type="text" placeholder="Slot"
+                                                        x-model="timeInterval.slot" disabled
+                                                        class="input input-bordered input-accent w-full " />
+                                                </template>
+                                                <template x-if="timeInterval.slot !== 'break'">
+                                                    <input type="text" placeholder="Slot"
+                                                        x-model="timeInterval.slot"
+                                                        class="input input-bordered input-accent w-full " />
+                                                </template>
+                                            </div>
+                                        </template>
+                                        <input type="hidden" :value="JSON.stringify(timeIntervals)" name="timeSlot">
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="flex flex-row-reverse">
-                            <button class="btn btn-accent capitalize" @click="content">Add</button>
+                            <button class="btn btn-accent capitalize" @click="content()">Add</button>
                         </div>
                     </form>
                 </div>
@@ -144,6 +181,7 @@
                 return {
                     image: null,
                     description: null,
+                    timeIntervals: [],
                     uploadImageHandler(e) {
                         const {
                             files
@@ -163,14 +201,53 @@
                         })
                     },
                     content() {
+
                         const data = document.getElementById('editor').querySelector('.ql-editor').innerHTML;
                         if (data === '<p></p>') {
                             return this.description = null
                         }
-
                         this.description = data
+                    },
+                    setTimeItervalForm() {
+                        const startEl = document.getElementById('start').value;
+                        const endEl = document.getElementById('end').value;
+                        let startInt = parseInt(startEl.slice(0, 2))
+                        const endInt = parseInt(endEl.slice(0, 2))
+                        let duration = [];
+                        while (startInt < endInt) {
+                            const _start = startInt;
+                            startInt++;
+                            const _end = startInt
+                            let count = 0;
+                            const timeObj = {
+                                duration: `${this.convertTo12HourFormat(`${_start}:00`)}  - ${this.convertTo12HourFormat(`${_end}:00`)}`,
+                                slot: _start === 12 ? 'break' : null
+                            }
 
-                    }
+                            duration.push(timeObj)
+
+                        }
+                        this.timeIntervals = duration
+
+                        console.log(this.timeIntervals)
+                    },
+                    convertTo12HourFormat(time) {
+                        let [hours, minutes] = time.split(':');
+                        let period = 'AM';
+
+                        if (hours >= 12) {
+                            period = 'PM';
+                            if (hours > 12) {
+                                hours -= 12;
+                            }
+                        }
+
+                        if (hours === '00') {
+                            hours = '12';
+                        }
+
+                        return `${parseInt(hours, 10)}:${minutes}${period}`;
+                    },
                 }
             }
         </script>

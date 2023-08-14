@@ -14,7 +14,8 @@ class Service extends Model
         'price',
         'image',
         'description',
-        'init_payment'
+        'init_payment',
+        'time_slot'
     ];
 
 
