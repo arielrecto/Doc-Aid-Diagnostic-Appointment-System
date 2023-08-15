@@ -49,6 +49,7 @@
                                     <th>Name</th>
                                     <th>Description</th>
                                     <th>Price</th>
+                                    <th>Session Time</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -60,6 +61,7 @@
                                         <td>{{ $service->name }}</td>
                                         <td>{!! $service->description !!}</td>
                                         <td>{{ $service->price }}</td>
+                                        <td>{{ $service->session_time }} min</td>
                                     </tr>
                                 @empty
                                     <tr>

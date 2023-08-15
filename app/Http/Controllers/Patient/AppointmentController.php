@@ -44,7 +44,8 @@ class AppointmentController extends Controller
         $user = Auth::user();
         $appointment = Appointment::create([
             'date' => $request->date,
-            'time' => '12:00',
+            'patient' => $user->name,
+            'time' => $request->timeSlot,
             'type' => 'sample',
             'user_id' => $user->id,
             'service_id' => $service->id,

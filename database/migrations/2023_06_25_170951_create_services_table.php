@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('description');
             $table->string('init_payment');
             $table->json('time_slot');
+            $table->string('session_time');
             $table->timestamps();
         });
     }

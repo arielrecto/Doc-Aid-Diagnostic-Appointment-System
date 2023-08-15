@@ -129,7 +129,7 @@
                                         <h1 class="p-2 w-full text-center text-base capitalized text-gray-500">
                                             Set Service Time
                                         </h1>
-                                        <div class="grid grid-cols-2 grid-flow-row gap-2">
+                                        <div class="grid grid-cols-3 grid-flow-row gap-2">
                                             <div class="flex flex-col gap-2">
                                                 <label for="" class="text-sm text-gray-500 p-2">Start</label>
                                                 <input type="time" placeholder="Type here" id="start"
@@ -138,8 +138,22 @@
                                             <div class="flex flex-col gap-2">
                                                 <label for="" class="text-sm text-gray-500 p-2">End</label>
                                                 <input type="time" placeholder="Type here" id="end"
-                                                    class="input input-bordered input-accent w-full"
-                                                    @change="setTimeItervalForm" />
+                                                    class="input input-bordered input-accent w-full" />
+                                            </div>
+                                            <div class="flex flex-col gap-2">
+                                                <label for="" class="text-sm text-gray-500 p-2">Session Time -
+                                                   </label>
+                                                <select class="select select-accent w-full max-w-xs" id="interval" name="session_time"
+                                                    @change="setTimeItervalForm">
+                                                    <option disabled selected>Duration</option>
+                                                    <option value="40">40 min</option>
+                                                    <option value="60">1 hr</option>
+                                                </select>
+                                                @if ($errors->has('session_time'))
+                                                    <div class="text-error text-sm">
+                                                        <p>{{ $errors->first('session_time') }}</p>
+                                                    </div>
+                                                @endif
                                             </div>
                                         </div>
                                         <template x-for="(timeInterval, index) in timeIntervals"
@@ -209,45 +223,57 @@
                         this.description = data
                     },
                     setTimeItervalForm() {
+                        const intervals = []
                         const startEl = document.getElementById('start').value;
                         const endEl = document.getElementById('end').value;
-                        let startInt = parseInt(startEl.slice(0, 2))
-                        const endInt = parseInt(endEl.slice(0, 2))
-                        let duration = [];
-                        while (startInt < endInt) {
-                            const _start = startInt;
-                            startInt++;
-                            const _end = startInt
-                            let count = 0;
-                            const timeObj = {
-                                duration: `${this.convertTo12HourFormat(`${_start}:00`)}  - ${this.convertTo12HourFormat(`${_end}:00`)}`,
-                                slot: _start === 12 ? 'break' : null
+                        const intervalEl = document.getElementById('interval').value;
+
+                        let start = new Date(`01/01/2000 ${startEl}`)
+                        const end = new Date(`01/01/2000 ${endEl}`)
+                        let dStart = null
+                        let dEnd = null
+                        while (start < end) {
+
+                            const formattedTime = start.toLocaleTimeString([], {
+                                hour: '2-digit',
+                                minute: '2-digit'
+                            })
+                            if (formattedTime === '12:00 PM') {
+                                dStart = formattedTime;
+                                start = new Date(`01/01/2000 01:00 PM`)
+
+                                dEnd = start.toLocaleTimeString([], {
+                                    hour: '2-digit',
+                                    minute: '2-digit'
+                                });
+                                intervals.push({
+                                    duration: `${dStart} - ${dEnd}`,
+                                    slot: 'break'
+                                })
+                            } else {
+                                dStart = formattedTime;
+                                start.setMinutes(start.getMinutes() + parseInt(intervalEl))
+                                dEnd = start.toLocaleTimeString([], {
+                                    hour: '2-digit',
+                                    minute: '2-digit'
+                                });
+                                intervals.push({
+                                    duration: `${dStart} - ${dEnd}`,
+                                    slot: null
+                                });
                             }
-
-                            duration.push(timeObj)
-
                         }
-                        this.timeIntervals = duration
 
-                        console.log(this.timeIntervals)
+                       this.timeIntervals = intervals
                     },
-                    convertTo12HourFormat(time) {
-                        let [hours, minutes] = time.split(':');
-                        let period = 'AM';
+                    fomattedTime(time) {
+                        const _time = time.toLocaleTimeString([], {
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        })
+                        return _time;
+                    }
 
-                        if (hours >= 12) {
-                            period = 'PM';
-                            if (hours > 12) {
-                                hours -= 12;
-                            }
-                        }
-
-                        if (hours === '00') {
-                            hours = '12';
-                        }
-
-                        return `${parseInt(hours, 10)}:${minutes}${period}`;
-                    },
                 }
             }
         </script>

@@ -52,7 +52,9 @@
                                         <tr>
                                             <th></th>
                                             <th>Service</th>
+                                            <th>Time</th>
                                             <th>Date</th>
+                                            <th>Session Time</th>
                                             <th>status</th>
                                         </tr>
                                     </thead>
@@ -61,7 +63,11 @@
                                             <tr>
                                                 <th>{{ $appointment->id }}</th>
                                                 <td>{{ $appointment->service->name }}</td>
+                                                <td>{{$appointment->time}}</td>
                                                 <td>{{ date('M-d-Y', strtotime($appointment->date)) }}</td>
+                                                <td>
+                                                    {{$appointment->service->session_time}} min
+                                                </td>
                                                 <td>
                                                     <p  class="{{$appointment->status === 'pending' ? 'bg-orange-300' : ($appointment->status === 'approve' ? 'bg-accent' : 'bg-red-400')}}
                                                         py-1 px-2 rounded-lg w-16 text-center">
