@@ -1,9 +1,16 @@
-<div class="h-auto min-h-screen flex flex-col w-full py-8 border-r border-gray-300 bg-base-100 relative"
-    x-data="sidebar">
-    <a href="{{ route('admin.dashboard') }}" class="h-16 flex gap-2 border-b-2 border-accent p-2 ">
-        <img src="{{ asset('image/logo.png') }}" alt="" srcset="" class="w-12 h-auto rounded-full">
-        <p class="text-xs text-center" x-show="toggle">
+<div class="h-auto min-h-screen flex flex-col w-full py-8 bg-gray-100 relative" x-data="sidebar">
+    <a href="{{ route('admin.dashboard') }}" class="flex gap-2 border-b-2 border-accent p-2 ">
+        <div class="w-12">
+            <img src="{{ asset('image/logo.png') }}" alt="" srcset="" class="object-contain">
+        </div>
+        {{-- <p class="text-sm text-center font-semibold" x-show="toggle">
             Doc Aid Diagnostic <br> & <br> Medical Center
+        </p> --}}
+
+        <p class="text-sm flex flex-col flex-1 items-center font-bold" x-show="toggle">
+            <span>Doc Aid Diagnostic</span>
+            <span>&</span>
+            <span>Medical Center</span>
         </p>
     </a>
     <button class="bg-base-100 rounded-full px-3 py-2 shadow-lg absolute -right-5" @click="openToggle()">

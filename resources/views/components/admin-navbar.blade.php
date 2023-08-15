@@ -3,19 +3,22 @@
 ]) --}}
 
 <div class="w-full flex flex-col" x-data="navbar">
-    <div class="w-full bg-base-100 h-24 flex">
-        <div class="flex pl-10 h-full pt-5 flex-grow">
-            <input type="text" placeholder="Type here" class="input input-ghost w-full" />
+    <div class="w-full bg-gray-100 h-24 flex">
+        <div class="flex h-full p-5 flex-grow">
+            <input type="text" placeholder="Type here"
+                class="input input-bordered input-accent border-2
+            focus:outline-none w-full shadow-lg" />
         </div>
-        <div class="w-1/5 flex flex-row-reverse p-5 relative">
+        <div class="w-1/5 flex items-center justify-end p-5 relative">
             <button @click="openToggle" class="flex gap-2">
-                <p>{{Auth::user()->name}}</p>
+                <p>{{ Auth::user()->name }}</p>
                 <i class="fi fi-rr-user"></i>
             </button>
-            <div class="absolute z-10 bg-base-100 -bottom-4 shadow-lg rounded-lg pt-2" x-show="toggle" x-transition.duration.700ms>
+            <div class="absolute z-10 bg-base-100 -bottom-4 shadow-lg rounded-lg pt-2" x-show="toggle"
+                x-transition.duration.700ms>
                 <ul class="flex flex-col space-y-2">
                     <li class="p-2 hover:bg-accent hover:font-bold duration-700">
-                        <form action="{{route('logout')}}" method="post">
+                        <form action="{{ route('logout') }}" method="post">
                             @csrf
                             <button>Logout</button>
                         </form>
@@ -49,9 +52,9 @@
 
 @push('js')
     <script>
-        function navbar () {
+        function navbar() {
             return {
-                toggle : false,
+                toggle: false,
                 openToggle() {
                     this.toggle = !this.toggle
                 }

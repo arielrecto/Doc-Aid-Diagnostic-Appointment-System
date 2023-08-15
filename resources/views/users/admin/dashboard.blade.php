@@ -1,6 +1,6 @@
 <x-app-layout>
     <div class="flex">
-        <div>
+        <div class="w-1/6">
             <x-admin-siderbar></x-admin-siderbar>
         </div>
         <div class="flex-grow h-screen" x-data="dashboard">
