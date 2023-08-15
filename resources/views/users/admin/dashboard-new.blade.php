@@ -1,9 +1,9 @@
 <x-app-layout>
-    <div class="flex w-full h-screen max-h-screen overflow-hidden bg-base-100 p-2">
+    <div class="flex w-full h-screen max-h-screen overflow-hidden bg-base-100 gap-2">
 
         <x-admin.sidebar-new />
 
-        <div class="flex-grow h-screen flex flex-col gap-2" x-data="dashboard">
+        <div class="flex-grow h-screen flex flex-col gap-2 px-4" x-data="dashboard">
             <x-admin.navbar-new />
 
             @if (Route::is('admin.dashboard'))

@@ -1,4 +1,4 @@
-<div class="w-1/6 overflow-hidden h-full">
+<div class="w-1/6 overflow-hidden h-full pl-8">
     <div class="flex p-4 items-center gap-4">
         <div class="w-16 h-16 rounded-full bg-white border shadow">
             <img src="{{ asset('image/logo-transparent.png') }}" class="object-fill">
@@ -7,10 +7,10 @@
     </div>
 
     {{-- Menus --}}
-    <div class="flex flex-col gap-2">
-        <ul class="flex flex-col space-y-1 px-3 pt-2">
+    <div class="flex flex-col gap-1">
+        <ul class="flex flex-col p-4">
             <a href="{{ route('admin.dashboard') }}"
-                class="flex space-x-2 items-center rounded-md px-4 py-2 group
+                class="flex space-x-2 items-center rounded-md px-2 py-1 group
             {{ Route::is('admin.dashboard')
                 ? 'font-bold text-primary '
                 : 'hover:text-accent' }} ">
@@ -19,7 +19,7 @@
                 <p x-show="toggle">Dashboard</p>
             </a>
             <a href="{{ route('admin.appointment.index') }}"
-                class="w-full flex justify-between items-center rounded-md px-4 py-2 group cursor-pointer
+                class="w-full flex justify-between items-center rounded-md px-2 py-1 group cursor-pointer
             {{ Route::is('admin.appointment.index') 
                 ? 'border-r-4 border-accent font-bold text-accent bg-gray-200' 
                 : 'hover:text-primary-focus' }}">
