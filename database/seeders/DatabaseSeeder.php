@@ -4,7 +4,9 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\Service;
 use App\Models\User;
+use Database\Factories\ServicesFactory;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Hash;
@@ -16,6 +18,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+
+       // Service::factory(30)->create();
+
         $admin = User::create([
             'name' => 'Admin',
             'email' => 'admin@gmail.com',

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Service;
+use App\Utilities\ImageUploader;
 use Illuminate\Http\Request;
 
 class ServiceController extends Controller
@@ -13,8 +14,9 @@ class ServiceController extends Controller
      */
     public function index()
     {
-        $services = Service::get();
-        return view('users.admin.Services.index', compact(['services']));
+        $services = Service::paginate(4);
+        $total = Service::total();
+        return view('users.admin.Services.index', compact(['services', 'total']));
     }
 
     /**
@@ -30,16 +32,31 @@ class ServiceController extends Controller
      */
     public function store(Request $request)
     {
-       $data = $request->validate([
-        'name' => 'required',
-        'description' => 'required',
-        'price' => 'required'
-       ]);
+        $data = $request->validate([
+            'image' => 'required',
+            'name' => 'required',
+            'description' => 'required',
+            'price' => 'required',
+            'initPayment' => 'required',
+            'session_time' => 'required'
+        ]);
 
-       $service = Service::create($data);
+
+        $imageUploader = new ImageUploader();
+        $imageUploader->handler($request->image, '/image/services/', 'SRVCS');
+
+           $service = Service::create([
+            'name' => $request->name,
+            'description' => $request->description,
+            'price' => $request->price,
+            'init_payment' => $request->initPayment,
+            'image' => $imageUploader->getURL(),
+            'time_slot' => $request->timeSlot,
+            'session_time' => $request->session_time
+           ]);
 
 
-       return back()->with(['message' => 'Medical Service Added Successfully']);
+           return back()->with(['message' => 'Medical Service Added Successfully']);
     }
 
     /**

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Patient;
 use App\Http\Controllers\Controller;
 use App\Models\Appointment;
 use App\Models\Service;
+use App\Utilities\ImageUploader;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,7 +16,8 @@ class AppointmentController extends Controller
      */
     public function index()
     {
-        //
+        $appointments = Appointment::get();
+        return view('users.patient.appointment.index', compact(['appointments']));
     }
 
     /**
@@ -23,7 +25,11 @@ class AppointmentController extends Controller
      */
     public function create()
     {
-        //
+
+        $services = Service::get()->toJSON();
+        $timeSlot = $this->timeIntervalByHour('8:00', '4:00');
+
+        return view('users.patient.appointment.create', compact(['services', 'timeSlot']));
     }
 
     /**
@@ -31,19 +37,24 @@ class AppointmentController extends Controller
      */
     public function store(Request $request)
     {
-        $service = Service::where('name', $request->service)->first();
-
+        $service = Service::find($request->service);
+        $imageUploader = new ImageUploader();
+        $imageUploader->handler($request->receipt, '/image/receipt/', 'RCPT');
 
         $user = Auth::user();
         $appointment = Appointment::create([
-            'date' => $request->appointment_date,
-            'time' => $request->time,
-            'type' => $request->type,
-            'user_id' => $user->id
+            'date' => $request->date,
+            'patient' => $user->name,
+            'time' => $request->timeSlot,
+            'type' => 'sample',
+            'user_id' => $user->id,
+            'service_id' => $service->id,
+            'receipt_image' => $imageUploader->getURL(),
+            'status' => 'pending'
         ]);
 
 
-        $appointment->services()->attach($service->id);
+        // $appointment->services()->attach($service->id);
 
         return back()->with(['message' => 'Appointment Request Sent!']);
     }
@@ -78,5 +89,20 @@ class AppointmentController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+    public function timeIntervalByHour($start, $end)
+    {
+        $startTime = strtotime($start .'AM');
+        $endTime = strtotime($end . 'PM');
+
+        $timeInterval = [];
+        while ($startTime <= $endTime) {
+            $endTimeSlot = strtotime('+1 hour', $startTime);
+            $timeInterval[] = date('h:i A', $startTime) . ' - ' . date('h:i A', $endTimeSlot);
+            $startTime = $endTimeSlot;
+        }
+
+        // Now $timeInterval contains an array of time intervals in the desired format
+        return $timeInterval;
     }
 }
