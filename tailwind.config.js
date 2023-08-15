@@ -1,4 +1,4 @@
-import defaultTheme from "tailwindcss/defaultTheme";
+import { fontFamily } from "tailwindcss/defaultTheme";
 import forms from "@tailwindcss/forms";
 
 /** @type {import('tailwindcss').Config} */
@@ -8,19 +8,37 @@ export default {
         "./storage/framework/views/*.php",
         "./resources/views/**/*.blade.php",
     ],
+
     daisyui: {
         themes: [
             {
                 mytheme: {
-                    "primary": "#050505",
 
-                    "secondary": "#FA0706",
+                    // "primary": "#34d399",
+                    
+                    "primary": "#14b8a6",
 
-                    "accent": "#04ABA3",
+                    "primary": "#2c6975",
 
-                    "neutral": "#DFC9C8",
+                    "secondary": "#68b2a0",
 
-                    "base-100": "#ffffff",
+                    "accent": "#2d82b5",
+
+                    "neutral": "#2b3440",
+
+                    // "base-100": "#ffffff",
+
+                    // "base-100": "#e0e7ff",
+
+                    // "base-100": "#eff2ff",
+
+                    // "base-100": "#f6f8ff",
+                    
+                    // "base-100": "#fafbff",
+
+                    "base-100": "#f9fefe",
+                    "base-100": "#e4f3ef",
+                    "base-100": "#eff5f3",
 
                     "info": "#3abff8",
 
@@ -34,13 +52,13 @@ export default {
         ],
     },
 
-    // theme: {
-    //     extend: {
-    //         fontFamily: {
-    //             sans: ["Figtree", ...defaultTheme.fontFamily.sans],
-    //         },
-    //     },
-    // },
+    theme: {
+        extend: {
+            fontFamily: {
+                sans: ["Inter", ...fontFamily.sans],
+            },
+        },
+    },
 
     plugins: [forms, require("daisyui")],
 };

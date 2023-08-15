@@ -10,6 +10,6 @@ class DashboardController extends Controller
 {
     public function dashboard() {
         $appointments = Appointment::paginate(30);
-        return view('users.admin.dashboard', compact(['appointments']));
+        return view('users.admin.dashboard-new', compact(['appointments']));
     }
 }
