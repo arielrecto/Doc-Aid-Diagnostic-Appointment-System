@@ -23,10 +23,16 @@
 
                                 <div class="w-full flex flex-col gap-2">
                                     <label for="" class="text-xs">Patient</label>
-                                    <select class="select select-accent w-full" id="interval"
-                                        name="patient" @change="setTimeItervalForm">
+                                    <select class="select select-accent w-full" id="interval" name="patient"
+                                        @change="setTimeItervalForm">
                                         <option disabled selected>Patient</option>
-                                        <option value="{{Auth::user()->name}}">{{Auth::user()->name}}</option>
+                                        <option value="{{ Auth::user()->name }}">{{ Auth::user()->name }}</option>
+                                        <option disabled> - Family Members - </option>
+                                        @forelse ($familyMembers as $member)
+                                            <option value="{{ $member->full_name }}" class="capitalize">{{ $member->full_name }}</option>
+                                        @empty
+                                            <option disabled class="text-xs">No Family Members</option>
+                                        @endforelse
                                     </select>
                                 </div>
                                 <div

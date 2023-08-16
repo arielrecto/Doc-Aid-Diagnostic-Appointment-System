@@ -15,7 +15,6 @@ class Appointment extends Model
         'user_id',
         'time',
         'type',
-        'is_approved',
         'receipt_image',
         'service_id',
         'status'
@@ -29,6 +28,10 @@ class Appointment extends Model
     }
     public static function today(){
         $appointments  = Appointment::with('service')->where('date',now('GMT+8')->format('Y-m-d'))->get();
+        return $appointments;
+    }
+    public static function pending(){
+        $appointments = Appointment::where('status', 'pending')->get();
         return $appointments;
     }
 }

@@ -1,20 +1,24 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Patient;
 
-use App\Http\Controllers\Controller;
-use App\Models\Appointment;
+use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Models\Family;
+use Illuminate\Support\Facades\Auth;
 
-class AppointmentController extends Controller
+class FamilyController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $appointments = Appointment::pending();
-        return view('users.admin.Appoinment.index', compact(['appointments']));
+
+        $members = Family::authUserFamilyMember();
+
+        return view('users.patient.family.index', compact(['members']));
     }
 
     /**
@@ -22,7 +26,7 @@ class AppointmentController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
@@ -30,7 +34,17 @@ class AppointmentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+       $user = Auth::user();
+       $request->validate([
+        'name' => 'required'
+       ]);
+
+       Family::create([
+        'name' => $request->name,
+        'user_id' => $user->id
+       ]);
+
+       return back()->with(['message' => 'Family Added Success']);
     }
 
     /**
@@ -62,25 +76,6 @@ class AppointmentController extends Controller
      */
     public function destroy(string $id)
     {
-        $appointment = Appointment::find($id);
-
-        $appointment->delete();
-
-
-        return back()->with(['rejected' => 'Appointment Rejected ! ']);
-    }
-    public function approved($id){
-        $appointment = Appointment::find($id);
-
-        $appointment->update(['status' => 'approved']);
-
-        return back()->with(['approved' => 'Appointment Approved']);
-    }
-    public function reject($id){
-        $appointment = Appointment::find($id);
-
-        $appointment->update(['status' => 'reject']);
-
-        return back()->with(['reject' => 'Appointment reject']);
+        //
     }
 }

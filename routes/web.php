@@ -7,9 +7,12 @@ use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Patient\AppointmentController;
 use App\Http\Controllers\Admin\AppointmentController as AdminAppointmentController;
+use App\Http\Controllers\Admin\EmployeeController;
 use App\Http\Controllers\Patient\DashboardController as PatientDashboardController;
 use App\Http\Controllers\Employee\DashboardController as EmployeeDashboardController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Patient\FamilyController;
+use App\Http\Controllers\Patient\FamilyMemberController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,13 +44,19 @@ Route::middleware('auth')->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
         Route::prefix('appointment')->as('appointment.')->group(function(){
             Route::post('/approved/{id}', [AdminAppointmentController::class, 'approved'])->name('approved');
+            Route::post('/reject/{id}', [AdminAppointmentController::class, 'reject'])->name('reject');
         });
         Route::resource('services', ServiceController::class);
         Route::resource('appointment', AdminAppointmentController::class);
+        Route::resource('employee', EmployeeController::class);
     });
     Route::middleware('role:patient')->prefix('patient')->as('patient.')->group(function(){
         Route::get('/dashboard', [PatientDashboardController::class, 'dashboard'])->name('dashboard');
         Route::resource('appointment', AppointmentController::class)->only('store', 'index', 'create');
+        Route::prefix('family')->as('family.')->group(function(){
+            Route::resource('members', FamilyMemberController::class);
+        });
+        Route::resource('family', FamilyController::class)->except('edit', 'destroy'.'create');
     });
     Route::middleware('role:employee')->prefix('employee')->as('employee.')->group(function() {
         Route::get('/dashboard', [EmployeeDashboardController::class, 'dashboard'])->name('dashboard');

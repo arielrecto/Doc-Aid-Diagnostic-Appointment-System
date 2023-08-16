@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Service;
 use App\Models\User;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
@@ -13,16 +12,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('appointments', function (Blueprint $table) {
+        Schema::create('families', function (Blueprint $table) {
             $table->id();
-            $table->string('patient');
-            $table->string('date');
-            $table->string('time');
-            $table->string('type');
-            $table->foreignIdFor(Service::class);
-            $table->string('receipt_image');
+            $table->string('name');
             $table->foreignIdFor(User::class);
-            $table->string('status');
             $table->timestamps();
         });
     }
@@ -32,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('appointments');
+        Schema::dropIfExists('families');
     }
 };

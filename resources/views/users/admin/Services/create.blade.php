@@ -238,7 +238,7 @@
                                 hour: '2-digit',
                                 minute: '2-digit'
                             })
-                            if (formattedTime === '12:00 PM') {
+                            if (formattedTime === '12:00 PM' || (formattedTime > '12:00 PM' && formattedTime < '1:00 PM')) {
                                 dStart = formattedTime;
                                 start = new Date(`01/01/2000 01:00 PM`)
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Patient;
 
 use App\Http\Controllers\Controller;
 use App\Models\Appointment;
+use App\Models\Family;
 use App\Models\Service;
 use App\Utilities\ImageUploader;
 use Illuminate\Http\Request;
@@ -28,8 +29,9 @@ class AppointmentController extends Controller
 
         $services = Service::get()->toJSON();
         $timeSlot = $this->timeIntervalByHour('8:00', '4:00');
+        $familyMembers = Family::authUserFamilyMember();
 
-        return view('users.patient.appointment.create', compact(['services', 'timeSlot']));
+        return view('users.patient.appointment.create', compact(['services', 'timeSlot', 'familyMembers']));
     }
 
     /**

@@ -3,18 +3,18 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Appointment;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
 
-class AppointmentController extends Controller
+class EmployeeController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $appointments = Appointment::pending();
-        return view('users.admin.Appoinment.index', compact(['appointments']));
+        return view('users.admin.Employee.index');
     }
 
     /**
@@ -22,7 +22,7 @@ class AppointmentController extends Controller
      */
     public function create()
     {
-        //
+        return view('users.admin.Employee.create');
     }
 
     /**
@@ -30,7 +30,20 @@ class AppointmentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+      $data = $request->validate([
+        'name' => 'required',
+        'email' => 'required',
+        'password' => 'required|confirmed'
+       ]);
+
+       $user = User::create($data);
+
+       $role = Role::where('name', 'employee')->first();
+
+       $user->assignRole($role);
+
+
+       return back()->with(['message' => 'Employee Account Created !']);
     }
 
     /**
@@ -62,25 +75,6 @@ class AppointmentController extends Controller
      */
     public function destroy(string $id)
     {
-        $appointment = Appointment::find($id);
-
-        $appointment->delete();
-
-
-        return back()->with(['rejected' => 'Appointment Rejected ! ']);
-    }
-    public function approved($id){
-        $appointment = Appointment::find($id);
-
-        $appointment->update(['status' => 'approved']);
-
-        return back()->with(['approved' => 'Appointment Approved']);
-    }
-    public function reject($id){
-        $appointment = Appointment::find($id);
-
-        $appointment->update(['status' => 'reject']);
-
-        return back()->with(['reject' => 'Appointment reject']);
+        //
     }
 }

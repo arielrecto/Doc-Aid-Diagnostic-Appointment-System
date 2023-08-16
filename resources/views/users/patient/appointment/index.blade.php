@@ -69,11 +69,12 @@
                                                     {{$appointment->service->session_time}} min
                                                 </td>
                                                 <td>
-                                                    <p  class="{{$appointment->status === 'pending' ? 'bg-orange-300' : ($appointment->status === 'approve' ? 'bg-accent' : 'bg-red-400')}}
-                                                        py-1 px-2 rounded-lg w-16 text-center">
-                                                        {{ $appointment->status }}
-                                                    </p>
-
+                                                    <div class="flex justify-center">
+                                                        <p  class="{{$appointment->status === 'pending' ? 'bg-orange-300' : ($appointment->status === 'approved' ? 'bg-accent' : 'bg-red-400')}}
+                                                            p-2 rounded-lg text-center capitalize">
+                                                            {{ $appointment->status }}
+                                                        </p>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         @empty
