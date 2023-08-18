@@ -52,11 +52,12 @@ class AppointmentController extends Controller
             'user_id' => $user->id,
             'service_id' => $service->id,
             'receipt_image' => $imageUploader->getURL(),
-            'status' => 'pending'
+            'receipt_amount'=> $request->receipt_amount,
+            'balance' => $request->balance,
+            'total' => $request->total,
+            'status' => 'pending',
+            'is_extended' => $request?->is_extended === "on" ? true : false
         ]);
-
-
-        // $appointment->services()->attach($service->id);
 
         return back()->with(['message' => 'Appointment Request Sent!']);
     }

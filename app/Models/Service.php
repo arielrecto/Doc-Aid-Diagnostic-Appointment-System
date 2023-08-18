@@ -16,7 +16,9 @@ class Service extends Model
         'description',
         'init_payment',
         'time_slot',
-        'session_time'
+        'session_time',
+        'extension_time',
+        'extension_price'
     ];
 
 

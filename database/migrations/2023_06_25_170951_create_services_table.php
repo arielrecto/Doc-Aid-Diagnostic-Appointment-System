@@ -21,6 +21,8 @@ return new class extends Migration
             $table->string('init_payment');
             $table->json('time_slot');
             $table->string('session_time');
+            $table->string('extension_time');
+            $table->string('extension_price');
             $table->timestamps();
         });
     }

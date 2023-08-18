@@ -13,8 +13,9 @@ class AppointmentController extends Controller
      */
     public function index()
     {
-        $appointments = Appointment::pending();
-        return view('users.admin.Appoinment.index', compact(['appointments']));
+        $appointments = Appointment::get();
+        $total = Appointment::total();
+        return view('users.admin.Appointment.index', compact(['appointments', 'total']));
     }
 
     /**
@@ -38,7 +39,10 @@ class AppointmentController extends Controller
      */
     public function show(string $id)
     {
-        //
+
+        $appointment = Appointment::find($id);
+
+        return view('users.admin.Appointment.show', compact(['appointment']));
     }
 
     /**
@@ -82,5 +86,11 @@ class AppointmentController extends Controller
         $appointment->update(['status' => 'reject']);
 
         return back()->with(['reject' => 'Appointment reject']);
+    }
+    public function filter($filter){
+       $appointments = Appointment::filter($filter);
+       $total = Appointment::total();
+
+      return view('users.admin.Appointment.filter', compact(['appointments', 'filter', 'total']));
     }
 }

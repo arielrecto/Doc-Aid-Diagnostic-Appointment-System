@@ -16,6 +16,9 @@ class Appointment extends Model
         'time',
         'type',
         'receipt_image',
+        'receipt_amount',
+        'balance',
+        'total',
         'service_id',
         'status'
     ];
@@ -33,5 +36,19 @@ class Appointment extends Model
     public static function pending(){
         $appointments = Appointment::where('status', 'pending')->get();
         return $appointments;
+    }
+    public static function filter($data){
+        if($data === 'today') {
+            return $appointments = Appointment::where('date', now('GMT+8')->format('Y-m-d'))->get();
+        }
+        $appointments = Appointment::where('status', $data)->get();
+
+
+        return $appointments;
+    }
+    public static function total() {
+        $total = Appointment::count();
+
+        return $total;
     }
 }

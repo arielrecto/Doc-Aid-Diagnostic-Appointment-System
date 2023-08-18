@@ -45,6 +45,7 @@ Route::middleware('auth')->group(function () {
         Route::prefix('appointment')->as('appointment.')->group(function(){
             Route::post('/approved/{id}', [AdminAppointmentController::class, 'approved'])->name('approved');
             Route::post('/reject/{id}', [AdminAppointmentController::class, 'reject'])->name('reject');
+            Route::get('/filter={filter}', [AdminAppointmentController::class, 'filter'])->name('filter');
         });
         Route::resource('services', ServiceController::class);
         Route::resource('appointment', AdminAppointmentController::class);

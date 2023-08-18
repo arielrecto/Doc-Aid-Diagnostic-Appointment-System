@@ -18,7 +18,7 @@ number of user types
    * - user select services
    * - user set appointment to selected service
    * - user must paid down payment to serve set the appointment 50% of selected services
-    - user can set time extent the session time but need additional payment
+   * - user can set time extent the session time but need additional payment
     - user can reschedule the appointment
     - user can modify his/her medical profile
    * - upload payment receipt to approve the appointment

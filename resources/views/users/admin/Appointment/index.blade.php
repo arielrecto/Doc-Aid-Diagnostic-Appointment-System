@@ -19,21 +19,11 @@
             @endif
             <div class="w-full h-full px-5">
                 <div class="flex flex-col gap-2 py-5 w-full h-full">
-                    <div class="grid grid-cols-3 grid-flow-row gap-4">
-                        <div class="w-full h-32 bg-accent rounded-lg show-sm duration-700 hover:shadow-lg">
-                            total appointment 9
-                        </div>
-                        <div class="w-full h-32 bg-accent rounded-lg show-sm duration-700 hover:shadow-lg">
-                            today Schedule
-                        </div>
-                        <div class="w-full h-32 bg-accent rounded-lg show-sm duration-700 hover:shadow-lg">
-                            pending appointment
-                        </div>
-                    </div>
+                    <x-admin.appointment.header-selection :total="$total" />
                     <div
                         class="w-full rounded-lg shadow-sm hover:shadow-lg duration-700 bg-base-100 h-96 flex flex-col space-y-2">
                         <div class="bg-gray-200 p-2 rounded-t-lg">
-                            <h1 class="text-lg font-medium capitalize">pending appointment</h1>
+                            <h1 class="text-lg font-medium capitalize">Appointment - Index</h1>
                         </div>
                         <div class="overflow-auto h-4/6">
                             <table class="table table-xs">
@@ -62,22 +52,34 @@
                                             <td>{{ $appointment->status }}</td>
                                             <td>
                                                 <div class="flex gap-2 p-2 items-center">
-                                                    <form
-                                                        action="{{ route('admin.appointment.approved', ['id' => $appointment->id]) }}"
-                                                        method="post">
-                                                        @csrf
-                                                        <button
-                                                            class="text-accent text-xs hover:scale-105 duration-700">
-                                                            <i class="fi fi-rr-checkbox  hover:font-bold"></i>
-                                                        </button>
-                                                    </form>
-                                                    <form action="{{route('admin.appointment.reject', ['id' => $appointment->id])}}" method="post">
+                                                    @if ($appointment->status === 'pending')
+                                                        <form
+                                                            action="{{ route('admin.appointment.approved', ['id' => $appointment->id]) }}"
+                                                            method="post">
+                                                            @csrf
+                                                            <button
+                                                                class="text-accent text-xs hover:scale-105 duration-700">
+                                                                <i class="fi fi-rr-checkbox  hover:font-bold"></i>
+                                                            </button>
+                                                        </form>
+                                                        <form
+                                                            action="{{ route('admin.appointment.reject', ['id' => $appointment->id]) }}"
+                                                            method="post">
 
-                                                        @csrf
-                                                        <button class="text-error text-xs hover:scale-105 duration-700">
-                                                            <i class="fi fi-rr-square-x hover:font-bold"></i>
+                                                            @csrf
+                                                            <button
+                                                                class="text-error text-xs hover:scale-105 duration-700">
+                                                                <i class="fi fi-rr-square-x hover:font-bold"></i>
+                                                            </button>
+                                                        </form>
+                                                    @endif
+                                                    <a
+                                                        href="{{ route('admin.appointment.show', ['appointment' => $appointment->id]) }}">
+                                                        <button
+                                                            class="text-blue-500 text-xs hover:scale-105 duration-700">
+                                                            <i class="fi fi-rr-eye hover:font-bold"></i>
                                                         </button>
-                                                    </form>
+                                                    </a>
                                                 </div>
                                             </td>
                                         </tr>
