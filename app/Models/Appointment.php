@@ -29,6 +29,9 @@ class Appointment extends Model
     public function service(){
         return $this->belongsTo(Service::class);
     }
+    public function result(){
+        return $this->hasOne(Result::class);
+    }
     public static function today(){
         $appointments  = Appointment::with('service')->where('date',now('GMT+8')->format('Y-m-d'))->get();
         return $appointments;

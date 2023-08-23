@@ -17,6 +17,11 @@
                     <h1 class="text-xl text-center">{{ Session::get('approved') }}</h1>
                 </div>
             @endif
+            @if (Session::has('message'))
+                <div class="w-full p-5 bg-green-500">
+                    <h1 class="text-xl text-center">{{ Session::get('message') }}</h1>
+                </div>
+            @endif
             <div class="w-full h-full px-5">
                 <div class="flex flex-col gap-2 py-5 w-full h-full">
                     <div class="w-full h-full flex justify-center items-center">
@@ -120,12 +125,116 @@
                                     </div>
                                 @endif
                             </div>
+
+
+                            <div class="w-full p-2 flex flex-col gap-2" x-data="result">
+                                @if ($appointment->result === null)
+                                    <div class="w-full flex justify-center">
+                                        <button class="btn btn-accent" @click="openToggle">
+                                            <span><i class="fi fi-rr-upload"></i></span>
+                                            Upload Result
+                                        </button>
+                                    </div>
+                                @else
+                                    <div class="w-full flex flex-col gap-2">
+                                        <h1 class="text-lg font-semibold w-full text-center capitalize">result</h1>
+                                        <div class="overflow-x-auto">
+                                            <table class="table">
+                                                <!-- head -->
+                                                <thead class="capitalize">
+                                                    <tr>
+                                                        <th></th>
+                                                        <th>Name</th>
+                                                        <th>description</th>
+                                                        <th>action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <!-- row 1 -->
+                                                    <tr class="bg-base-200">
+                                                        <th>{{ $appointment->result->id }}</th>
+                                                        <td>{{ $appointment->result->name }}</td>
+                                                        <td>{!! $appointment->result->description !!}</td>
+                                                        <td>
+                                                            <div class="flex justify-ned p-2 gap-4">
+                                                                <a href="{{ asset($appointment->result->path) }}"
+                                                                    target="_blank">
+                                                                    <button><i
+                                                                            class="fi fi-rr-eye text-accent"></i></button>
+                                                                </a>
+
+                                                                <a href="{{ asset($appointment->result->path) }}"
+                                                                    download>
+                                                                    <button><i class="fi fi-rr-download"></i></button>
+                                                                </a>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                @endif
+                                <div x-show="toggle" x-transition.duration.700ms>
+                                    <form action="{{ route('admin.appointment.result.store') }}" method="post"
+                                        class="w-full flex flex-col gap-4 p-5" enctype="multipart/form-data">
+                                        @csrf
+                                        <h1 class="text-xl font-bold w-full text-center p-4">Result</h1>
+                                        <div class="flex flex-col gap-2">
+                                            <label for="" class="text-sm text-gray-500">Name</label>
+                                            <input type="text" class="input input-accent w-full rounded-lg"
+                                                name="name">
+                                        </div>
+                                        <div class="flex flex-col gap-2 h-64" x-init="quillEditor()">
+                                            <label for="" class="text-sm text-gray-500">Description</label>
+                                            <div id="editor">
+
+                                            </div>
+                                            <input type="hidden" name="description" x-model="description">
+                                        </div>
+                                        <div class="flex flex-col gap-2 h-64">
+                                            <label for="" class="text-sm text-gray-500">Upload File</label>
+                                            <input type="file"
+                                                class="file-input file-input-bordered file-input-accent w-full"
+                                                name="file" />
+                                        </div>
+                                        <input type="hidden" name="appointment_id" value="{{ $appointment->id }}">
+                                        <div class="w-full flex justify-end">
+                                            <button class="btn btn-accent" @click="content()">Upload</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    </div>
+
+
+    @push('js')
+        <script>
+            function result() {
+                return {
+                    toggle: false,
+                    description: null,
+                    openToggle() {
+                        this.toggle = !this.toggle
+                    },
+                    quillEditor() {
+                        const editor = document.getElementById('editor');
+                        const quill = new Quill(editor, {
+                            theme: 'snow'
+                        })
+                    },
+                    content() {
+                        const desription = document.getElementById('editor').querySelector(".ql-editor").innerHTML;
+                        this.description = desription;
+                    }
+                }
+            }
+        </script>
+    @endpush
 
 </x-app-layout>

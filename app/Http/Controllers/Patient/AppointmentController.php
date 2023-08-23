@@ -67,7 +67,9 @@ class AppointmentController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $appointment = Appointment::find($id);
+
+        return view('users.patient.appointment.show', compact(['appointment']));
     }
 
     /**
@@ -75,7 +77,8 @@ class AppointmentController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $appointment = Appointment::find($id);
+        return view('users.patient.appointment.edit', compact(['appointment']));
     }
 
     /**
@@ -83,7 +86,15 @@ class AppointmentController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $appointment = Appointment::find($id);
+
+        $appointment->update([
+            'date' => $request->date ?? $appointment->date,
+            'patient' => $request->patient ?? $appointment->patient
+        ]);
+
+
+        return to_route('patient.appointment.show', ['appointment' => $appointment->id])->with(['message' => 'Appointment Updated Success']);
     }
 
     /**

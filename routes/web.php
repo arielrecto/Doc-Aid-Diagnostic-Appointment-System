@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Patient\AppointmentController;
 use App\Http\Controllers\Admin\AppointmentController as AdminAppointmentController;
 use App\Http\Controllers\Admin\EmployeeController;
+use App\Http\Controllers\Admin\ResultController;
 use App\Http\Controllers\Patient\DashboardController as PatientDashboardController;
 use App\Http\Controllers\Employee\DashboardController as EmployeeDashboardController;
 use App\Http\Controllers\HomeController;
@@ -46,6 +47,7 @@ Route::middleware('auth')->group(function () {
             Route::post('/approved/{id}', [AdminAppointmentController::class, 'approved'])->name('approved');
             Route::post('/reject/{id}', [AdminAppointmentController::class, 'reject'])->name('reject');
             Route::get('/filter={filter}', [AdminAppointmentController::class, 'filter'])->name('filter');
+            Route::resource('result', ResultController::class)->except('create');
         });
         Route::resource('services', ServiceController::class);
         Route::resource('appointment', AdminAppointmentController::class);
@@ -53,7 +55,7 @@ Route::middleware('auth')->group(function () {
     });
     Route::middleware('role:patient')->prefix('patient')->as('patient.')->group(function(){
         Route::get('/dashboard', [PatientDashboardController::class, 'dashboard'])->name('dashboard');
-        Route::resource('appointment', AppointmentController::class)->only('store', 'index', 'create');
+        Route::resource('appointment', AppointmentController::class);
         Route::prefix('family')->as('family.')->group(function(){
             Route::resource('members', FamilyMemberController::class);
         });
