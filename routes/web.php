@@ -37,10 +37,6 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
     Route::middleware('role:admin')->prefix('admin')->as('admin.')->group(function(){
         Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
         Route::prefix('appointment')->as('appointment.')->group(function(){
@@ -60,6 +56,13 @@ Route::middleware('auth')->group(function () {
             Route::resource('members', FamilyMemberController::class);
         });
         Route::resource('family', FamilyController::class)->except('edit', 'destroy'.'create');
+
+        Route::prefix('profile')->as('profile.')->group(function(){
+            Route::get('/create', [ProfileController::class, 'create'])->name('create');
+            Route::get('/show/id={profile}', [ProfileController::class, 'show'])->name('show');
+            Route::post('/', [ProfileController::class, 'store'])->name('store');
+        });
+
     });
     Route::middleware('role:employee')->prefix('employee')->as('employee.')->group(function() {
         Route::get('/dashboard', [EmployeeDashboardController::class, 'dashboard'])->name('dashboard');

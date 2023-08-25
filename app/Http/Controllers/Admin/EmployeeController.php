@@ -14,7 +14,9 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        return view('users.admin.Employee.index');
+
+        $employees = User::role('employee')->get();
+        return view('users.admin.Employee.index', compact(['employees']));
     }
 
     /**

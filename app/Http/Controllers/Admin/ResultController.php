@@ -46,7 +46,7 @@ class ResultController extends Controller
             'path' => $fileUploader->getPath()
         ]);
 
-        // Mail::to($appointment->user->email)->send(new AppointmentResult($result, asset($result->path)));
+        Mail::to($appointment->user->email)->send(new AppointmentResult($result, asset($result->path)));
 
         return back()->with(['message' => 'Result Uploaded !']);
     }

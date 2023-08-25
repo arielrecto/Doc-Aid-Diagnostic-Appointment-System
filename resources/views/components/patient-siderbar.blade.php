@@ -28,6 +28,13 @@
                 <p class="text-base ">Family</p>
             </div>
         </a>
+        <a href="{{route('patient.profile.show', ['profile' => Auth::user()->profile->id ?? 0])}}" class="items-center rounded-md p-2 group hover:bg-gray-100
+        {{Route::is('patient.profile.show') || Route::is('patient.profile.create') ? 'text-accent font-semibold border-b-4 border-accent duration-700' : 'hover:text-accent hover:font-semibold hover:border-b-4 hover:border-accent duration-700'}}">
+            <div class="flex space-x-2">
+                <i class="fi fi-rr-user text-lg"></i>
+                <p class="text-base ">Profile</p>
+            </div>
+        </a>
         {{-- <a href="" class="w-full flex justify-between items-center rounded-md px-4 py-2 group hover:bg-gray-200 cursor-pointer">
             <div class="flex space-x-2 items-center">
                 <i class='bx bxs-shopping-bag text-xl'></i>

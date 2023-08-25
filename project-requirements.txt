@@ -22,6 +22,7 @@ number of user types
    * - user can reschedule the appointment
     - user can modify his/her medical profile
    * - upload payment receipt to approve the appointment
+    - show payment image credentials
 
 
 

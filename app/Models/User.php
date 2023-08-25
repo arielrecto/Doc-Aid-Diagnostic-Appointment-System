@@ -50,4 +50,7 @@ class User extends Authenticatable
     public function family (){
         return $this->hasOne(Family::class);
     }
+    public function profile(){
+        return $this->hasOne(Profile::class);
+    }
 }
