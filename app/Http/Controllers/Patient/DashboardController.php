@@ -12,7 +12,7 @@ class DashboardController extends Controller
     public function dashboard()
     {
         $services = Service::get();
-        $appointments = Appointment::where('is_approved', false)->with('service')->get()->toJson();
+        $appointments = Appointment::with('service')->get()->toJson();
         $timeInterval = $this->timeIntervalByHour('8:00', '4:00');
         $todayAppointments = Appointment::today();
 

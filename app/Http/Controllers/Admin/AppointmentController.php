@@ -13,8 +13,9 @@ class AppointmentController extends Controller
      */
     public function index()
     {
-        $appointments = Appointment::where('is_approved', false)->get();
-        return view('users.admin.Appoinment.index', compact(['appointments']));
+        $appointments = Appointment::get();
+        $total = Appointment::total();
+        return view('users.admin.Appointment.index', compact(['appointments', 'total']));
     }
 
     /**
@@ -38,7 +39,10 @@ class AppointmentController extends Controller
      */
     public function show(string $id)
     {
-        //
+
+        $appointment = Appointment::find($id);
+
+        return view('users.admin.Appointment.show', compact(['appointment']));
     }
 
     /**
@@ -72,8 +76,21 @@ class AppointmentController extends Controller
     public function approved($id){
         $appointment = Appointment::find($id);
 
-        $appointment->update(['is_approved' => true]);
+        $appointment->update(['status' => 'approved']);
 
         return back()->with(['approved' => 'Appointment Approved']);
+    }
+    public function reject($id){
+        $appointment = Appointment::find($id);
+
+        $appointment->update(['status' => 'reject']);
+
+        return back()->with(['reject' => 'Appointment reject']);
+    }
+    public function filter($filter){
+       $appointments = Appointment::filter($filter);
+       $total = Appointment::total();
+
+      return view('users.admin.Appointment.filter', compact(['appointments', 'filter', 'total']));
     }
 }

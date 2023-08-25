@@ -1,7 +1,7 @@
 number of user types
-    - admin
-    - patient
-    - employee
+   * - admin
+   * - patient
+   * - employee
 
 
 --Business process--
@@ -14,27 +14,27 @@ number of user types
 
 
 ---patient---
-    - user patient create account
-    - user select services
-    - user set appointment to selected service
-    - user must paid down payment to serve set the appointment 50% of selected services
-    - user can set time extent the session time but need additional payment
-    - user can reschedule the appointment
+   * - user patient create account
+   * - user select services
+   * - user set appointment to selected service
+   * - user must paid down payment to serve set the appointment 50% of selected services
+   * - user can set time extent the session time but need additional payment
+   * - user can reschedule the appointment
     - user can modify his/her medical profile
-    - upload payment receipt to approve the appointment
+   * - upload payment receipt to approve the appointment
+    - show payment image credentials
 
 
 
 --admin--
-    - can create a services
-    - can set a down payment percent per services to 50%
-    - can accept & decline appointment schedule
+   * - can create a services
+   * - can set a down payment
+   * - can accept & decline appointment schedule
     - modify all appointments of users
     - modify user details
-    - can view all overall transaction of user and employees
-    - can create employee account
-    - upload result and attach to email sent to dedicated user
-    - can view appointment CRUD
+   * - can create employee account
+   * - upload result and attach to email sent to dedicated user
+   * - can view appointment
 
 --employee--
     - view appointment

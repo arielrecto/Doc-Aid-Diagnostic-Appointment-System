@@ -47,4 +47,10 @@ class User extends Authenticatable
     public function appointments(){
         return $this->hasMany(Appointment::class);
     }
+    public function family (){
+        return $this->hasOne(Family::class);
+    }
+    public function profile(){
+        return $this->hasOne(Profile::class);
+    }
 }

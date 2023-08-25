@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Patient;
 
 use App\Http\Controllers\Controller;
 use App\Models\Appointment;
+use App\Models\Family;
 use App\Models\Service;
 use App\Utilities\ImageUploader;
 use Illuminate\Http\Request;
@@ -28,8 +29,9 @@ class AppointmentController extends Controller
 
         $services = Service::get()->toJSON();
         $timeSlot = $this->timeIntervalByHour('8:00', '4:00');
+        $familyMembers = Family::authUserFamilyMember();
 
-        return view('users.patient.appointment.create', compact(['services', 'timeSlot']));
+        return view('users.patient.appointment.create', compact(['services', 'timeSlot', 'familyMembers']));
     }
 
     /**
@@ -50,11 +52,12 @@ class AppointmentController extends Controller
             'user_id' => $user->id,
             'service_id' => $service->id,
             'receipt_image' => $imageUploader->getURL(),
-            'status' => 'pending'
+            'receipt_amount'=> $request->receipt_amount,
+            'balance' => $request->balance,
+            'total' => $request->total,
+            'status' => 'pending',
+            'is_extended' => $request?->is_extended === "on" ? true : false
         ]);
-
-
-        // $appointment->services()->attach($service->id);
 
         return back()->with(['message' => 'Appointment Request Sent!']);
     }
@@ -64,7 +67,9 @@ class AppointmentController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $appointment = Appointment::find($id);
+
+        return view('users.patient.appointment.show', compact(['appointment']));
     }
 
     /**
@@ -72,7 +77,8 @@ class AppointmentController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $appointment = Appointment::find($id);
+        return view('users.patient.appointment.edit', compact(['appointment']));
     }
 
     /**
@@ -80,7 +86,15 @@ class AppointmentController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $appointment = Appointment::find($id);
+
+        $appointment->update([
+            'date' => $request->date ?? $appointment->date,
+            'patient' => $request->patient ?? $appointment->patient
+        ]);
+
+
+        return to_route('patient.appointment.show', ['appointment' => $appointment->id])->with(['message' => 'Appointment Updated Success']);
     }
 
     /**

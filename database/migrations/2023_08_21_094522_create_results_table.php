@@ -12,17 +12,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('services', function (Blueprint $table) {
+        Schema::create('results', function (Blueprint $table) {
             $table->id();
-            $table->string('image');
             $table->string('name');
-            $table->string('price');
+            $table->string('path');
             $table->string('description');
-            $table->string('init_payment');
-            $table->json('time_slot');
-            $table->string('session_time');
-            $table->string('extension_time');
-            $table->string('extension_price');
+            $table->foreignIdFor(Appointment::class);
             $table->timestamps();
         });
     }
@@ -32,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('services');
+        Schema::dropIfExists('results');
     }
 };

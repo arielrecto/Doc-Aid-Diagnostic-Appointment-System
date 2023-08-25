@@ -38,7 +38,9 @@ class ServiceController extends Controller
             'description' => 'required',
             'price' => 'required',
             'initPayment' => 'required',
-            'session_time' => 'required'
+            'session_time' => 'required',
+            'extension_time' =>'required',
+            'extension_price' => 'required'
         ]);
 
 
@@ -52,7 +54,9 @@ class ServiceController extends Controller
             'init_payment' => $request->initPayment,
             'image' => $imageUploader->getURL(),
             'time_slot' => $request->timeSlot,
-            'session_time' => $request->session_time
+            'session_time' => $request->session_time,
+            'extension_time' => $request->extension_time,
+            'extension_price' => $request->extension_price
            ]);
 
 

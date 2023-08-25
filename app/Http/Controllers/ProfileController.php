@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProfileUpdateRequest;
-use Illuminate\Http\RedirectResponse;
+use App\Models\Profile;
+use Illuminate\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\View\View;
+use App\Http\Requests\ProfileUpdateRequest;
+use App\Utilities\ImageUploader;
 
 class ProfileController extends Controller
 {
@@ -20,10 +22,65 @@ class ProfileController extends Controller
             'user' => $request->user(),
         ]);
     }
+    public function create()
+    {
+        return view('users.patient.profile.create');
+    }
 
     /**
      * Update the user's profile information.
      */
+
+    public function show(String $id)
+    {
+        if (Auth::user()->profile == null) {
+            return to_route('patient.profile.create');
+        }
+
+        $profile = Profile::find($id);
+
+        return view('users.patient.profile.show', compact(['profile']));
+    }
+
+    public function store(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'avatar' => 'required',
+            'last_name' => 'required',
+            'first_name' => 'required',
+            'gender' => 'required',
+            'street' => 'required',
+            'barangay' => 'required',
+            'municipality' => 'required',
+            'region' => 'required',
+            'contact_no' => 'required',
+            'zip_code' => 'required'
+        ]);
+
+        $imageName = 'avatar-' . uniqid() . '.' . $request->avatar->extension();
+        $dir = $request->avatar->storeAs('/profile/avatar', $imageName, 'public');
+
+
+        $profile = Profile::create([
+            'avatar' => asset('/storage/' . $dir),
+            'full_name' => $request->last_name . ', ' . $request->first_name . ' ' . $request->middle_name ?? ' ',
+            'last_name' => $request->last_name,
+            'first_name' => $request->first_name,
+            'middle_name' => $request->middle_name ?? 'N/A',
+            'gender' => $request->gender,
+            'street' => $request->street,
+            'barangay' => $request->barangay,
+            'municipality' => $request->municipality,
+            'region' => $request->region,
+            'contact_no' => $request->contact_no,
+            'zip_code' => $request->zip_code,
+            'user_id' => Auth::user()->id
+        ]);
+
+        return redirect(route('patient.profile.show', ['profile' => $profile->id]))->with(['message', 'Profile Created !']);
+    }
+
+
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
         $request->user()->fill($request->validated());

@@ -129,7 +129,7 @@
                                         <h1 class="p-2 w-full text-center text-base capitalized text-gray-500">
                                             Set Service Time
                                         </h1>
-                                        <div class="grid grid-cols-3 grid-flow-row gap-2">
+                                        <div class="grid grid-cols-5 grid-flow-row gap-2">
                                             <div class="flex flex-col gap-2">
                                                 <label for="" class="text-sm text-gray-500 p-2">Start</label>
                                                 <input type="time" placeholder="Type here" id="start"
@@ -142,9 +142,9 @@
                                             </div>
                                             <div class="flex flex-col gap-2">
                                                 <label for="" class="text-sm text-gray-500 p-2">Session Time -
-                                                   </label>
-                                                <select class="select select-accent w-full max-w-xs" id="interval" name="session_time"
-                                                    @change="setTimeItervalForm">
+                                                </label>
+                                                <select class="select select-accent w-full max-w-xs" id="interval"
+                                                    name="session_time" @change="setTimeItervalForm">
                                                     <option disabled selected>Duration</option>
                                                     <option value="40">40 min</option>
                                                     <option value="60">1 hr</option>
@@ -153,6 +153,32 @@
                                                     <div class="text-error text-sm">
                                                         <p>{{ $errors->first('session_time') }}</p>
                                                     </div>
+                                                @endif
+                                            </div>
+                                            <div class="flex flex-col gap-2">
+                                                <label for="" class="text-sm text-gray-500 p-2">Extension Time
+                                                    <span class="text-xs text-gray-500">ex: 20 - mins</span></label>
+                                                <div class="form-control">
+                                                    <label class="input-group">
+                                                        <input type="text" placeholder="20" name="extension_time"
+                                                            class="input input-bordered w-full" />
+                                                        <span class="bg-accent">Mins</span>
+                                                    </label>
+                                                </div>
+                                                @if ($errors->has('extension_time'))
+                                                    <p class="text-xs text-error">
+                                                        {{ $errors->first('extension_time') }}</p>
+                                                @endif
+                                            </div>
+                                            <div class="flex flex-col gap-2">
+                                                <label for="" class="text-sm text-gray-500 p-2">Extension
+                                                    Rate</label>
+                                                <input type="text" placeholder="Type here" id="end"
+                                                    name="extension_price"
+                                                    class="input input-bordered input-accent w-full" />
+                                                @if ($errors->has('extension_price'))
+                                                    <p class="text-xs text-error">
+                                                        {{ $errors->first('extension_price') }}</p>
                                                 @endif
                                             </div>
                                         </div>
@@ -238,7 +264,7 @@
                                 hour: '2-digit',
                                 minute: '2-digit'
                             })
-                            if (formattedTime === '12:00 PM') {
+                            if (formattedTime === '12:00 PM' || (formattedTime > '12:00 PM' && formattedTime < '1:00 PM')) {
                                 dStart = formattedTime;
                                 start = new Date(`01/01/2000 01:00 PM`)
 
@@ -264,7 +290,7 @@
                             }
                         }
 
-                       this.timeIntervals = intervals
+                        this.timeIntervals = intervals
                     },
                     fomattedTime(time) {
                         const _time = time.toLocaleTimeString([], {

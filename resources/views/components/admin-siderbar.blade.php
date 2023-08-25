@@ -42,11 +42,12 @@
             </div>
         </a>
 
-        <a href=""
-            class="w-full flex justify-between items-center rounded-md px-4 py-2 group hover:bg-gray-200 cursor-pointer">
+        <a href="{{route('admin.employee.index')}}"
+            class="w-full flex justify-between items-center rounded-md px-4 py-2 group cursor-pointer
+            {{ Route::is('admin.employee.index') || Route::is('admin.employee.create') ? 'border-r-4 border-accent font-bold text-accent bg-gray-200 ' : 'hover:text-accent duration-700 hover:font-bold hover:bg-gray-200 ' }}">
             <div class="flex space-x-2 items-center">
-                <i class='bx bxs-shopping-bag text-xl'></i>
-                <p class="text-lg " x-show="toggle">Admin User list </p>
+                <i class="fi fi-rr-users-alt pt-1"></i>
+                <p class="text-lg " x-show="toggle">Employee</p>
             </div>
         </a>
         {{-- <div id="productLinks" class="flex flex-col hidden px-2 border-t border-gray-300 py-1">

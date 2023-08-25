@@ -20,10 +20,13 @@ return new class extends Migration
             $table->string('time');
             $table->string('type');
             $table->foreignIdFor(Service::class);
-            $table->boolean('is_approved')->default(false);
             $table->string('receipt_image');
             $table->foreignIdFor(User::class);
             $table->string('status');
+            $table->string('receipt_amount');
+            $table->string('balance');
+            $table->string('total');
+            $table->boolean('is_extended')->default(false);
             $table->timestamps();
         });
     }
