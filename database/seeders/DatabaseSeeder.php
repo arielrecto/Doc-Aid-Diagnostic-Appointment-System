@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\Appointment;
 use App\Models\Service;
 use App\Models\User;
 use Database\Factories\ServicesFactory;
@@ -19,7 +20,9 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
 
-       // Service::factory(30)->create();
+        Service::factory(5)->create();
+
+        Appointment::factory(200)->create();
 
         $admin = User::create([
             'name' => 'Admin',
@@ -43,8 +46,8 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('ariel123')
         ]);
 
-       $admin->assignRole($adminRole);
+        $admin->assignRole($adminRole);
 
-       $employee->assignRole($employeeRole);
+        $employee->assignRole($employeeRole);
     }
 }

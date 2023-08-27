@@ -22,7 +22,8 @@ class ServiceFactory extends Factory
             'price' => fake()->numberBetween(100, 500),
             'init_payment' => fake()->numberBetween(50, 250),
             'image' => fake()->imageUrl(400, 400, 'medical'),
-            'time_slot' =>'[{"duration":"8:00AM - 9:00AM","slot":"1"},{"duration":"9:00AM - 10:00AM","slot":"2"},{"duration":"10:00AM - 11:00AM","slot":"3"},{"duration":"11:00AM  - 12:00PM","slot":"4"},{"duration":"12:00PM  - 1:00PM","slot":"break"},{"duration":"1:00PM  - 2:00PM","slot":"5"},{"duration":"2:00PM  - 3:00PM","slot":"6"},{"duration":"3:00PM  - 4:00PM","slot":"6"},{"duration":"4:00PM  - 5:00PM","slot":"1"}]'
+            'time_slot' => '[{"duration":"08:00 AM - 08:40 AM","slot":null},{"duration":"08:40 AM - 09:20 AM","slot":null},{"duration":"09:20 AM - 10:00 AM","slot":null},{"duration":"10:00 AM - 10:40 AM","slot":null},{"duration":"10:40 AM - 11:20 AM","slot":null},{"duration":"11:20 AM - 12:00 PM","slot":null},{"duration":"12:00 PM - 01:00 PM","slot":"break"},{"duration":"01:00 PM - 01:40 PM","slot":null},{"duration":"01:40 PM - 02:20 PM","slot":null},{"duration":"02:20 PM - 03:00 PM","slot":null},{"duration":"03:00 PM - 03:40 PM","slot":null},{"duration":"03:40 PM - 04:20 PM","slot":null},{"duration":"04:20 PM - 05:00 PM","slot":null}]',
+            'session_time' => fake()->randomElement(['40', '60'])
         ];
     }
 }

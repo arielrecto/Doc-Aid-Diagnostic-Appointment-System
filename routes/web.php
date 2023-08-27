@@ -67,6 +67,7 @@ Route::middleware('auth')->group(function () {
     });
     Route::middleware('role:employee')->prefix('employee')->as('employee.')->group(function() {
         Route::get('/dashboard', [EmployeeDashboardController::class, 'dashboard'])->name('dashboard');
+        Route::get('/dashboard/filter', [EmployeeDashboardController::class, 'filter'])->name('filter');
     });
 
 

@@ -27,6 +27,7 @@ return new class extends Migration
             $table->string('balance');
             $table->string('total');
             $table->boolean('is_extended')->default(false);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

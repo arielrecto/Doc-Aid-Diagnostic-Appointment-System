@@ -79,7 +79,7 @@ class AppointmentController extends Controller
         $appointment->delete();
 
 
-        return back()->with(['rejected' => 'Appointment Rejected ! ']);
+        return back()->with(['rejected' => 'Appointment Deleted ! ']);
     }
     public function approved($id){
         $appointment = Appointment::find($id);
