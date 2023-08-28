@@ -15,7 +15,7 @@ class AppointmentController extends Controller
     {
         $appointments = Appointment::get();
         $total = Appointment::total();
-        return view('users.admin.Appointment.index', compact(['appointments', 'total']));
+        return view('users.admin.Appointment.index-new', compact(['appointments', 'total']));
     }
 
     /**

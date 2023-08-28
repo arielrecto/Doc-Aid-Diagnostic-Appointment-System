@@ -1,4 +1,62 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
+@layer components {
+    .panel {
+        @apply w-full flex flex-col gap-2 bg-white p-4 rounded-lg shadow-md
+    }
+
+    .panel-error {
+        @apply panel bg-red-100 border-2 border-error;
+
+        span {
+            @apply text-xl text-error-content;
+        }
+    }
+
+    .panel-success {
+        @apply panel bg-green-100 border-2 border-success;
+
+        span {
+            @apply text-xl text-success-content;
+        }
+    }
+
+    .panel-warning {
+        @apply panel bg-yellow-100 border-2 border-warning;
+
+        span {
+            @apply text-xl text-warning-content;
+        }
+    }
+
+    .panel-info {
+        @apply panel bg-blue-100 border-2 border-info;
+
+        span {
+            @apply text-xl text-warning-content;
+        }
+    }
+
+    .input-generic {
+        @apply input bg-white border focus:outline-none shadow-md
+    }
+
+    .page-title {
+        @apply font-bold text-2xl text-primary
+    }
+
+    .main-screen {
+        @apply flex w-full h-screen max-h-screen overflow-hidden bg-base-100 gap-2 relative
+    }
+
+    .main-content {
+        @apply flex-grow h-screen flex flex-col gap-2 px-4
+    }
+
+    a.nav-link {
+        @apply flex space-x-2 items-center rounded-md px-2 py-1;
+    }
+}

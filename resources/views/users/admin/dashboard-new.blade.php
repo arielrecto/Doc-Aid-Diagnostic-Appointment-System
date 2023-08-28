@@ -1,32 +1,32 @@
 <x-app-layout>
-    <div class="flex w-full h-screen max-h-screen overflow-hidden bg-base-100 gap-2">
-
+    <div class="main-screen">
+        <x-responsive-indicator/>
         <x-admin.sidebar-new />
 
-        <div class="flex-grow h-screen flex flex-col gap-2 px-4" x-data="dashboard">
+        <div class="main-content" x-data="dashboard">
             <x-admin.navbar-new />
 
             @if (Route::is('admin.dashboard'))
-                <div class="w-full flex gap-2 text-primary bg-white p-4 rounded-lg shadow-md">
+                <div class="panel">
                     <div class="flex-grow flex flex-col gap-2">
-                        <h1 class="font-bold text-4xl">
+                        <h1 class="page-title">
                             Welcome back, admin
                         </h1>
                         <p class="text-gray-500">
-                            update last 7 days
+                            DATA PLACEHOLDER
                         </p>
                     </div>
                 </div>
             @endif
 
 
-            <div class="w-full flex flex-col p-4 bg-white shadow-lg h-4/6 overflow-auto shadow-md rounded-lg">
+            <div class="h-4/6 overflow-auto panel">
                 <div class="grid grid-cols-3 grid-flow-row gap-2 ">
-                    <div class="w-full h-36 bg-accent rounded-lg shadow-sm">
+                    <div class="panel h-36 bg-accent">
                     </div>
-                    <div class="w-full h-36 bg-secondary-focus rounded-lg shadow-md">
+                    <div class="panel h-36 bg-secondary-focus">
                     </div>
-                    <div class="w-full h-36 bg-warning shadow-md rounded-lg">
+                    <div class="panel h-36 bg-warning">
                     </div>
                 </div>
 
