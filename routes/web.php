@@ -43,6 +43,7 @@ Route::middleware('auth')->group(function () {
             Route::post('/approved/{id}', [AdminAppointmentController::class, 'approved'])->name('approved');
             Route::post('/reject/{id}', [AdminAppointmentController::class, 'reject'])->name('reject');
             Route::get('/filter={filter}', [AdminAppointmentController::class, 'filter'])->name('filter');
+            Route::put('/reschedule/id={appointment}', [AdminAppointmentController::class, 'reschedule'])->name('reschedule');
             Route::resource('result', ResultController::class)->except('create');
         });
         Route::resource('services', ServiceController::class);
@@ -66,6 +67,7 @@ Route::middleware('auth')->group(function () {
     });
     Route::middleware('role:employee')->prefix('employee')->as('employee.')->group(function() {
         Route::get('/dashboard', [EmployeeDashboardController::class, 'dashboard'])->name('dashboard');
+        Route::get('/dashboard/filter', [EmployeeDashboardController::class, 'filter'])->name('filter');
     });
 
 

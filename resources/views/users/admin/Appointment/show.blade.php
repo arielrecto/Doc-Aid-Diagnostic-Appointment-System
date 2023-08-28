@@ -26,7 +26,7 @@
                 <div class="flex flex-col gap-2 py-5 w-full h-full">
                     <div class="w-full h-full flex justify-center items-center">
                         <div
-                            class="w-5/6 h-auto bg-base-100 rounded-lg shadow-md hover:shadow-lg duration-700 flex flex-col space-y-2">
+                            class="w-5/6 h-auto bg-base-100 rounded-lg shadow-md hover:shadow-lg duration-700 flex flex-col space-y-2 relative">
                             <h1 class="w-full text-center text-xl font-semibold p-2">Appointment</h1>
                             <div class="w-full flex flex-col gap-2 p-2">
                                 <h1 class="text-base text-gray-500">Patient</h1>
@@ -34,7 +34,7 @@
                                     <h1 class="text-lg font-bold">{{ $appointment->patient }}</h1>
                                 </div>
                             </div>
-                            <div class="w-full flex flex-col gap-2 p-2">
+                            <div class="w-full flex flex-col gap-2 p-2" x-data="appointmentShow">
                                 <h1 class="text-base text-gray-500">Service</h1>
                                 <div class="flex space-x-4 w-full">
                                     <img src="{{ $appointment->service->image }}" alt="" srcset=""
@@ -51,8 +51,13 @@
                                             </div>
                                             <div class="flex flex-col gap-2 w-full">
                                                 <label for="" class="text-gray-500 text-sm">Date</label>
-                                                <h1 class="font-semibold">
-                                                    {{ date('M-d-Y', strtotime($appointment->date)) }}</h1>
+                                                <h1 class="font-semibold flex gap-4">
+                                                    {{ date('M-d-Y', strtotime($appointment->date)) }}
+                                                    <span>
+                                                        <button @click="openReschedModal"><i
+                                                                class="fi fi-rr-edit text-accent"></i></button>
+                                                    </span>
+                                                </h1>
                                             </div>
                                             <div class="flex flex-col gap-2 w-full">
                                                 <label for="" class="text-gray-500 text-sm">Session Time</label>
@@ -102,9 +107,30 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="absolute z-10 top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2"
+                                    x-show="reschedModal">
+                                    <div class="w-96 bg-base-100 rounded-lg shadow-sm hover:shadow-lg duration-700 p-5">
+                                        <form
+                                            action="{{ route('admin.appointment.reschedule', ['appointment' => $appointment->id]) }}"
+                                            method="post" class="flex flex-col gap-2">
+                                            @csrf
+                                            @method('put')
+                                            <h1 class="text-lg font-bold text-center">Reschedule</h1>
+                                            <p class="text-xs text-gray-500">Date</p>
+                                            <input type="date" name="date" class="input input-accent">
+                                            <button class="btn btn-accent">Save</button>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="flex w-full p-2 justify-end flex-wrap gap-2">
 
-                                @if ($appointment->status === 'pending')
-                                    <div class="flex w-full p-2 justify-end flex-wrap gap-2">
+                                    <a
+                                        href="{{ route('admin.appointment.edit', ['appointment' => $appointment->id]) }}">
+                                        <button class="text-primary text-lg hover:scale-105 duration-700">
+                                            <i class="fi fi-rr-edit hover:bold"></i>
+                                        </button>
+                                    </a>
+                                    @if ($appointment->status === 'pending')
                                         <form
                                             action="{{ route('admin.appointment.approved', ['id' => $appointment->id]) }}"
                                             method="post">
@@ -122,56 +148,61 @@
                                                 <i class="fi fi-rr-square-x hover:font-bold"></i>
                                             </button>
                                         </form>
-                                    </div>
-                                @endif
+                                    @endif
+                                </div>
+
                             </div>
 
 
                             <div class="w-full p-2 flex flex-col gap-2" x-data="result">
-                                @if ($appointment->result === null)
+                                @if ($appointment->result->count() === 0)
                                     <div class="w-full flex justify-center">
                                         <button class="btn btn-accent" @click="openToggle">
                                             <span><i class="fi fi-rr-upload"></i></span>
-                                            Upload Result
+                                            Send Result
                                         </button>
                                     </div>
                                 @else
                                     <div class="w-full flex flex-col gap-2">
                                         <h1 class="text-lg font-semibold w-full text-center capitalize">result</h1>
                                         <div class="overflow-x-auto">
-                                            <table class="table">
-                                                <!-- head -->
-                                                <thead class="capitalize">
-                                                    <tr>
-                                                        <th></th>
-                                                        <th>Name</th>
-                                                        <th>description</th>
-                                                        <th>action</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <!-- row 1 -->
-                                                    <tr class="bg-base-200">
-                                                        <th>{{ $appointment->result->id }}</th>
-                                                        <td>{{ $appointment->result->name }}</td>
-                                                        <td>{!! $appointment->result->description !!}</td>
-                                                        <td>
-                                                            <div class="flex justify-ned p-2 gap-4">
-                                                                <a href="{{ asset($appointment->result->path) }}"
-                                                                    target="_blank">
-                                                                    <button><i
-                                                                            class="fi fi-rr-eye text-accent"></i></button>
-                                                                </a>
 
-                                                                <a href="{{ asset($appointment->result->path) }}"
-                                                                    download>
-                                                                    <button><i class="fi fi-rr-download"></i></button>
-                                                                </a>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
+
+                                            @foreach ($appointment->result as $result)
+                                                <table class="table">
+                                                    <!-- head -->
+                                                    <thead class="capitalize">
+                                                        <tr>
+                                                            <th></th>
+                                                            <th>Name</th>
+                                                            <th>description</th>
+                                                            <th>action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <!-- row 1 -->
+                                                        <tr class="bg-base-200">
+                                                            <th>{{ $result->id }}</th>
+                                                            <td>{{ $result->name }}</td>
+                                                            <td>{!! $result->description !!}</td>
+                                                            <td>
+                                                                <div class="flex justify-ned p-2 gap-4">
+                                                                    <a href="{{ asset($result->path) }}"
+                                                                        target="_blank">
+                                                                        <button><i
+                                                                                class="fi fi-rr-eye text-accent"></i></button>
+                                                                    </a>
+
+                                                                    <a href="{{ asset($result->path) }}" download>
+                                                                        <button><i
+                                                                                class="fi fi-rr-download"></i></button>
+                                                                    </a>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            @endforeach
                                         </div>
                                     </div>
                                 @endif
@@ -215,6 +246,16 @@
 
     @push('js')
         <script>
+            function appointmentShow() {
+                return {
+                    reschedModal: false,
+                    openReschedModal() {
+                        this.reschedModal = !this.reschedModal
+                    }
+                }
+            }
+        </script>
+        <script>
             function result() {
                 return {
                     toggle: false,
@@ -231,7 +272,7 @@
                     content() {
                         const desription = document.getElementById('editor').querySelector(".ql-editor").innerHTML;
                         this.description = desription;
-                    }
+                    },
                 }
             }
         </script>

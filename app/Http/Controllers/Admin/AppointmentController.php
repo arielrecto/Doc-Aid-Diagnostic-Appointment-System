@@ -50,7 +50,8 @@ class AppointmentController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $appointment = Appointment::find($id);
+        return view('users.admin.Appointment.edit', compact(['appointment']));
     }
 
     /**
@@ -58,7 +59,14 @@ class AppointmentController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $appointment = Appointment::find($id);
+        $appointment->update([
+            'patient' => $request->patient ?? $appointment->patient,
+            'time' => $request->start_time . ' - ' . $request->end_time ?? $appointment->time,
+            'date' => $request->date ?? $appointment->date
+        ]);
+
+        return redirect(route('admin.appointment.show', ['appointment' => $appointment->id]))->with(['message', 'Appointment is Updated']);
     }
 
     /**
@@ -71,7 +79,7 @@ class AppointmentController extends Controller
         $appointment->delete();
 
 
-        return back()->with(['rejected' => 'Appointment Rejected ! ']);
+        return back()->with(['rejected' => 'Appointment Deleted ! ']);
     }
     public function approved($id){
         $appointment = Appointment::find($id);
@@ -92,5 +100,15 @@ class AppointmentController extends Controller
        $total = Appointment::total();
 
       return view('users.admin.Appointment.filter', compact(['appointments', 'filter', 'total']));
+    }
+    public function reschedule(Request $request, String $id) {
+
+        $appointment = Appointment::find($id);
+
+        $appointment->update([
+            'date' => $request->date
+        ]);
+
+        return back()->with(['message' => 'Appointment Date Updated']);
     }
 }

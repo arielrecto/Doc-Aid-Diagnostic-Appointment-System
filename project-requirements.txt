@@ -20,9 +20,9 @@ number of user types
    * - user must paid down payment to serve set the appointment 50% of selected services
    * - user can set time extent the session time but need additional payment
    * - user can reschedule the appointment
-    - user can modify his/her medical profile
+   * - user can modify his/her medical profile
    * - upload payment receipt to approve the appointment
-    - show payment image credentials
+   // - show payment image credentials
 
 
 
@@ -30,13 +30,13 @@ number of user types
    * - can create a services
    * - can set a down payment
    * - can accept & decline appointment schedule
-    - modify all appointments of users
+   * - modify all appointments of users
     - modify user details
    * - can create employee account
    * - upload result and attach to email sent to dedicated user
    * - can view appointment
 
 --employee--
-    - view appointment
+   * - view appointment
 
 

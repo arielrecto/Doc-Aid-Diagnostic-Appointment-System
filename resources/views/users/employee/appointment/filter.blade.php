@@ -18,7 +18,7 @@
                 <div
                     class="w-full bg-base-100 rounded-lg p-2 shadow-sm hover:shadow-lg duration-700 h-full flex flex-col gap-2">
                     <div class="w-full flex justify-end">
-                        <form action="{{ route('employee.filter') }}" method="get">
+                        <form action="{{route('employee.filter')}}" method="get">
                             <div class="form-control">
                                 <label class="label">
                                     <span class="label-text">Search</span>
@@ -26,9 +26,9 @@
                                 <label class="input-group">
                                     <input type="text" placeholder="search" name="search"
                                         class="input input-bordered" />
-                                    <span class="bg-accent">
-                                        <button><i class="fi fi-rr-search"></i></button>
-                                    </span>
+                                        <span class="bg-accent">
+                                            <button><i class="fi fi-rr-search"></i></button>
+                                        </span>
                                 </label>
                             </div>
                         </form>

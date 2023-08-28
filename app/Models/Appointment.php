@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Appointment extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'patient',
@@ -30,7 +31,7 @@ class Appointment extends Model
         return $this->belongsTo(Service::class);
     }
     public function result(){
-        return $this->hasOne(Result::class);
+        return $this->hasMany(Result::class);
     }
     public static function today(){
         $appointments  = Appointment::with('service')->where('date',now('GMT+8')->format('Y-m-d'))->get();
@@ -48,6 +49,9 @@ class Appointment extends Model
 
 
         return $appointments;
+    }
+    public static function currentMonth(){
+        return Appointment::whereBetween('date', [now()->startOfMonth()->format('Y-m-d'), now()->endOfMonth()->format('Y-m-d')])->get();
     }
     public static function total() {
         $total = Appointment::count();
