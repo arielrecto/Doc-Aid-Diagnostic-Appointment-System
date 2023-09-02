@@ -11,8 +11,10 @@ class AppointmentController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $query = $request->query('filter');
+        
         $appointments = Appointment::get();
         $total = Appointment::total();
         return view('users.admin.Appointment.index-new', compact(['appointments', 'total']));

@@ -3,7 +3,7 @@
 ])
 
 <div class="grid grid-cols-4 grid-flow-row gap-4">
-    <a class="panel bg-accent max-w-full" href="{{ route('admin.appointment.index') }}">
+    <a class="header-selection bg-accent max-w-full" href="{{ route('admin.appointment.index') }}">
         <div class="w-full text-xl font-semibold capitalize text-white flex gap-2">
             <i class="ri-book-mark-line"></i>
             <span>
@@ -16,18 +16,18 @@
             1234567890
         </span>
     </a>
-    <a class="panel bg-secondary" href="{{ route('admin.appointment.filter', ['filter' => 'today']) }}">
-        <div class="w-full h-32  text-xl font-semibold text-white capitalize">
+    <a class="header-selection" href="{{ route('admin.appointment.filter', ['filter' => 'today']) }}">
+        <div class="header-title">
             today Schedule
         </div>
     </a>
-    <a class="panel bg-secondary" href="{{ route('admin.appointment.filter', ['filter' => 'pending']) }}">
-        <div class="w-full h-32 text-xl font-semibold text-white capitalize">
+    <a class="header-selection" href="{{ route('admin.appointment.filter', ['filter' => 'pending']) }}">
+        <div class="header-title">
             pending appointment
         </div>
     </a>
-    <a class="panel bg-secondary" href="{{ route('admin.appointment.filter', ['filter' => 'approved']) }}">
-        <div class="w-full h-32 text-xl font-semibold capitalize text-white">
+    <a class="header-selection" href="{{ route('admin.appointment.filter', ['filter' => 'approved']) }}">
+        <div class="header-title">
             approved appointment
         </div>
     </a>

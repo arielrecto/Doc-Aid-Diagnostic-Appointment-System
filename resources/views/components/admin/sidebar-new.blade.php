@@ -23,7 +23,7 @@
     @endphp
 
 
-    <div class="w-4/5 sm:w-1/2 lg:w-1/3 xl:w-1/6 overflow-hidden h-full pl-8 bg-base-100 absolute z-50 lg:static">
+    <div class="w-4/5 sm:w-1/2 lg:w-1/3 xl:w-1/6 overflow-hidden h-full pl-8 bg-base-100 absolute z-50 lg:static shrink-0">
         <div class="flex p-4 items-center gap-4">
             <div class="w-16 h-16 rounded-full bg-white border shadow">
                 <img src="{{ asset('image/logo-transparent.png') }}" class="object-fill">

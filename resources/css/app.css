@@ -5,7 +5,7 @@
 
 @layer components {
     .panel {
-        @apply w-full flex flex-col gap-2 bg-white p-4 rounded-lg shadow-md
+        @apply w-full flex flex-col gap-2 bg-white p-4 rounded-lg shadow-md overflow-y-auto;
     }
 
     .panel-error {
@@ -41,7 +41,23 @@
     }
 
     .input-generic {
-        @apply input bg-white border focus:outline-none shadow-md
+        @apply input bg-white border focus:outline-none shadow
+    }
+
+    .btn-generic {
+        @apply btn btn-sm btn-primary capitalize border border-primary shadow shadow-primary font-bold;
+    }
+
+    .c-input  {
+        @apply input-generic px-2 py-1 border-base-300 text-sm;
+    }
+
+    .c-input-label {
+        @apply text-sm uppercase font-semibold text-primary focus flex flex-col gap-1;   
+    }
+
+    .c-input-group {
+        @apply flex flex-col gap-2;
     }
 
     .page-title {
@@ -53,10 +69,25 @@
     }
 
     .main-content {
-        @apply flex-grow h-screen flex flex-col gap-2 px-4
+        @apply flex-grow h-screen flex flex-col gap-2 px-4 pb-4;
     }
 
     a.nav-link {
         @apply flex space-x-2 items-center rounded-md px-2 py-1;
+    }
+
+    .header-selection {
+        @apply panel bg-secondary h-32;
+
+        .header-title {
+            @apply w-full text-xl font-semibold text-white capitalize;
+        }
+    }
+
+
+    .image-dropzone {
+        @apply flex flex-col items-center justify-center border-2 
+        border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50
+        hover:bg-gray-100 w-full h-full overflow-hidden;
     }
 }
