@@ -12,11 +12,24 @@ class ServiceController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $services = Service::paginate(4);
+
+        $query = $request->query();
+
+        $builder = Service::select('*');
+
+        if($query['availability'] ?? false ){
+            $builder = Service::where(function($q) use($query) {
+                $q->where('availability', '=', $query['availability']);
+            });
+        }
+
+        $services = $builder->paginate(4);
         $total = Service::total();
-        return view('users.admin.Services.index', compact(['services', 'total']));
+        $totalInactiveServices = Service::totalBaseOnAvailability('INACTIVE');
+
+        return view('users.admin.Services.index', compact(['services', 'total', 'totalInactiveServices']));
     }
 
     /**

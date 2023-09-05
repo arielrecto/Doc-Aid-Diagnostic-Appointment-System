@@ -21,8 +21,10 @@ return new class extends Migration
             $table->string('init_payment');
             $table->json('time_slot');
             $table->string('session_time');
+            $table->string('availability')->default('ACTIVE');
             $table->string('extension_time')->nullable();
             $table->string('extension_price')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

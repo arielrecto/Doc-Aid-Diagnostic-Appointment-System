@@ -12,22 +12,28 @@
 
                 <div class="flex flex-col gap-2 py-5 w-full h-full">
                     <div class="w-full grid grid-cols-2 grid-flow-row gap-4">
-                        <div class="header-selection bg-accent">
-                            <div class="header-title">
-                                <i class="fi fi-rr-person-dolly"></i>
-                                Total Services
+                        <a href="{{ route('admin.services.index')}}">
+                            <div class="header-selection bg-accent">
+                                <div class="header-title">
+                                    <i class="fi fi-rr-person-dolly"></i>
+                                    Total Services
+                                </div>
+
+                                <span class="text-6xl font-bold text-white truncate max-w-[250px]">
+                                    {{ $total }}
+                                </span>
                             </div>
-
-                            <span class="text-6xl font-bold text-white truncate max-w-[250px]">
-                                {{ $total }}
-                            </span>
-                        </div>
-
-                        <div class="header-selection">
-                            <span class="header-title">
-                                total of not availble services
-                            </span>
-                        </div>
+                        </a>
+                        <a href="{{ route('admin.services.index', ['availability' => 'INACTIVE']) }}">
+                            <div class="header-selection">
+                                <span class="header-title">
+                                    total of not availble services
+                                </span>
+                                <span class="text-6xl font-bold text-white truncate max-w-[250px]">
+                                    {{ $totalInactiveServices }}
+                                </span>
+                            </div>
+                        </a>
                     </div>
 
                     <div class="flex flex-row-reverse">

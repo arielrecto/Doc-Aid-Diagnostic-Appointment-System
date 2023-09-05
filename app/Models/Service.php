@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Service extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'name',
@@ -22,11 +23,24 @@ class Service extends Model
     ];
 
 
-    public function appointments (){
+    public function appointments()
+    {
         return $this->hasMany(Appointment::class);
     }
-    public static function total() {
+    public static function total()
+    {
         $total = Service::get()->count();
+        return $total;
+    }
+    public static function totalBaseOnAvailability($availability)
+    {
+
+        $builder = Service::where(function($q) use($availability) {
+            $q->where('availability', '=', $availability);
+        });
+
+        $total = $builder->count();
+
         return $total;
     }
 }

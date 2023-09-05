@@ -11,11 +11,15 @@
                     </x-slot>
                 </x-patient.navbar>
 
-                @if(Session::has('message'))
-                <div class="alert alert-success">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                    <span>{{Session::get('message')}}</span>
-                  </div>
+                @if (Session::has('message'))
+                    <div class="alert alert-success">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span>{{ Session::get('message') }}</span>
+                    </div>
                 @endif
 
                 <div class="flex flex-col gap-2 p-5 w-full h-full relative">
@@ -102,37 +106,43 @@
                                                             <h1 class="text-xs font-semibold">Slot</h1>
                                                         </div>
                                                     </div>
+                                                    <div class="w-full flex justify-end">
+                                                        <button @click="openToggleTimeSlot($event)">Minimize</button>
+                                                    </div>
+                                                    <template x-if="toggleTimeSlot">
+                                                        <div class="w-full flex flex-col gap-2">
+                                                            <template
+                                                                x-for="(timeSlot, index) in selectedService.time_slot"
+                                                                :key="index">
+                                                                <div class="grid grid-cols-2 grid-flow-row gap-2 p-2">
+                                                                    <div class="w-full">
+                                                                        <span x-text="timeSlot.duration"
+                                                                            class="text-xs text-gray-500">
 
-                                                    <template x-if="selectedTimeSlot === null">
-                                                        <template x-for="(timeSlot, index) in selectedService.time_slot"
-                                                            :key="index">
-                                                            <div class="grid grid-cols-2 grid-flow-row gap-2 p-2">
-                                                                <div class="w-full">
-                                                                    <span x-text="timeSlot.duration"
-                                                                        class="text-xs text-gray-500">
+                                                                        </span>
 
-                                                                    </span>
-
-                                                                </div>
-                                                                <div class="w-full flex">
-                                                                    <span x-text="timeSlot.slot"
-                                                                        class="text-xs flex-grow text-gray-500"></span>
-                                                                    <div>
-                                                                        <template
-                                                                            x-if="timeSlot.slot !== 'break' && timeSlot.slot !== 0">
-                                                                            <button
-                                                                                @click="selectSlot($event, timeSlot)">
-                                                                                <p class="bg-accent w-7 rounded-full ">
-                                                                                    <i
-                                                                                        class="fi fi-rr-add text-3xl flex items-center text-base-100">
-                                                                                    </i>
-                                                                                </p>
-                                                                            </button>
-                                                                        </template>
+                                                                    </div>
+                                                                    <div class="w-full flex">
+                                                                        <span x-text="timeSlot.slot"
+                                                                            class="text-xs flex-grow text-gray-500"></span>
+                                                                        <div>
+                                                                            <template
+                                                                                x-if="timeSlot.slot !== 'break' && timeSlot.slot !== 0">
+                                                                                <button
+                                                                                    @click="selectSlot($event, timeSlot)">
+                                                                                    <p
+                                                                                        class="bg-accent w-7 rounded-full ">
+                                                                                        <i
+                                                                                            class="fi fi-rr-add text-3xl flex items-center text-base-100">
+                                                                                        </i>
+                                                                                    </p>
+                                                                                </button>
+                                                                            </template>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
-                                                            </div>
-                                                        </template>
+                                                            </template>
+                                                        </div>
                                                     </template>
                                                 </div>
                                             </div>
@@ -142,8 +152,12 @@
                                         <template x-if="selectedTimeSlot !== null">
                                             <div class="w-full flex flex-col gap-2" x-init="listTimeExtend">
                                                 <label for="" class="text-xs">Selected Slot</label>
-                                                <p x-text="selectedTimeSlot.duration" class="text-xs text-gray-500">
+                                                <p class="text-xs text-gray-500">
+                                                    <span x-text="selectedTimeSlot.duration">
 
+                                                    </span>
+                                                    <button class="px-2 py-1 bg-accent rounded-lg"
+                                                        @click="reSelectSlot($event, selectedTimeSlot)">Reselect</button>
                                                 </p>
                                                 <input type="hidden" :value="selectedTimeSlot.duration"
                                                     name="timeSlot">
@@ -152,13 +166,14 @@
                                                         <div class="form-control">
                                                             <label class="cursor-pointer label flex gap-2">
                                                                 <span class="label-text">Extend</span>
-                                                                <input type="checkbox" class="checkbox checkbox-accent"
+                                                                <input type="checkbox"
+                                                                    class="checkbox checkbox-accent"
                                                                     name="is_extended" @change="checkedExtend" />
                                                             </label>
                                                         </div>
                                                     </div>
 
-                                                    <template x-if="extend">
+                                                    {{-- <template x-if="extend">
                                                         <div>
                                                             <select class="select select-accent w-full max-w-xs"
                                                                 @change="selectedExtension($event)">
@@ -172,7 +187,7 @@
 
                                                             </select>
                                                         </div>
-                                                    </template>
+                                                    </template> --}}
                                                 </div>
                                             </div>
 
@@ -212,8 +227,11 @@
 
                                             <template x-if="image !== null">
                                                 <div class="flex flex-col gap-2">
-                                                    <label for="" class="text-xs text-gray-500">Receipt Amount</label>
-                                                    <input type="text" name="receipt_amount" class="input input-accent" placeholder="Amount" @change="computation($event)" x-model="rAmount">
+                                                    <label for="" class="text-xs text-gray-500">Receipt
+                                                        Amount</label>
+                                                    <input type="text" name="receipt_amount"
+                                                        class="input input-accent" placeholder="Amount"
+                                                        @change="computation($event)" x-model="rAmount">
                                                 </div>
                                             </template>
                                         </div>
@@ -278,20 +296,70 @@
         <script>
             function create(data) {
                 return {
+                    balance: 0,
+                    extend: false,
+                    image: null,
+                    previousTimeSlotData: null,
+                    rAmount: 0,
+                    selectedTimeSlot: null,
                     selectedService: null,
                     services: data,
-                    toggle: false,
-                    image: null,
-                    extend: false,
                     timeExtentions: [],
-                    selectedTimeSlot: null,
-                    previousTimeSlotData: null,
+                    toggle: false,
+                    toggleTimeSlot: true,
                     total: 0,
-                    balance: 0,
-                    rAmount : 0,
+                    computation(e) {
+                        const amount = e.target.value;
+                        this.rAmount = amount;
+                        const data = this.selectedService
+
+                        this.balance = data.price - amount;
+
+                        this.total = amount;
+                    },
+                    checkedExtend() {
+                        this.extend = !this.extend
+                    },
+                    closeImage(e) {
+                        e.preventDefault()
+                        this.image = null
+                    },
+                    fullCalendar() {
+                        const cal = document.getElementById('calendar');
+
+                        const calendar = new FullCalendar.Calendar(cal, {
+                            initialView: 'dayGridMonth'
+                        });
+                        calendar.render()
+                    },
+                    listTimeExtend() {
+                        const exTime = parseInt(this.selectedService.extension_time);
+                        for (let i = exTime; i <= 60; i = i + exTime) {
+                            this.timeExtentions.push(i)
+                        }
+
+                    },
                     openToggle(e) {
                         e.preventDefault();
                         this.toggle = !this.toggle
+                    },
+                    reSelectSlot(e, _slot) {
+                        e.preventDefault()
+
+
+                        this.selectedService = {
+                            ...this.selectedService,
+                            time_slot: this.selectedService.time_slot.map((item) =>
+                                item = item.duration === _slot.duration ?
+                                item = {
+                                    ...item,
+                                    slot: item.slot + 1
+                                } : item
+
+                            )
+                        }
+                        this.selectedTimeSlot = null;
+                        this.toggleTimeSlot = true;
                     },
                     selectService(id, e) {
                         e.preventDefault()
@@ -305,37 +373,11 @@
                         };
 
                         this.total = this.selectedService.init_payment
-                        this.balance = this.selectedService.price -this.selectedService.init_payment
+                        this.balance = this.selectedService.price - this.selectedService.init_payment
 
                         this.toggle = false
 
                         console.log(service)
-                    },
-                    uploadImageHandler(e) {
-                        const {
-                            files
-                        } = e.target;
-
-                        const reader = new FileReader();
-
-                        reader.onload = function() {
-                            this.image = reader.result
-                        }.bind(this)
-
-                        reader.readAsDataURL(files[0]);
-
-                    },
-                    fullCalendar() {
-                        const cal = document.getElementById('calendar');
-
-                        const calendar = new FullCalendar.Calendar(cal, {
-                            initialView: 'dayGridMonth'
-                        });
-                        calendar.render()
-                    },
-                    closeImage(e) {
-                        e.preventDefault()
-                        this.image = null
                     },
                     selectSlot(e, _slot) {
                         e.preventDefault()
@@ -352,16 +394,6 @@
                             )
                         }
                         this.selectedTimeSlot = _slot
-                    },
-                    checkedExtend() {
-                        this.extend = !this.extend
-                    },
-                    listTimeExtend() {
-                        const exTime = parseInt(this.selectedService.extension_time);
-                        for (let i = exTime; i <= 60; i = i + exTime) {
-                            this.timeExtentions.push(i)
-                        }
-
                     },
                     selectedExtension(e) {
 
@@ -380,14 +412,23 @@
                             duration: slot.duration.slice(0, -8) + formatEndTime
                         }
                     },
-                    computation (e){
-                        const amount = e.target.value;
-                        this.rAmount = amount;
-                       const data = this.selectedService
+                    openToggleTimeSlot(e) {
+                        e.preventDefault()
+                        this.toggleTimeSlot = !this.toggleTimeSlot
+                    },
+                    uploadImageHandler(e) {
+                        const {
+                            files
+                        } = e.target;
 
-                       this.balance = data.price - amount;
+                        const reader = new FileReader();
 
-                       this.total = amount;
+                        reader.onload = function() {
+                            this.image = reader.result
+                        }.bind(this)
+
+                        reader.readAsDataURL(files[0]);
+
                     }
                 }
             }
