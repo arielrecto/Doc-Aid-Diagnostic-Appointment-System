@@ -321,9 +321,9 @@
 
                         this.timeIntervals = intervals
 
-                        let _slot = this.timeIntervals.map((item) => item.slot = 2 )
+                        // let _slot = this.timeIntervals.map((item) => item.slot = 2 )
 
-                        console.log(JSON.stringify(this.timeIntervals))
+                        // console.log(JSON.stringify(this.timeIntervals))
 
                     },
                     fomattedTime(time) {
