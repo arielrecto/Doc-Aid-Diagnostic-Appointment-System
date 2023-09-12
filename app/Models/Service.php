@@ -19,7 +19,8 @@ class Service extends Model
         'time_slot',
         'session_time',
         'extension_time',
-        'extension_price'
+        'extension_price',
+        'availability'
     ];
 
 

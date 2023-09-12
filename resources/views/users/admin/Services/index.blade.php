@@ -57,6 +57,8 @@
                                         <th>Description</th>
                                         <th>Price</th>
                                         <th>Session Time</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -69,6 +71,12 @@
                                             <td>{!! $service->description !!}</td>
                                             <td>{{ $service->price }}</td>
                                             <td>{{ $service->session_time }} min</td>
+                                            <td>{{ $service->availability }}</td>
+                                            <td>
+                                                <a href="{{route('admin.services.show', ['service' => $service->id])}}">
+                                                    <i class="fi fi-rr-eye hover:font-bold text-primary"></i>
+                                                </a>
+                                            </td>
                                         </tr>
                                     @empty
                                         <tr>

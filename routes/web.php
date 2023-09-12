@@ -14,6 +14,7 @@ use App\Http\Controllers\Employee\DashboardController as EmployeeDashboardContro
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Patient\FamilyController;
 use App\Http\Controllers\Patient\FamilyMemberController;
+use App\Models\Service;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,6 +46,9 @@ Route::middleware('auth')->group(function () {
             Route::get('/filter={filter}', [AdminAppointmentController::class, 'filter'])->name('filter');
             Route::put('/reschedule/id={appointment}', [AdminAppointmentController::class, 'reschedule'])->name('reschedule');
             Route::resource('result', ResultController::class)->except('create');
+        });
+        Route::prefix('/services')->as('service.')->group(function (){
+            Route::patch('/availability/{Service}', [ServiceController::class, 'availability'])->name('availability');
         });
         Route::resource('services', ServiceController::class);
         Route::resource('appointment', AdminAppointmentController::class);

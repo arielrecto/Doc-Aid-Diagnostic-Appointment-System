@@ -128,15 +128,18 @@
                                                                         <div>
                                                                             <template
                                                                                 x-if="timeSlot.slot !== 'break' && timeSlot.slot !== 0">
-                                                                                <button
-                                                                                    @click="selectSlot($event, timeSlot)">
-                                                                                    <p
-                                                                                        class="bg-accent w-7 rounded-full ">
-                                                                                        <i
-                                                                                            class="fi fi-rr-add text-3xl flex items-center text-base-100">
-                                                                                        </i>
-                                                                                    </p>
-                                                                                </button>
+
+                                                                                <template x-if="selectedTimeSlot === null">
+                                                                                    <button
+                                                                                        @click="selectSlot($event, timeSlot)">
+                                                                                        <p
+                                                                                            class="bg-accent w-7 rounded-full ">
+                                                                                            <i
+                                                                                                class="fi fi-rr-add text-3xl flex items-center text-base-100">
+                                                                                            </i>
+                                                                                        </p>
+                                                                                    </button>
+                                                                                </template>
                                                                             </template>
                                                                         </div>
                                                                     </div>
