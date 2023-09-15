@@ -12,6 +12,7 @@
                     </span>
                 </div>
             @endif
+
             @if (Session::has('approved'))
                 <div class="panel-success">
                     <span>
@@ -36,7 +37,7 @@
 
                 <h1 class="page-title">Create A Service</h1>
                 <form action="{{ route('admin.services.store') }}" method="POST"
-                    class="m-0 p-2 flex gap-4 grow overflow-hidden">
+                    class="m-0 p-2 flex gap-4 grow overflow-y-auto">
                     @csrf
                     {{-- Image and Service Information --}}
                     <div class="w-1/3 max-w-full grow-0 flex flex-col gap-2">
@@ -51,7 +52,7 @@
                         @endif
 
                         <label for="" class="c-input-label">Service Image</label>
-                        <div class="h-[200px] w-[800px] max-w-full overflow-hidden flex flex-col gap-2">
+                        <div class="h-[200px] w-[800px] max-w-full overflow-hidden flex flex-col gap-2 shrink-0">
                             <template x-if="image === null">
                                 <label for="dropzone-file" class="image-dropzone">
                                     <div class="flex flex-col items-center justify-center pt-5 pb-6">
@@ -206,7 +207,9 @@
 
                         <div class="flex flex-col gap-2 grow overflow-y-auto border-4 border-base-300 rounded-lg p-2">
                             <template x-if="timeIntervals.length <= 0">
-                                <span class="text-primary-focus font-semibold uppercase text-sm text-opacity-50">Service Time will appear here. Set the time from above.</span>
+                                <span
+                                    class="text-primary-focus font-semibold uppercase text-sm text-opacity-50">Service
+                                    Time will appear here. Set the time from above.</span>
                             </template>
                             <template x-for="(timeInterval, index) in timeIntervals" :key="index">
                                 <div class="grid grid-cols-2 grid-flow-row gap-2 p-2">

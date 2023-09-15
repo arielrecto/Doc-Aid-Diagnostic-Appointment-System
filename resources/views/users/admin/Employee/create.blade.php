@@ -1,14 +1,26 @@
 <x-app-layout>
-    <div class="flex">
-        <div>
-            <x-admin-siderbar></x-admin-siderbar>
-        </div>
-        <div class="flex-grow flex flex-col gap-2">
-            <x-admin-navbar>
-                <x-slot name="sample">
-                    {{ __('Employee - Create') }}
-                </x-slot>
-            </x-admin-navbar>
+    <div class="main-screen">
+        <x-admin.sidebar-new />
+
+        <div class="main-content">
+            <x-admin.navbar-new />
+
+            @if (Session::has('rejected'))
+                <div class="panel-error">
+                    <span>
+                        CODE ERROR - Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis, dolor?
+                    </span>
+                </div>
+            @endif
+
+            @if (Session::has('approved'))
+                <div class="panel-success">
+                    <span>
+                        CODE SUCCESS - Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate, voluptatum?
+                    </span>
+                </div>
+            @endif
+
             @if (Session::has('message'))
                 <div class="w-full p-2">
                     <div class="alert alert-success">
@@ -21,16 +33,14 @@
                     </div>
                 </div>
             @endif
-            <div class="flex justify-center items-center gap-2 p-5 w-full h-full">
+
+            <div class="panel">
+                <h1 class="page-title">Create New Employee</h1>
                 <div
-                    class=" w-1/2 h-auto flex flex-col gap-2 rounded-lg shadow-sm hover:shadow-lg duration-700 bg-base-100 p-5">
+                    class="h-auto flex flex-col gap-2 rounded p-4">
                     <form action="{{ route('admin.employee.store') }}" method="post">
                         @csrf
-                        <div class="w-full flex justify-center">
-                            <h1 class="text-xl font-semibold">
-                                Create Employee Account
-                            </h1>
-                        </div>
+                        
                         <div class="flex flex-col space-y-5 w-full">
                             <div class="flex flex-col gap-2">
                                 <label for="" class="text-sm text-gray-500">Full Name</label>
@@ -63,7 +73,7 @@
                             </div>
                         </div>
                         <div class="flex justify-end p-2">
-                            <button class="btn btn-accent">Add</button>
+                            <button class="btn-generic btn-sm uppercase">+ Create Employee</button>
                         </div>
                     </form>
                 </div>

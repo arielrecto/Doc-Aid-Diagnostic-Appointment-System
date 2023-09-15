@@ -21,7 +21,7 @@
                 </span>
             </template>
             <template v-else>
-                <button ref="selectedItems" @click.prevent="removeItem(item)" v-for="item in items"
+                <button ref="selectedItems" @click.prevent="removeItem(item)" v-for="item in items" :key="item.id"
                     class="btn btn-s border border-red-dark color-red-dark text-center rounded-s flex-shrink-0">
                     @{{ item.first_name }} @{{ item.last_name }} (@{{ item.username }})
                 </button>
