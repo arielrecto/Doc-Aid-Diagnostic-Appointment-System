@@ -2,6 +2,10 @@
 
 namespace App\Models;
 
+// use App\Http\Controllers\Admin\Availability;
+
+use App\Enums\Availability;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -21,6 +25,10 @@ class Service extends Model
         'extension_time',
         'extension_price',
         'availability'
+    ];
+
+    protected $casts = [
+        'availability' => Availability::class
     ];
 
 
@@ -43,5 +51,12 @@ class Service extends Model
         $total = $builder->count();
 
         return $total;
+    }
+
+    public function isAvailable(Availability|string|null $availability = null): EloquentCollection
+    {
+        $availability = $availability->name ?? $availability->value ?? $availability;
+
+        return $this->whereAvailability($availability ?? $this->availability ?? 'ACTIVE')->get();
     }
 }
