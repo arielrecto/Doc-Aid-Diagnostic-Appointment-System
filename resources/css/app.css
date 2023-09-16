@@ -91,3 +91,5 @@
         hover:bg-gray-100 w-full h-full overflow-hidden;
     }
 }
+
+[x-cloak] { display: none !important; }

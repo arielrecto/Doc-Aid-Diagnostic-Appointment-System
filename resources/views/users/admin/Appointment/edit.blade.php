@@ -1,39 +1,48 @@
 <x-app-layout>
-    <div class="flex h-screen">
-        <div>
-            <x-admin-siderbar></x-admin-siderbar>
-        </div>
-        <div class="flex flex-col w-full h-full">
-            <x-admin-navbar>
-                <x-slot name="sample">{{ __('appointment - Edit') }}</x-slot>
-            </x-admin-navbar>
+    <div class="main-screen">
+        <x-admin.sidebar-new />
+
+        <div class="main-content">
+            <x-admin.navbar-new />
+
             @if (Session::has('rejected'))
-                <div class="w-full p-5 bg-red-500">
-                    <h1 class="text-xl text-center">{{ Session::get('rejected') }}</h1>
+                <div class="panel-error">
+                    <span>
+                        CODE ERROR - Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis, dolor?
+                    </span>
                 </div>
             @endif
+
             @if (Session::has('approved'))
-                <div class="w-full p-5 bg-green-500">
-                    <h1 class="text-xl text-center">{{ Session::get('approved') }}</h1>
+                <div class="panel-success">
+                    <span>
+                        CODE SUCCESS - Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate, voluptatum?
+                    </span>
                 </div>
             @endif
+
             @if (Session::has('message'))
-                <div class="w-full p-5 bg-green-500">
-                    <h1 class="text-xl text-center">{{ Session::get('message') }}</h1>
+                <div class="panel-success">
+                    <span>
+                        {{ Session::get('message') }}
+                    </span>
                 </div>
             @endif
-            <div class="w-full h-full px-5">
+
+            <div class="panel">
+                <h1 class="page-title">Edit Appointment</h1>
+
                 <div class="flex flex-col gap-2 py-5 w-full h-full">
                     <div class="w-full h-full flex justify-center items-center">
-                        <form method="POST" action="{{route('admin.appointment.update', ['appointment' => $appointment->id])}}"
-                            class="w-5/6 h-auto bg-base-100 rounded-lg shadow-md hover:shadow-lg duration-700 flex flex-col space-y-2 relative">
+                        <form method="POST"
+                            action="{{ route('admin.appointment.update', ['appointment' => $appointment->id]) }}"
+                            class="w-full rounded-lg flex flex-col space-y-2 relative">
                             @csrf @method('put')
-                            <h1 class="w-full text-center text-xl font-semibold p-2">Appointment</h1>
                             <div class="w-full flex flex-col gap-2 p-2">
                                 <h1 class="text-base text-gray-500">Patient</h1>
                                 <div>
                                     <h1 class="text-lg font-bold">{{ $appointment->patient }}</h1>
-                                    <select class="select select-accent w-full" id="interval" name="patient"
+                                    <select class="c-input w-full" id="interval" name="patient"
                                         @change="setTimeItervalForm">
                                         <option disabled selected>Patient</option>
                                         <option value="{{ $appointment->patient }}">{{ $appointment->patient }}</option>
@@ -65,13 +74,14 @@
                                                     <div class="flex flex-col gap-2">
                                                         <label for="" class="text-xs text-gray-500">Start
                                                             time</label>
-                                                        <input type="time" class="input input-accent" name="start_time" id="sTime">
+                                                        <input type="time" class="input input-accent"
+                                                            name="start_time" id="sTime">
                                                     </div>
                                                     <div class="flex flex-col gap-2">
                                                         <label for="" class="text-xs text-gray-500">End
                                                             time</label>
-                                                        <input type="time" class="input input-accent" name="end_time" id="eTime"
-                                                            @change="calculateDuration">
+                                                        <input type="time" class="input input-accent" name="end_time"
+                                                            id="eTime" @change="calculateDuration">
                                                     </div>
                                                     <input type="hidden" name="duration" x-model="duration">
                                                 </div>

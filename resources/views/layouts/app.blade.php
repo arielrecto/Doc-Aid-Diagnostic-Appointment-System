@@ -15,8 +15,9 @@
 
     <!-- full calendar css -->
     <script src="
-        https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js
-        "></script>
+                https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js
+                "></script>
+
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
@@ -64,7 +65,9 @@
     </div>
 </body>
 
-<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
-@stack('js')
 
+
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+
+@stack('js')
 </html>

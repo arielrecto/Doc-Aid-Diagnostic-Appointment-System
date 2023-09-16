@@ -16,7 +16,7 @@
                     <p class="font-semibold">{{ Auth::user()->name }}</p>
                     <i class="fi fi-rr-user"></i>
                 </button>
-                <div class="absolute z-10 bg-white top-full right-0 shadow-lg rounded-lg p-2 w-64" x-show="toggle" x-transition>
+                <div class="absolute z-10 bg-white top-full right-0 shadow-lg rounded-lg p-2 w-64" x-cloak x-show="toggle" x-transition>
                     <ul class="flex flex-col gap-2">
                         <li class="p-2 bg-gray-50 hover:bg-gray-100 text-center text-primary-focus font-bold shadow-md duration-150">
                             <form action="{{ route('logout') }}" method="post">
@@ -44,14 +44,11 @@
 
 
 @push('js')
-    <script>
+    {{-- <script>
         function navbar() {
             return {
-                toggle: false,
-                openToggle() {
-                    this.toggle = !this.toggle
-                }
+
             }
         }
-    </script>
+    </script> --}}
 @endpush

@@ -22,25 +22,17 @@
             @endif
 
             @if (Session::has('message'))
-                <div class="w-full p-2">
-                    <div class="alert alert-success">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none"
-                            viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        <span>{{ Session::get('message') }}</span>
-                    </div>
+                <div class="panel-success">
+                    <span>{{ Session::get('message') }}</span>
                 </div>
             @endif
 
             <div class="panel">
                 <h1 class="page-title">Create New Employee</h1>
-                <div
-                    class="h-auto flex flex-col gap-2 rounded p-4">
+                <div class="h-auto flex flex-col gap-2 rounded p-4">
                     <form action="{{ route('admin.employee.store') }}" method="post">
                         @csrf
-                        
+
                         <div class="flex flex-col space-y-5 w-full">
                             <div class="flex flex-col gap-2">
                                 <label for="" class="text-sm text-gray-500">Full Name</label>
