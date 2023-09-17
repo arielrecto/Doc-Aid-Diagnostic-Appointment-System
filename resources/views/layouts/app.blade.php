@@ -18,6 +18,8 @@
                 https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js
                 "></script>
 
+
+
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
