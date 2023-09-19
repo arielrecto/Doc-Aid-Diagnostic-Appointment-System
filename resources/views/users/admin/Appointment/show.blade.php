@@ -68,7 +68,7 @@
                         </h1>
                     </div>
 
-                    <div class="flex flex-col gap-2 ">
+                    {{-- <div class="flex flex-col gap-2 ">
                         <label for="" class="text-gray-500 text-sm">Session Time</label>
                         <h1 class="font-semibold">{{ $appointment->service->session_time }} -
                             min
@@ -86,7 +86,7 @@
                     <div class="flex flex-col gap-2 ">
                         <label for="" class="text-gray-500 text-sm">Downpayment</label>
                         <h1 class="font-semibold">{{ $appointment->service->init_payment }}
-                    </div>
+                    </div> --}}
                 </div>
 
                 <div class="w-full h-full flex p-4 border shadow-sm rounded">
@@ -254,6 +254,69 @@
 
             <div class="panel grow">
                 <h1 class="page-title">Services Availed</h1>
+
+                <table class="table table-xs">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Image</th>
+                            <th>Service</th>
+                            <th>Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @forelse ($appointment->subscribeServices as $_subService)
+                            <tr>
+                                <th>1</th>
+                                <td><img src="{{$_subService->service->image}}" alt="" srcset="" class="object h-10 w-10 object-center"></td>
+                                <td>{{$_subService->service->name }}</td>
+                                <td>{{ date('H:i', strtotime($_subService->start_time)) . ' - ' .date('H:i', strtotime($_subService->end_time))}}</td>
+                                {{-- <td>{{ $appointment->time }}</td>
+                                <td>{{ $appointment->service->session_time }} mins</td> --}}
+                                {{-- <td>{{ $appointment->status }}</td>
+                                <td>
+                                    <div class="flex gap-2 p-2 items-center">
+                                        @if ($appointment->status === 'pending')
+                                            <form
+                                                action="{{ route('admin.appointment.approved', ['id' => $appointment->id]) }}"
+                                                method="post">
+                                                @csrf
+                                                <button class="text-accent text-xs hover:scale-105 duration-700">
+                                                    <i class="fi fi-rr-checkbox  hover:font-bold"></i>
+                                                </button>
+                                            </form>
+                                            <form
+                                                action="{{ route('admin.appointment.reject', ['id' => $appointment->id]) }}"
+                                                method="post">
+
+                                                @csrf
+                                                <button class="text-error text-xs hover:scale-105 duration-700">
+                                                    <i class="fi fi-rr-square-x hover:font-bold"></i>
+                                                </button>
+                                            </form>
+                                        @endif
+                                        <a
+                                            href="{{ route('admin.appointment.show', ['appointment' => $appointment->id]) }}">
+                                            <button class="text-blue-500 text-xs hover:scale-105 duration-700">
+                                                <i class="fi fi-rr-eye hover:font-bold"></i>
+                                            </button>
+                                        </a>
+                                    </div>
+                                </td> --}}
+                            </tr>
+                        @empty
+                        @endforelse
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th></th>
+                            <th>Image</th>
+                            <th>Service</th>
+                            <th>Time</th>
+                        </tr>
+                    </tfoot>
+                </table>
 
             </div>
         </div>

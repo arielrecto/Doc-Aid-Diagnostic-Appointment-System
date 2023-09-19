@@ -50,11 +50,8 @@
                                 <tr>
                                     <th></th>
                                     <th>Patient</th>
-                                    <th>Service</th>
-                                    <th>Session Time</th>
-                                    <th>location</th>
-                                    <th>Last Login</th>
-                                    <th>Favorite Color</th>
+                                    <th>No. Service</th>
+                                    <th>Date</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -63,11 +60,8 @@
                                     <tr>
                                         <th>{{ $appointment->id }}</th>
                                         <th>{{ $appointment->patient }}</th>
-                                        <td>{{ $appointment->service->name }}</td>
-                                        <td>{{ $appointment->service->session_time }} min</td>
-                                        <td>Canada</td>
-                                        <td>12/16/2020</td>
-                                        <td>Blue</td>
+                                        <td>{{ $appointment->subscribeServices()->count() }}</td>
+                                        <td>{{date('M-d-Y', strtotime($appointment->date))}}</td>
                                     </tr>
                                 @empty
                                     <tr>
@@ -79,11 +73,8 @@
                                 <tr>
                                     <th></th>
                                     <th>Patient</th>
-                                    <th>Service</th>
-                                    <th>Session Time</th>
-                                    <th>location</th>
-                                    <th>Last Login</th>
-                                    <th>Favorite Color</th>
+                                    <th>No. Service</th>
+                                    <th>Date</th>
                                 </tr>
                             </tfoot>
                         </table>

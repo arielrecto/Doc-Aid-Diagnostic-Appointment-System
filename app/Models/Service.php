@@ -31,10 +31,13 @@ class Service extends Model
         'availability' => Availability::class
     ];
 
-
-    public function appointments()
+    public function appointment()
     {
-        return $this->hasMany(Appointment::class);
+        return $this->hasOne(Appointment::class);
+    }
+    public function subscribeServices()
+    {
+        return $this->hasMany(SubscribeService::class);
     }
     public static function total()
     {
@@ -44,7 +47,7 @@ class Service extends Model
     public static function totalBaseOnAvailability($availability)
     {
 
-        $builder = Service::where(function($q) use($availability) {
+        $builder = Service::where(function ($q) use ($availability) {
             $q->where('availability', '=', $availability);
         });
 

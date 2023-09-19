@@ -51,10 +51,9 @@
                                     <thead>
                                         <tr>
                                             <th></th>
-                                            <th>Service</th>
-                                            <th>Time</th>
+                                            <th>Patient</th>
+                                            <th>No. Services</th>
                                             <th>Date</th>
-                                            <th>Session Time</th>
                                             <th>status</th>
                                         </tr>
                                     </thead>
@@ -62,14 +61,11 @@
                                         @forelse ($appointments as $appointment)
                                             <tr>
                                                 <th>{{ $appointment->id }}</th>
+                                                <th>{{ $appointment->patient }}</th>
                                                 <td><a href="{{route('patient.appointment.show', ['appointment' => $appointment->id])}}">
-                                                    {{ $appointment->service->name }}</a>
+                                                    {{ $appointment->subscribeServices()->count() }}</a>
                                                 </td>
-                                                <td>{{$appointment->time}}</td>
                                                 <td>{{ date('M-d-Y', strtotime($appointment->date)) }}</td>
-                                                <td>
-                                                    {{$appointment->service->session_time}} min
-                                                </td>
                                                 <td>
                                                     <div class="flex justify-center w-full">
                                                         <p  class="{{$appointment->status === 'pending' ? 'bg-orange-300' : ($appointment->status === 'approved' ? 'bg-accent' : 'bg-red-400')}}

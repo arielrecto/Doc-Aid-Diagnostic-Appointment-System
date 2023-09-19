@@ -10,27 +10,32 @@ use Illuminate\Support\Facades\Schema;
 
 class DashboardController extends Controller
 {
-    public function dashboard() {
+    public function __construct(public Appointment $appointment)
+    {
+    }
+    public function dashboard()
+    {
         $appointments = Appointment::paginate(20);
-        $appointmentsTodayTotal = Appointment::today()->count();
+        $appointmentsTodayTotal = $this->appointment->today()->count();
 
-        $appointmentByMonthTotal = Appointment::currentMonth()->count();
+        $appointmentByMonthTotal = $this->appointment->currentMonth()->count();
 
 
         return view('users.employee.dashboard', compact(['appointments', 'appointmentsTodayTotal', 'appointmentByMonthTotal']));
     }
-    public function filter(Request $request){
+    public function filter(Request $request)
+    {
         $search = $request->search;
-        $appointments = Appointment::where(function($query) use ($search){
+        $appointments = Appointment::where(function ($query) use ($search) {
             $columns = Schema::getColumnListing('appointments');
-            foreach($columns as $column) {
-                $query->orWhere(DB::raw("LOWER($column)") , 'LIKE' , '%' . strtolower($search) . '%');
+            foreach ($columns as $column) {
+                $query->orWhere(DB::raw("LOWER($column)"), 'LIKE', '%' . strtolower($search) . '%');
             }
         })->paginate(20);
 
-        $appointmentsTodayTotal = Appointment::today()->count();
+        $appointmentsTodayTotal = $this->appointment->today()->count();
 
-        $appointmentByMonthTotal = Appointment::currentMonth()->count();
+        $appointmentByMonthTotal = $this->appointment->currentMonth()->count();
 
         return view('users.employee.appointment.filter',  compact(['appointments', 'appointmentsTodayTotal', 'appointmentByMonthTotal']));
     }

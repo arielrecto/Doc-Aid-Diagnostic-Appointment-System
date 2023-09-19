@@ -17,9 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('patient');
             $table->string('date');
-            $table->string('time');
             $table->string('type');
-            $table->foreignIdFor(Service::class);
             $table->string('receipt_image');
             $table->foreignIdFor(User::class);
             $table->string('status');

@@ -47,8 +47,8 @@
                             <tr>
                                 <th>{{$appointment->id}}</th>
                                 <th>{{$appointment->patient}}</th>
-                                <td>{{$appointment->service->name}}</td>
-                                <td>{{$appointment->service->session_time}} min</td>
+                                {{-- <td>{{$appointment->service->name}}</td>
+                                <td>{{$appointment->service->session_time}} min</td> --}}
                                 <td>Canada</td>
                                 <td>12/16/2020</td>
                                 <td>Blue</td>

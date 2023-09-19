@@ -51,36 +51,67 @@
                                     class="w-full border-2 border-gray-50 hover:bg-gray-50 duration-700
                                      hover:border-gray-100 rounded-lg h-full">
                                     <div class="p-2 flex flex-col gap-2">
-                                        <label for="" class="text-xs">Add Service</label>
-                                        <div class="flex gap-2 h-24 w-full p-2">
-                                            <template x-if="selectedService !== null">
-                                                <div
-                                                    class="h-full w-24 bg-base-100 rounded-lg shadow-lg flex flex-col gap-2 relative">
-                                                    <button class="text-xs text-accent absolute z-10 top-1 right-1"
-                                                        @click="() => {selectedService = null}"> <i
-                                                            class="fi fi-rr-circle-xmark"></i></button>
-                                                    <img :src="selectedService.image" alt="" srcset=""
-                                                        class="object-cover h-12 w-full rounded-t-lg">
-                                                    <p
-                                                        class="text-xs font-semibold w-full text-center"x-text="selectedService.name">
-                                                    </p>
-                                                    <input type="hidden" name="service" :value="selectedService.id">
-                                                </div>
-                                            </template>
-                                            <div x-show="selectedService === null">
+                                        <div class="flex justify-between">
+                                            <label for="" class="text-xs">Add Service</label>
+                                            <div>
                                                 <button @click="openToggle($event)"><i
                                                         class="fi fi-rr-add bg-accent rounded-full text-3xl flex items-center text-base-100"></i></button>
                                             </div>
                                         </div>
-                                        <template x-if="selectedService !== null">
+                                        <template x-if="selectedService.length > 0">
+                                            <div class="flex gap-2 h-auto max-h-sx w-full p-2 overflow-y-auto">
+                                                <div class="w-full h-24">
+                                                    <table class="table table-xs">
+                                                        <thead>
+                                                            <tr>
+                                                                <th></th>
+                                                                <th>Service</th>
+                                                                <th>Time</th>
+                                                                <th>price</th>
+                                                                <th>Downpayment</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <template x-for="service in selectedService"
+                                                                :key="service.id">
+                                                                <tr>
+                                                                    <th>1</th>
+                                                                    <td><span x-text="service.name"></span></td>
+                                                                    <td><span
+                                                                            x-text="service?.selectedSlot?.duration"></span>
+                                                                    </td>
+                                                                    <td>&#8369 <span x-text="service.price"></span></td>
+                                                                    <td>&#8369 <span
+                                                                            x-text="service.init_payment"></span></td>
+                                                                    <td>
+                                                                        <button
+                                                                            @click="openDetail($event, service.id)">open</button>
+                                                                    </td>
+                                                                </tr>
+                                                            </template>
+                                                            <input type="hidden" name="services" :value="JSON.stringify(selectedService)">
+                                                        </tbody>
+                                                        <tfoot>
+                                                            <tr>
+                                                                <th></th>
+                                                                <th>Service</th>
+                                                            </tr>
+                                                        </tfoot>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </template>
+                                        <template x-if="sDetailID !== null  ">
                                             <div class="w-full flex flex-col gap-2">
                                                 <div class="flex flex-col gap-2">
+                                                    <h1 class="text-xs">Service</h1>
+                                                    <p x-html="sPreview.name" class="text-gray-400"></p>
                                                     <h1 class="text-xs">Description</h1>
-                                                    <p x-html="selectedService.description" class="text-gray-400"></p>
+                                                    <p x-html="sPreview.description" class="text-gray-400"></p>
                                                     <div class="flex gap-2">
                                                         <div class="flex flex-col gap-2">
                                                             <h1 class="text-xs">Downpayment</h1>
-                                                            <p x-text="selectedService.init_payment"
+                                                            <p x-text="sPreview.init_payment"
                                                                 class="text-gray-400 w-full text-center"></p>
                                                         </div>
                                                         <div class="flex flex-col gap-2">
@@ -90,7 +121,7 @@
                                                         </div>
                                                         <div class="flex flex-col gap-2">
                                                             <h1 class="text-xs">Session Time : </h1>
-                                                            <p x-text="selectedService.session_time + ' min'"
+                                                            <p x-text="sPreview.session_time + ' min'"
                                                                 class="text-gray-400 w-full text-center"></p>
                                                         </div>
                                                     </div>
@@ -111,8 +142,7 @@
                                                     </div>
                                                     <template x-if="toggleTimeSlot">
                                                         <div class="w-full flex flex-col gap-2">
-                                                            <template
-                                                                x-for="(timeSlot, index) in selectedService.time_slot"
+                                                            <template x-for="(timeSlot, index) in sPreview.time_slot"
                                                                 :key="index">
                                                                 <div class="grid grid-cols-2 grid-flow-row gap-2 p-2">
                                                                     <div class="w-full">
@@ -129,9 +159,10 @@
                                                                             <template
                                                                                 x-if="timeSlot.slot !== 'break' && timeSlot.slot !== 0">
 
-                                                                                <template x-if="selectedTimeSlot === null">
+                                                                                <template
+                                                                                    x-if="selectedTimeSlot === null">
                                                                                     <button
-                                                                                        @click="selectSlot($event, timeSlot)">
+                                                                                        @click="selectSlot($event, timeSlot, sPreview)">
                                                                                         <p
                                                                                             class="bg-accent w-7 rounded-full ">
                                                                                             <i
@@ -241,13 +272,19 @@
                                         <div class="flex justify-end p-5 gap-2">
                                             <div class="flex flex-col gap-2">
                                                 <label for="" class="text-sm text-gray-500">balance</label>
-                                                <h1 class="text-accent text-x" x-text="balance"></h1>
+                                                <h1 class="text-accent text-x"> &#8369 <span x-text="balance"></span>
+                                                </h1>
                                                 <input type="hidden" x-model="balance" name="balance">
                                             </div>
                                             <div class="flex flex-col gap-2">
-                                                <label for="" class="text-sm text-gray-500">Total Reserve
+                                                <label for="" class="text-sm text-gray-500">Total Downpayment
                                                     Fee</label>
-                                                <h1 class="text-accent" x-text="total"></h1>
+                                                <h1 class="text-accent"> &#8369 <span x-text="dTotal"></span></h1>
+                                                <input type="hidden" x-model="dTotal" name="downpayment_total">
+                                            </div>
+                                            <div class="flex flex-col gap-2">
+                                                <label for="" class="text-sm text-gray-500">Total</label>
+                                                <h1 class="text-accent"> &#8369 <span x-text="total"></span></h1>
                                                 <input type="hidden" x-model="total" name="total">
                                             </div>
                                         </div>
@@ -304,24 +341,23 @@
                     image: null,
                     previousTimeSlotData: null,
                     rAmount: 0,
+                    sDetailID: null,
+                    sPreview: null,
                     selectedTimeSlot: null,
-                    selectedService: null,
+                    selectedService: [],
                     services: data,
                     timeExtentions: [],
                     toggle: false,
                     toggleTimeSlot: true,
                     total: 0,
+                    dTotal: 0,
                     computation(e) {
                         const amount = e.target.value;
                         this.rAmount = amount;
-                        const data = this.selectedService
-
-                        this.balance = data.price - amount;
-
-                        this.total = amount;
+                        this.balance = this.total - amount;
                     },
                     checkedExtend() {
-                        this.extend = !this.extend
+                        // this.extend = !this.extend
                     },
                     closeImage(e) {
                         e.preventDefault()
@@ -336,33 +372,35 @@
                         calendar.render()
                     },
                     listTimeExtend() {
-                        const exTime = parseInt(this.selectedService.extension_time);
-                        for (let i = exTime; i <= 60; i = i + exTime) {
-                            this.timeExtentions.push(i)
-                        }
-
+                        // const exTime = parseInt(this.selectedService.extension_time);
+                        // for (let i = exTime; i <= 60; i = i + exTime) {
+                        //     this.timeExtentions.push(i)
+                        // }
                     },
                     openToggle(e) {
                         e.preventDefault();
                         this.toggle = !this.toggle
                     },
+                    openDetail(e, id) {
+                        e.preventDefault()
+                        this.sDetailID = id;
+                        this.sPreview = this.selectedService.find(item => item.id === id);
+                    },
                     reSelectSlot(e, _slot) {
                         e.preventDefault()
+                        // this.selectedService = {
+                        //     ...this.selectedService,
+                        //     time_slot: this.selectedService.time_slot.map((item) =>
+                        //         item = item.duration === _slot.duration ?
+                        //         item = {
+                        //             ...item,
+                        //             slot: item.slot + 1
+                        //         } : item
 
-
-                        this.selectedService = {
-                            ...this.selectedService,
-                            time_slot: this.selectedService.time_slot.map((item) =>
-                                item = item.duration === _slot.duration ?
-                                item = {
-                                    ...item,
-                                    slot: item.slot + 1
-                                } : item
-
-                            )
-                        }
-                        this.selectedTimeSlot = null;
-                        this.toggleTimeSlot = true;
+                        //     )
+                        // }
+                        // this.selectedTimeSlot = null;
+                        // this.toggleTimeSlot = true;
                     },
                     selectService(id, e) {
                         e.preventDefault()
@@ -370,24 +408,46 @@
                             return item.id == id
                         });
 
-                        this.selectedService = {
+                        if (this.selectedService.find(item => item.id === service.id)) {
+                            return
+                        }
+
+                        this.selectedService = [...this.selectedService, {
                             ...service,
                             time_slot: JSON.parse(service.time_slot)
-                        };
+                        }]
 
-                        this.total = this.selectedService.init_payment
-                        this.balance = this.selectedService.price - this.selectedService.init_payment
+                        this.total  = this.selectedService.reduce((total, item) => total + parseInt(item.price), 0)
 
-                        this.toggle = false
+                        this.dTotal =  this.selectedService.reduce((total, item) => total + parseInt(item.init_payment), 0)
 
-                        console.log(service)
+                        console.log(this.dTotal)
+
+                        // this.balance = this.selectedService.price - this.selectedService.init_payment
+
+                        // this.toggle = false
+
+                        console.log(this.selectedService.length)
                     },
-                    selectSlot(e, _slot) {
+                    selectSlot(e, _slot, service) {
                         e.preventDefault()
 
-                        this.selectedService = {
-                            ...this.selectedService,
-                            time_slot: this.selectedService.time_slot.map((item) =>
+                        if ('selectedSlot' in service) {
+                            service = {
+                                ...service,
+                                time_slot: service.time_slot.map((item) =>
+                                    item = item.duration === service.selectedSlot.duration ?
+                                    item = {
+                                        ...item,
+                                        slot: item.slot + 1
+                                    } : item
+                                )
+                            }
+                        }
+
+                        service = {
+                            ...service,
+                            time_slot: service.time_slot.map((item) =>
                                 item = item.duration === _slot.duration ?
                                 item = {
                                     ...item,
@@ -396,24 +456,31 @@
 
                             )
                         }
-                        this.selectedTimeSlot = _slot
+                        this.sDetailID = null
+                        this.sPreview = null
+
+                        const data = this.selectedService.filter(item => item.id !== service.id);
+                        this.selectedService = [...data, {
+                            ...service,
+                            selectedSlot: _slot
+                        }]
                     },
                     selectedExtension(e) {
 
-                        const min = parseInt(e.target.value);
-                        const slot = this.selectedTimeSlot
-                        const endTime = slot.duration.slice(-8);
-                        const startTime = new Date(`01/01/2000 ${endTime}`)
-                        startTime.setMinutes(startTime.getMinutes() + min)
-                        const formatEndTime = startTime.toLocaleTimeString([], {
-                            hour: '2-digit',
-                            minute: '2-digit'
-                        });
+                        // const min = parseInt(e.target.value);
+                        // const slot = this.selectedTimeSlot
+                        // const endTime = slot.duration.slice(-8);
+                        // const startTime = new Date(`01/01/2000 ${endTime}`)
+                        // startTime.setMinutes(startTime.getMinutes() + min)
+                        // const formatEndTime = startTime.toLocaleTimeString([], {
+                        //     hour: '2-digit',
+                        //     minute: '2-digit'
+                        // });
 
-                        this.selectedTimeSlot = {
-                            ...this.selectService,
-                            duration: slot.duration.slice(0, -8) + formatEndTime
-                        }
+                        // this.selectedTimeSlot = {
+                        //     ...this.selectService,
+                        //     duration: slot.duration.slice(0, -8) + formatEndTime
+                        // }
                     },
                     openToggleTimeSlot(e) {
                         e.preventDefault()
@@ -431,7 +498,6 @@
                         }.bind(this)
 
                         reader.readAsDataURL(files[0]);
-
                     }
                 }
             }

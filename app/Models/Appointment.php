@@ -14,27 +14,25 @@ class Appointment extends Model
         'patient',
         'date',
         'user_id',
-        'time',
         'type',
         'receipt_image',
         'receipt_amount',
         'balance',
         'total',
-        'service_id',
         'status'
     ];
 
     public function user(){
         return $this->belongsTo(User::class);
     }
-    public function service(){
-        return $this->belongsTo(Service::class);
+    public function subscribeServices(){
+        return $this->hasMany(SubscribeService::class);
     }
     public function result(){
         return $this->hasMany(Result::class);
     }
-    public static function today(){
-        $appointments  = Appointment::with('service')->where('date',now('GMT+8')->format('Y-m-d'))->get();
+    public function today(){
+        $appointments  = Appointment::with('subscribeServices.service')->where('date',now('GMT+8')->format('Y-m-d'))->get();
         return $appointments;
     }
     public static function pending(){
@@ -50,11 +48,11 @@ class Appointment extends Model
 
         return $appointments;
     }
-    public static function currentMonth(){
+    public function currentMonth(){
         return Appointment::whereBetween('date', [now()->startOfMonth()->format('Y-m-d'), now()->endOfMonth()->format('Y-m-d')])->get();
     }
-    public static function total() {
-        $total = Appointment::count();
+    public function total() {
+        $total = $this->get()->count();
 
         return $total;
     }
