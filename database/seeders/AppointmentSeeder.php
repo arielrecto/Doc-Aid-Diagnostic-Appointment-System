@@ -24,15 +24,16 @@ class AppointmentSeeder extends Seeder
 
         SubscribeService::factory(Appointment::count())->create();
 
-        foreach ($this->appointment->get() as $appointment) {
-           if($appointment->subscribeService === null) {
+
+            collect($this->appointment->get())->map(function ($item) {
+            if ($item->subscribeService === null) {
                 SubscribeService::create([
-                    'appointment_id' => $appointment->id,
+                    'appointment_id' => $item->id,
                     'service_id' => $this->service->first()->id,
                     'start_time' => fake()->time("H:i"),
                     'end_time' => fake()->time('H:i')
                 ]);
-           }
-        }
+            }
+        });
     }
 }

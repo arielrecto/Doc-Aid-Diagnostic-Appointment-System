@@ -79,10 +79,10 @@
                                     <tr>
                                         <th>{{ $appointment->id }}</th>
                                         <td>{{ $appointment->patient }}</td>
-                                        <td>{{ $appointment->service->name }}</td>
+                                        <td>{{ $appointment->subscribeServices()->count() }}</td>
                                         <td>{{ date('M-d-Y', strtotime($appointment->date)) }}</td>
                                         <td>{{ $appointment->time }}</td>
-                                        <td>{{ $appointment->service->session_time }} mins</td>
+                                        {{-- <td>{{ $appointment->service->session_time }} mins</td> --}}
                                         <td>{{ $appointment->status }}</td>
                                         <td>
                                             <div class="flex gap-2 p-2 items-center">

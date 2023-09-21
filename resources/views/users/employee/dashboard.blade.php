@@ -65,10 +65,10 @@
                                 <tr>
                                     <th></th>
                                     <th>Patient</th>
-                                    <th>Service</th>
+                                    <th>No. Service</th>
                                     <th>Schedule</th>
-                                    <th>Time Slot</th>
-                                    <th>Session Duration</th>
+                                    {{-- <th>Time Slot</th> --}}
+                                    {{-- <th>Session Duration</th> --}}
                                     <th>Status</th>
                                     <th>Action</th>
                                 </tr>
@@ -79,14 +79,14 @@
                                     <tr>
                                         <th>{{ $appointment->id }}</th>
                                         <td>{{ $appointment->patient }}</td>
-                                        <td>{{ $appointment->service->name }}</td>
+                                        <td>{{ $appointment->subscribeServices()->count() }}</td>
                                         <td>{{ date('M-d-Y', strtotime($appointment->date)) }}</td>
-                                        <td>{{ $appointment->time }}</td>
-                                        <td>{{ $appointment->service->session_time }} mins</td>
+                                        {{-- <td>{{ $appointment->time }}</td> --}}
+                                        {{-- <td>{{ $appointment->service->session_time }} mins</td> --}}
                                         <td>{{ $appointment->status }}</td>
                                         <td>
                                             <div class="flex gap-2 p-2 items-center">
-                                                <a href="#">
+                                                <a href="{{route('employee.appointment.show', ['Appointment' => $appointment->id])}}">
                                                     <button class="text-blue-500 text-xs hover:scale-105 duration-700">
                                                         <i class="fi fi-rr-eye hover:font-bold"></i>
                                                     </button>
