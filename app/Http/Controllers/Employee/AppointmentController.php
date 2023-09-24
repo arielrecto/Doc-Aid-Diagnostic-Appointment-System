@@ -19,6 +19,7 @@ class AppointmentController extends Controller
 
         $appointment = $this->appointment->where('id', $id)->with('subscribeServices.service')->first();
 
+
         return view('users.employee.appointment.show', compact(['appointment']));
 
     }

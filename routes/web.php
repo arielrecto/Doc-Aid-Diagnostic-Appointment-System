@@ -29,7 +29,10 @@ use App\Http\Controllers\Employee\AppointmentController as EmployeeAppointmentCo
 */
 
 Route::get('/', function () {
-    return view('welcome');
+
+    $services = Service::get();
+
+    return view('welcome', compact(['services']));
 });
 
 Route::get('/home', [HomeController::class, 'home'])->name('home');
