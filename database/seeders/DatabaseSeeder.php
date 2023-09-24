@@ -21,9 +21,9 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
 
-        Service::factory(20)->create();
+        // Service::factory(20)->create();
 
-        $this->call(AppointmentSeeder::class);
+        // $this->call(AppointmentSeeder::class);
 
 
         $admin = User::create([
