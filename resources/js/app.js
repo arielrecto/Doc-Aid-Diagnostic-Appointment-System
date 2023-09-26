@@ -55,4 +55,62 @@ Alpine.data('appointmentShow', () => ({
     }
 }))
 
+
+Alpine.data('result', () => ({
+    toggle: false,
+    description: null,
+    cleanupUI: null,
+
+    init() {
+        const button = document.getElementById('result-mail-modal-trigger');
+        const tooltip = document.getElementById('result-mail-modal');
+
+        this.cleanupUI = window.FloatingUI.autoUpdate(button, tooltip,
+            () => this.spawnModal(button, tooltip))
+
+        this.$watch('toggle', () => {
+            this.spawnModal(button, tooltip);
+        });
+    },
+
+    spawnModal(button, tooltip) {
+        const {
+            computePosition,
+            autoPlacement
+        } = window.FloatingUI;
+
+        computePosition(button, tooltip, {
+            placement: 'bottom-end',
+            // middleware: [
+            //     autoPlacement()
+            // ],
+        }).then(({
+            x,
+            y
+        }) => {
+            Object.assign(tooltip.style, {
+                left: `${x}px`,
+                top: `${y}px`,
+            });
+        });
+    },
+
+    openToggle() {
+        this.toggle = !this.toggle
+    },
+
+    quillEditor() {
+        const editor = document.getElementById('editor');
+        const quill = new Quill(editor, {
+            theme: 'snow'
+        })
+    },
+
+    content() {
+        const desription = document.getElementById('editor').querySelector(".ql-editor").innerHTML;
+        this.description = desription;
+    },
+
+}));
+
 Alpine.start();
