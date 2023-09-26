@@ -15,6 +15,7 @@ class Appointment extends Model
         'date',
         'user_id',
         'type',
+        'receipt_number',
         'receipt_image',
         'receipt_amount',
         'balance',

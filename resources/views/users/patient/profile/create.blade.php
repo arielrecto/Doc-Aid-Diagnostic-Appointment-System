@@ -1,18 +1,15 @@
 <x-app-layout>
-    <div class="flex w-full min-h-screen">
-        <div class="w-64 h-full">
-            <x-patient-siderbar />
-        </div>
-        <div class="w-full flex flex-col space-y-5">
-            <div class="w-full">
-                <x-patient.navbar>
-                    <x-slot name="header">
-                        {{ __('Profile - Create') }}
-                    </x-slot>
-                </x-patient.navbar>
-            </div>
-            <div class="w-full h-full flex justify-center items-center p-2" x-data="profile">
-                <div class="w-5/6 h-full bg-base-100 shadow-sm hover:shadow-lg duration-700">
+    <div class="main-screen">
+
+        <x-patient-siderbar />
+
+        <div class="main-content">
+
+            <x-patient.navbar />
+
+
+            <div class="panel" x-data="profile">
+                <div class="w-full h-full shadow-sm hover:shadow-lg duration-700">
                     <form action="{{ route('patient.profile.store') }}" method="post"
                         class="p-5 flex flex-col gap-5 w-full h-full" enctype="multipart/form-data">
                         @csrf
@@ -86,14 +83,16 @@
                         <div class="grid grid-cols-3 grid-flow-row gap-5">
                             <div class="flex flex-col gap-2">
                                 <label for="" class="capitalize text-sm text-gray-500">Age</label>
-                                <input type="text" class="input input-accent w-full" name="age" placeholder="Age">
+                                <input type="text" class="input input-accent w-full" name="age"
+                                    placeholder="Age">
                                 @if ($errors->has('age'))
                                     <p class="text-xs text-error">{{ $errors->first('age') }}</p>
                                 @endif
                             </div>
                             <div class="flex flex-col gap-2">
                                 <label for="" class="capitalize text-sm text-gray-500">Birthdate</label>
-                                <input type="date" class="input input-accent w-full" name="birthdate" placeholder="birthdate">
+                                <input type="date" class="input input-accent w-full" name="birthdate"
+                                    placeholder="birthdate">
                                 @if ($errors->has('birthdate'))
                                     <p class="text-xs text-error">{{ $errors->first('birthdate') }}</p>
                                 @endif
@@ -112,7 +111,8 @@
                         </div>
                         <div class="flex flex-col gap-2">
                             <label for="" class="capitalize text-sm text-gray-500">Street</label>
-                            <input type="text" name="street" class="input input-accent w-full" placeholder="Street">
+                            <input type="text" name="street" class="input input-accent w-full"
+                                placeholder="Street">
                             @if ($errors->has('street'))
                                 <p class="text-xs text-error">{{ $errors->first('street') }}</p>
                             @endif

@@ -8,7 +8,7 @@
             @if (Session::has('rejected'))
                 <div class="panel-error">
                     <span>
-                        CODE ERROR - Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis, dolor?
+                        {{ Session::get('rejected') }}
                     </span>
                 </div>
             @endif
@@ -16,7 +16,7 @@
             @if (Session::has('approved'))
                 <div class="panel-success">
                     <span>
-                        CODE SUCCESS - Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate, voluptatum?
+                        {{ Session::get('approved') }}
                     </span>
                 </div>
             @endif
@@ -46,14 +46,14 @@
 
                             @if ($appointment->status === 'pending')
                                 <form action="{{ route('admin.appointment.approved', ['id' => $appointment->id]) }}"
-                                    method="post">
+                                    method="post" class="flex p-2 justify-end gap-2 items-center">
                                     @csrf
                                     <button class="btn btn-primary btn-sm uppercase shadow border">
                                         <i class="fi fi-rr-checkbox  hover:font-bold"></i> approved
                                     </button>
                                 </form>
                                 <form action="{{ route('admin.appointment.reject', ['id' => $appointment->id]) }}"
-                                    method="post">
+                                    method="post" class="flex p-2 justify-end gap-2 items-center">
 
                                     @csrf
                                     <button class="btn btn-error btn-sm uppercase shadow border">
@@ -74,7 +74,7 @@
 
                                 <div id="result-mail-modal"
                                     class="absolute w-1/2 h-1/2
-                                top-0 left-0" x-cloak
+                                top-0 left-0 z-10" x-cloak
                                     @click.outside="openToggle" x-show="toggle">
                                     <form action="{{ route('admin.appointment.result.store') }}" method="post"
                                         class="w-full flex flex-col gap-4 p-5 bg-white
@@ -112,9 +112,9 @@
                                                 name="file" />
                                         </div>
                                         <input type="hidden" name="appointment_id" value="{{ $appointment->id }}">
-                                        <div class="w-full flex justify-end">
-                                            <button class="btn btn-accent" @click="content()">Upload</button>
-                                        </div>
+
+                                        <button class="btn btn-accent" @click="content()">Upload</button>
+
                                     </form>
                                 </div>
                             </div>
@@ -173,13 +173,14 @@
                     </div>
                     <div class="w-full flex flex-col gap-2">
                         <label for="" class="text-gray-500 text-sm">Patient</label>
-                        <h1 class="text-lg font-bold">{{$appointment->patient}}</h1>
+                        <h1 class="text-lg font-bold">{{ $appointment->patient }}</h1>
                     </div>
                 </div>
 
                 <div class="flex flex-col gap-2 bg-white rounded-lg shadow-md p-4">
                     <h1 class="page-title">Payment Status</h1>
-
+                    <h1 class="text-lg font-bold"> <span class="font-thin">Referrence Number
+                            :</span>{{ $appointment->receipt_number }}</h1>
                     <div class="w-full flex flex-col gap-2 p-2">
                         <div class="w-full h-full flex flex-col gap-2">
 
@@ -251,7 +252,8 @@
                                 <!-- row 1 -->
                                 <tr class="">
                                     <th>{{ $s_service->service->id }}</th>
-                                    <th><img src="{{$s_service->service->image}}" alt="" srcset="" class="object object-center h-10 w-10"></th>
+                                    <th><img src="{{ $s_service->service->image }}" alt="" srcset=""
+                                            class="object object-center h-10 w-10"></th>
                                     <td>{{ $s_service->service->name }}</td>
                                     <td>{!! $s_service->service->description !!}</td>
                                     <td>&#8369 {{ $s_service->service->init_payment }}</td>
@@ -286,9 +288,10 @@
                             <tbody>
                                 <!-- row 1 -->
                                 <tr class="">
-                                    <th>{{ $result->name}}</th>
+                                    <th>{{ $result->name }}</th>
                                     <td>{!! $result->description !!}</td>
-                                    <td><a href="{{$result->path}}" target="_blank"><i class="fi fi-rr-document"></i></a></td>
+                                    <td><a href="{{ $result->path }}" target="_blank"><i
+                                                class="fi fi-rr-document"></i></a></td>
                                 </tr>
                             </tbody>
                         </table>

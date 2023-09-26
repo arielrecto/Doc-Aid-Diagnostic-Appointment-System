@@ -63,6 +63,7 @@
                                             <th>No. Services</th>
                                             <th>Date</th>
                                             <th>status</th>
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -84,6 +85,7 @@
                                                         </p>
                                                     </div>
                                                 </td>
+                                            <td><a href="{{route('patient.appointment.show', ['appointment' => $appointment->id])}}"><i class="fi fi-rr-eye"></i></a></td>
                                             </tr>
                                         @empty
 

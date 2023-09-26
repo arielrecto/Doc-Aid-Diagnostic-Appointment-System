@@ -102,7 +102,7 @@ class AppointmentController extends Controller
 
         $appointment->update(['status' => 'reject']);
 
-        return back()->with(['reject' => 'Appointment reject']);
+        return back()->with(['rejected' => 'Appointment reject']);
     }
     public function filter($filter){
        $appointments = Appointment::filter($filter);

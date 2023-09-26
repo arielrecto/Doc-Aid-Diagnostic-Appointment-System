@@ -181,7 +181,7 @@
 
                 <div class="flex flex-col gap-2 bg-white rounded-lg shadow-md p-4">
                     <h1 class="page-title">Payment Status</h1>
-
+                    <h1 class="text-lg font-bold"> <span class="font-thin">Referrence Number :</span>{{$appointment->receipt_number}}</h1>
                     <div class="w-full flex flex-col gap-2 p-2">
                         <div class="w-full h-full flex flex-col gap-2">
 

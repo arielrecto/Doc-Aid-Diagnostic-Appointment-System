@@ -44,9 +44,11 @@ class AppointmentController extends Controller
     public function store(Request $request)
     {
 
+
         $request->validate([
             'patient' => 'required',
             'date' => 'required',
+            'receipt_number' => 'required',
             'receipt' => 'required',
             'receipt_amount' => 'required',
             'patient' => 'required'
@@ -65,6 +67,7 @@ class AppointmentController extends Controller
             'time' => $request->timeSlot,
             'type' => 'sample',
             'user_id' => $user->id,
+            'receipt_number' => $request->receipt_number,
             'receipt_image' => $imageUploader->getURL(),
             'receipt_amount' => $request->receipt_amount,
             'balance' => $request->balance,
