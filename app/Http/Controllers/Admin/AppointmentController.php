@@ -48,7 +48,8 @@ class AppointmentController extends Controller
     public function show(string $id)
     {
 
-        $appointment = Appointment::find($id);
+        $appointment = Appointment::with(['subscribeServices.service', 'results'])->where('id', $id)->first();
+
 
         return view('users.admin.Appointment.show', compact(['appointment']));
     }
@@ -114,7 +115,8 @@ class AppointmentController extends Controller
         $appointment = Appointment::find($id);
 
         $appointment->update([
-            'date' => $request->date
+            'date' => $request->date,
+            'status' => 'RESCHEDULE'
         ]);
 
         return back()->with(['message' => 'Appointment Date Updated']);

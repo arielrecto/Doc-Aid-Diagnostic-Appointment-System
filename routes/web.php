@@ -77,7 +77,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/dashboard', [EmployeeDashboardController::class, 'dashboard'])->name('dashboard');
         Route::get('/dashboard/filter', [EmployeeDashboardController::class, 'filter'])->name('filter');
         Route::prefix('/appointment')->as('appointment.')->group(function () {
+            Route::post('/approved/{appointment}', [EmployeeAppointmentController::class, 'approved'])->name('approved');
             Route::get('/show/{Appointment}', [EmployeeAppointmentController::class, 'show'])->name('show');
+            Route::post('/reject/{appointment}', [EmployeeAppointmentController::class, 'reject'])->name('reject');
         });
     });
 

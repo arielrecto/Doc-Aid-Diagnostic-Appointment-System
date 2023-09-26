@@ -23,4 +23,23 @@ class AppointmentController extends Controller
         return view('users.employee.appointment.show', compact(['appointment']));
 
     }
+    public function approved (Request $request, String $id){
+        $appointment = appointment::find($id);
+
+        $appointment->update([
+            'status' => 'approved'
+        ]);
+
+        return back()->with(['message' => 'Appointment is approved']);
+    }
+    public function reject (Request $request, String $id){
+
+       $appointment = appointment::find($id);
+
+        $appointment->update([
+            'status' => 'reject'
+        ]);
+
+        return back()->with(['message' => 'Appointment is approved']);
+    }
 }

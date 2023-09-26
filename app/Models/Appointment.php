@@ -28,7 +28,7 @@ class Appointment extends Model
     public function subscribeServices(){
         return $this->hasMany(SubscribeService::class);
     }
-    public function result(){
+    public function results(){
         return $this->hasMany(Result::class);
     }
     public function today(){
