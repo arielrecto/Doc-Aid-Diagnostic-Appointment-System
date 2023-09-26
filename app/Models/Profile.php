@@ -15,6 +15,8 @@ class Profile extends Model
         'first_name',
         'last_name',
         'middle_name',
+        'birthdate',
+        'age',
         'gender',
         'contact_no',
         'street',

@@ -11,6 +11,7 @@ class Result extends Model
 
     protected $fillable = [
         'name',
+        'user_id',
         'path',
         'description',
         'appointment_id'
@@ -18,5 +19,8 @@ class Result extends Model
 
     public function appointment (){
         return $this->belongsTo(Appointment::class);
+    }
+    public function user() {
+        return $this->belongsTo(User::class);
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Appointment;
+use App\Models\TimeSlot;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -19,7 +20,6 @@ return new class extends Migration
             $table->string('price');
             $table->string('description');
             $table->string('init_payment');
-            $table->json('time_slot');
             $table->string('session_time');
             $table->string('availability')->default('ACTIVE');
             $table->string('extension_time')->nullable();

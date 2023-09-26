@@ -20,7 +20,6 @@ class Service extends Model
         'image',
         'description',
         'init_payment',
-        'time_slot',
         'session_time',
         'extension_time',
         'extension_price',
@@ -61,5 +60,8 @@ class Service extends Model
         $availability = $availability->name ?? $availability->value ?? $availability;
 
         return $this->whereAvailability($availability ?? $this->availability ?? 'ACTIVE')->get();
+    }
+    public function timeSlot(){
+        return $this->hasMany(TimeSlot::class);
     }
 }

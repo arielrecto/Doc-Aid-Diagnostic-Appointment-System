@@ -1,18 +1,15 @@
 <x-app-layout>
-    <div class="flex w-full min-h-screen">
-        <div class="w-64">
-            <x-patient-siderbar />
-        </div>
-        <div class="flex flex-col space-y-5 w-full h-full">
-            <div class="w-full">
-                <x-patient.navbar>
-                    <x-slot name="header">
-                        {{ __('Profile - ' . Auth::user()->name) }}
-                    </x-slot>
-                </x-patient.navbar>
-            </div>
-            <div class="w-full h-full flex justify-center items-center p-5">
-                <div class="w-5/6 h-full bg-base-100 shadow-sm hover:shadow-lg duration-700 flex space-x-2">
+    <div class="main-screen">
+
+        <x-patient-siderbar />
+
+        <div class="main-content">
+
+            <x-patient.navbar />
+
+
+            <div class="panel">
+                <div class="full h-full flex space-x-2">
                     <div class="w-1/3 p-2 h-full flex flex-col gap-5 border-r-2 border-gray-100">
                         <div class="w-full flex flex-col gap-2 items-center">
                             <img src="{{ $profile->avatar }}" alt=""
@@ -39,10 +36,21 @@
                                 <h1 class="font-bold">{{ $profile->middle_name }}</h1>
                             </div>
                         </div>
-                        <div class="flex flex-col gap-2 capitalize">
-                            <label for="" class="text-xs text-gray-500">Sex</label>
-                            <h1 class="font-bold">{{ $profile->gender }}</h1>
+                        <div class="grid grid-cols-3 grid-flow-row">
+                            <div class="flex flex-col gap-2 capitalize">
+                                <label for="" class="text-xs text-gray-500">Age</label>
+                                <h1 class="font-bold">{{ $profile->age }}</h1>
+                            </div>
+                            <div class="flex flex-col gap-2 capitalize">
+                                <label for="" class="text-xs text-gray-500">Birthdate</label>
+                                <h1 class="font-bold">{{ date('F d, Y', strtotime($profile->birthdate)) }}</h1>
+                            </div>
+                            <div class="flex flex-col gap-2 capitalize">
+                                <label for="" class="text-xs text-gray-500">Sex</label>
+                                <h1 class="font-bold">{{ $profile->gender }}</h1>
+                            </div>
                         </div>
+
                         <div class="grid grid-cols-3 grid-flow-row gap-5">
                             <div class="flex flex-col gap-2 capitalize">
                                 <label for="" class="text-xs text-gray-500">Street</label>
@@ -110,6 +118,39 @@
                                         @empty
                                             <tr>
                                                 <td>No Family Member</td>
+                                            </tr>
+                                        @endforelse
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <h1 class="w-full text-center font-semibold p-5 border-t-2 boder-gray-100">Medical History</h1>
+                        <div class="w-full flex flex-col gap-2">
+                            <div class="overflow-x-auto">
+                                <table class="table">
+                                    <!-- head -->
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>Subject</th>
+                                            <th>Description</th>
+                                            <th>File</th>
+                                            {{-- <th>Relationship</th> --}}
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- row 1 -->
+                                        @forelse ($medicalHistory as $medical)
+                                            <tr class="">
+                                                <th></th>
+                                                <td class="capitalize">{{ $medical->name }}</td>
+                                                <td> <p class="truncate">{!! $medical->description !!}</p></td>
+                                                <td><a href="{{$medical->path}}" target="_blank"><i class="fi fi-rr-document pt-1"></i></a> </td>
+                                                {{-- <td>{{ $member->relationship }}</td>  --}}
+                                            </tr>
+                                        @empty
+                                            <tr>
+                                                <td>No Medical History</td>
                                             </tr>
                                         @endforelse
                                     </tbody>

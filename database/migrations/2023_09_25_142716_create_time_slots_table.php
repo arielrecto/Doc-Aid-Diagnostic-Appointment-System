@@ -1,7 +1,6 @@
 <?php
 
-use App\Models\Appointment;
-use App\Models\User;
+use App\Models\Service;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,13 +12,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('results', function (Blueprint $table) {
+        Schema::create('time_slots', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class);
-            $table->string('name');
-            $table->string('path');
-            $table->string('description');
-            $table->foreignIdFor(Appointment::class);
+            $table->foreignIdFor(Service::class);
+            $table->json('slots');
+            $table->string('date')->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('results');
+        Schema::dropIfExists('time_slots');
     }
 };

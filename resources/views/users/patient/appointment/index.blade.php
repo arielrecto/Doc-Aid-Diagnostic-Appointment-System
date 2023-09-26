@@ -1,31 +1,33 @@
 <x-app-layout>
-    <div class="w-full h-screen m-0 p-0">
-        <div class="flex w-full h-full">
-            <div class="w-1/6">
-                <x-patient-siderbar></x-patient-siderbar>
+    <div class="main-screen">
+        <x-patient-siderbar />
+        <div class="main-content">
+            <x-patient.navbar />
+            <div class="panel">
+                <div class="page-title">
+                    <h1 class="font-semibold">Appointments</h1>
+                </div>
             </div>
-            <div class="flex-grow h-full w-full flex flex-col gap-2">
-                <x-patient.navbar>
+            <div class="panel">
+                {{-- <x-patient.navbar>
                     <x-slot name="header">
                         {{ __('Appointment - List') }}
                     </x-slot>
-                </x-patient.navbar>
-
+                </x-patient.navbar> --}}
                 <div class="flex w-full p-5 flex-col space-y-2 h-full">
                     <div class="w-full grid grid-cols-2 grid-flow-row gap-2">
-                        <div class="h-32 w-full bg-accent rounded-lg shadow-sm hover:shadow-lg duration-700">
-
+                        <div class="header-selection bg-accent">
+                            <h1 class="header-title">total appointment</h1>
+                            <span
+                                class="text-6xl font-bold text-white truncate max-w-[250px]">{{ $appointments->count() }}</span>
                         </div>
-                        <div class="h-32 w-full bg-base-100 rounded-lg shadow-sm hover:shadow-lg duration-700">
+                        {{-- <div class="header-selection">
 
-                        </div>
+                        </div> --}}
                     </div>
                     <div class="w-full rounded-lg bg-base-100 shadow-sm hover:shadow-lg duration-700 h-full">
                         <div class="flex flex-col gap-2 border-b-2 border-gray-100">
-                            <div class="flex w-full p-2">
-                                <div class="flex-grow flex items-center">
-                                    <h1 class="font-semibold">Appointment - {{$appointments->count()}}</h1>
-                                </div>
+                            {{-- <div class="flex w-full p-2 justify-end">
                                 <div class="w-1/3">
                                     <div class="form-control">
                                         <label class="input-group">
@@ -35,13 +37,19 @@
                                         </label>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="w-full flex flex-row-reverse p-2">
-                                <div class="flex flex-row-reverse w-1/5">
-                                    <a href="{{ route('patient.appointment.create') }}">
-                                        <button class="capitalized btn btn-accent">Add New Appointment</button>
-                                    </a>
-                                </div>
+                            </div> --}}
+                            <div class="w-full flex justify-between p-2">
+
+                                <label class="input-group max-w-lg">
+                                    <input type="text" placeholder="search"
+                                        class="w-1/2 input-generic rounded-lg" />
+                                    <span class="bg-accent text-base-100"><i class="fi fi-rr-search"></i></span>
+                                </label>
+
+
+                                <a href="{{ route('patient.appointment.create') }}">
+                                    <button class="capitalized btn btn-accent">Add New Appointment</button>
+                                </a>
                             </div>
                         </div>
                         <div class="w-full h-full p-2">
@@ -62,13 +70,15 @@
                                             <tr>
                                                 <th>{{ $appointment->id }}</th>
                                                 <th>{{ $appointment->patient }}</th>
-                                                <td><a href="{{route('patient.appointment.show', ['appointment' => $appointment->id])}}">
-                                                    {{ $appointment->subscribeServices()->count() }}</a>
+                                                <td><a
+                                                        href="{{ route('patient.appointment.show', ['appointment' => $appointment->id]) }}">
+                                                        {{ $appointment->subscribeServices()->count() }}</a>
                                                 </td>
                                                 <td>{{ date('M-d-Y', strtotime($appointment->date)) }}</td>
                                                 <td>
                                                     <div class="flex justify-center w-full">
-                                                        <p  class="{{$appointment->status === 'pending' ? 'bg-orange-300' : ($appointment->status === 'approved' ? 'bg-accent' : 'bg-red-400')}}
+                                                        <p
+                                                            class="{{ $appointment->status === 'pending' ? 'bg-orange-300' : ($appointment->status === 'approved' ? 'bg-accent' : 'bg-red-400') }}
                                                             p-2 rounded-lg text-center capitalize">
                                                             {{ $appointment->status }}
                                                         </p>

@@ -1,16 +1,15 @@
 <x-app-layout>
+    <div class="main-screen" x-data="calendarData" x-init="initializeCalendar({{ $appointments }})">
+        <x-patient-siderbar />
+        <div class="main-content">
 
 
-    <div class="flex h-full w-full" x-data="calendarData" x-init="initializeCalendar({{$appointments}})">
-        <div class="w-1/6">
-            <x-patient-siderbar></x-patient-siderbar>
-        </div>
-        <div class="flex-grow w-full h-full flex flex-col gap-2">
-            <x-patient.navbar>
+            <x-patient.navbar />
+            {{-- <x-patient.navbar>
                 <x-slot name="header">
                     {{ __('dashboard') }}
                 </x-slot>
-            </x-patient.navbar>
+            </x-patient.navbar> --}}
 
             @if (Session::has('message'))
                 <div class="w-full p-5 bg-blue-500">
@@ -19,13 +18,22 @@
             @endif
 
 
-            <div class="w-full flex flex-col gap-2 px-5 h-[40rem] overflow-y-scroll">
-                <div
-                    class="w-full flex flex-col gap-2 bg-base-100 rounded-lg shadow-sm hover:shadow-lg duration-700 h-full p-2">
-                    <h1 class="text-lg font-bold">
+            <div class="panel bg-opacity-0 shadow-none">
+
+                @if (Route::is('patient.dashboard'))
+                    <div class="panel overflow-hidden">
+                        <div class="flex-grow flex flex-col gap-2">
+                            <h1 class="page-title">
+                                Welcome back, {{ Auth::user()->name }}
+                            </h1>
+                        </div>
+                    </div>
+                @endif
+                <div class="panel h-5/6 overflow-hidden">
+                    <h1 class="page-title text-lg">
                         Services
                     </h1>
-                    <div class="flex flex-wrap gap-2 overflow-x-auto w-full h-96 p-2 justify-center">
+                    <div class="">
                         @forelse ($services as $service)
                             <div class="w-64 h-full bg-base-100 rounded-lg flex flex-col m-auto shadow-xl">
                                 <img src="{{ $service->image }}" alt="" srcset=""
@@ -44,50 +52,57 @@
                         @endforelse
                     </div>
                 </div>
-                <div class="grid grid-cols-2 grid-flow-row gap-2">
-                    <div class="w-full bg-accent h-32 rounded-lg shadow-sm hover:shadow-lg duration-700">
-                        total appointment today {{$todayAppointments->count()}}
-                    </div>
-                    <div class="w-full bg-base-100 h-32 rounded-lg shadow-sm hover:shadow-lg duration-700">
 
-                    </div>
-                </div>
+                <div class="panel">
+                    <div class="grid grid-cols-2 grid-flow-row gap-2">
+                        <div class="header-selection">
+                            <h1 class="header-title">total appointment today </h1>
+                            <span
+                                class="text-6xl font-bold text-white truncate max-w-[250px]">{{ $todayAppointments->count() }}</span>
+                        </div>
+                        <div class="w-full bg-base-100 h-32 rounded-lg shadow-sm hover:shadow-lg duration-700">
 
-                <div class="flex gap-2 h-[32rem] w-full">
-                    <div
-                        class="flex-grow h-full flex flex-col gap-2 bg-base-100 rounded-lg shadow-sm hover:shadow-lg duration-700 p-2">
-                        <h1 class="font-semibold text-base">Today Appointment - {{ now('GMT+8')->format('M-d-Y') }}</h1>
-                        <div class="overflow-x-auto">
-                            <table class="table table-zebra">
-                                <!-- head -->
-                                <thead>
-                                    <tr>
-                                        <th></th>
-                                        <th>Patient</th>
-                                        <th>No. Service</th>
-                                        <th>Date</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @forelse ($todayAppointments as $appointment)
+                        </div>
+                    </div>
+
+                    <div class="flex gap-2">
+                        <div
+                            class="flex-grow h-full flex flex-col gap-2 bg-base-100 rounded-lg shadow-sm hover:shadow-lg duration-700 p-2">
+                            <h1 class="font-semibold text-base">Today Appointment - {{ now('GMT+8')->format('M-d-Y') }}
+                            </h1>
+                            <div class="overflow-x-auto">
+                                <table class="table table-zebra">
+                                    <!-- head -->
+                                    <thead>
                                         <tr>
-                                            <th>{{$appointment->id}}</th>
-                                            <th>{{$appointment->patient}}</th>
-                                            <td>{{$appointment->subscribeServices()->count()}}</td>
-                                            <td>{{date('M-d-Y', strtotime($appointment->date))}}</td>
+                                            <th></th>
+                                            <th>Patient</th>
+                                            <th>No. Service</th>
+                                            <th>Date</th>
                                         </tr>
-                                    @empty
-                                    @endforelse
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                        @forelse ($todayAppointments as $appointment)
+                                            <tr>
+                                                <th>{{ $appointment->id }}</th>
+                                                <th>{{ $appointment->patient }}</th>
+                                                <td>{{ $appointment->subscribeServices()->count() }}</td>
+                                                <td>{{ date('M-d-Y', strtotime($appointment->date)) }}</td>
+                                            </tr>
+                                        @empty
+                                        @endforelse
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-                    </div>
-                    <div class="w-1/3 h-full bg-base-100 rounded-lg shadow-sm hover:shadow-lg duration-700 p-2">
-                        <div id="calendar" class="w-full h-full text-xs fc-bg-event">
+                        <div class="w-1/3 h-full bg-base-100 rounded-lg shadow-sm hover:shadow-lg duration-700 p-2">
+                            <div id="calendar" class="w-full h-full text-xs fc-bg-event">
 
+                            </div>
                         </div>
                     </div>
                 </div>
+
 
             </div>
 
@@ -193,7 +208,7 @@
                                 this.showModal = true;
                                 console.log(this.clickedDate.toDateString())
                             },
-                           events: this.convertEvents(data)
+                            events: this.convertEvents(data)
                         });
                         calendar.render();
                     },

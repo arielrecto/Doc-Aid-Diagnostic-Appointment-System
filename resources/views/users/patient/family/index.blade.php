@@ -1,15 +1,11 @@
 <x-app-layout>
-    <div class="w-full min-h-screem m-0 p-0">
+    <div class="main-screen">
+        <x-patient-siderbar />
         <div class="flex w-full h-full">
-            <div class="w-1/6">
-                <x-patient-siderbar></x-patient-siderbar>
-            </div>
-            <div class="w-full flex-grow flex flex-col gap-2 h-full">
-                <x-patient.navbar>
+            <div class="main-content">
+                <x-patient.navbar />
 
-                </x-patient.navbar>
-
-                <div class="flex flex-col gap-2 p-5 w-full h-full relative" x-data="familyIndex">
+                <div class="fl  ex flex-col gap-2 p-5 w-full h-full relative panel" x-data="familyIndex">
                     <div class="w-full h-24">
                         @if (Auth::user()->family === null)
                             <h1 class="w-full flex flex-row-reverse p-2">
@@ -22,7 +18,7 @@
                         @endif
                     </div>
                     <div
-                        class="w-full bg-base-100 shadow-sm hover:shadow-lg rounded-lg duration-700 h-96 flex flex-col gap-2">
+                        class="w-full shadow-sm hover:shadow-lg rounded-lg duration-700 h-96 flex flex-col gap-2">
 
                         @if (Auth::user()->family !== null)
                             <div class="w-full flex justify-end p-2">

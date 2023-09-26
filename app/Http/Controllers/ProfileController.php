@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\Result;
 use App\Utilities\ImageUploader;
 
 class ProfileController extends Controller
@@ -37,9 +38,17 @@ class ProfileController extends Controller
             return to_route('patient.profile.create');
         }
 
+        $user = Auth::user();
+
+
+        $medicalHistory = Result::where('user_id', $user->id)->get();
+
+
+
+
         $profile = Profile::find($id);
 
-        return view('users.patient.profile.show', compact(['profile']));
+        return view('users.patient.profile.show', compact(['profile', 'medicalHistory']));
     }
 
     public function store(Request $request): RedirectResponse
@@ -49,6 +58,8 @@ class ProfileController extends Controller
             'last_name' => 'required',
             'first_name' => 'required',
             'gender' => 'required',
+            'birthdate' => 'required',
+            'age' => 'required',
             'street' => 'required',
             'barangay' => 'required',
             'municipality' => 'required',
@@ -67,6 +78,8 @@ class ProfileController extends Controller
             'last_name' => $request->last_name,
             'first_name' => $request->first_name,
             'middle_name' => $request->middle_name ?? 'N/A',
+            'birthdate' => $request->birthdate,
+            'age' => $request->age,
             'gender' => $request->gender,
             'street' => $request->street,
             'barangay' => $request->barangay,

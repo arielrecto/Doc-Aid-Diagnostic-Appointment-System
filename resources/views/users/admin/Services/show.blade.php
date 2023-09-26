@@ -48,7 +48,7 @@
                     </form>
 
 
-                    @if ($service->availability == 'INACTIVE')
+                    @if ($service->availability->name == 'INACTIVE')
                         <form action="{{ route('admin.service.availability', ['Service' => $service->id]) }}" method="POST">
 
                             @csrf

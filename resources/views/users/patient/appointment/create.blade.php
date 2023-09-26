@@ -1,15 +1,10 @@
 <x-app-layout>
-    <div class="w-full min-h-screem m-0 p-0" x-data="create({{ $services }})">
-        <div class="flex w-full h-full">
-            <div class="w-1/6">
-                <x-patient-siderbar></x-patient-siderbar>
-            </div>
-            <div class="w-full flex-grow flex flex-col gap-2 h-full">
-                <x-patient.navbar>
-                    <x-slot name="header">
-                        {{ __('Appointent - Create') }}
-                    </x-slot>
-                </x-patient.navbar>
+    <div class="main-screen" x-data="create({{ $services }})">
+        <x-patient-siderbar />
+        <div class="main-content">
+
+                <x-patient.navbar/>
+
 
                 @if (Session::has('message'))
                     <div class="alert alert-success">
@@ -22,10 +17,9 @@
                     </div>
                 @endif
 
-                <div class="flex flex-col gap-2 p-5 w-full h-full relative">
+                <div class="flex flex-col gap-2 p-5 w-full h-full relative panel">
                     <div class="flex h-full w-full gap-2">
-                        <div
-                            class="flex-grow w-full h-full bg-base-100 rounded-lg shadow-sm hover:shadow-lg
+                        <div class="flex-grow w-full h-full rounded-lg shadow-sm hover:shadow-lg
                              duration-700 p-2 flex flex-col gap-2">
                             <h1 class="w-full text-lg font-semibold text-center py-2">Set Appointment</h1>
                             <form action="{{ route('patient.appointment.store') }}" method="POST"
@@ -46,6 +40,19 @@
                                             <option disabled class="text-xs">No Family Members</option>
                                         @endforelse
                                     </select>
+                                    @if ($errors->has('patient'))
+                                        <p class="text-xs text-error">{{ $errors->first('patient') }}</p>
+                                    @endif
+                                </div>
+
+
+                                <div class="w-full flex flex-col gap-2">
+                                    <label for="" class="text-xs">Set Date</label>
+                                    <input type="date" name="date" class="input input-border input-accent"
+                                        x-model="sDate">
+                                    @if ($errors->has('date'))
+                                        <p class="text-xs text-error">{{ $errors->first('date') }}</p>
+                                    @endif
                                 </div>
                                 <div
                                     class="w-full border-2 border-gray-50 hover:bg-gray-50 duration-700
@@ -89,7 +96,8 @@
                                                                     </td>
                                                                 </tr>
                                                             </template>
-                                                            <input type="hidden" name="services" :value="JSON.stringify(selectedService)">
+                                                            <input type="hidden" name="services"
+                                                                :value="JSON.stringify(selectedService)">
                                                         </tbody>
                                                         <tfoot>
                                                             <tr>
@@ -129,57 +137,72 @@
                                                 <div class="flex flex-col gap-2">
                                                     <h1 class="w-full text-center text-sm text-gray-500 font-semibold">
                                                         Service Time Slot</h1>
-                                                    <div class="grid grid-cols-2 grid-flow-row gap-2">
-                                                        <div class="w-full">
-                                                            <h1 class="text-xs font-semibold">Time</h1>
-                                                        </div>
-                                                        <div class="w-full">
-                                                            <h1 class="text-xs font-semibold">Slot</h1>
-                                                        </div>
-                                                    </div>
-                                                    <div class="w-full flex justify-end">
-                                                        <button @click="openToggleTimeSlot($event)">Minimize</button>
-                                                    </div>
-                                                    <template x-if="toggleTimeSlot">
-                                                        <div class="w-full flex flex-col gap-2">
-                                                            <template x-for="(timeSlot, index) in sPreview.time_slot"
-                                                                :key="index">
-                                                                <div class="grid grid-cols-2 grid-flow-row gap-2 p-2">
-                                                                    <div class="w-full">
-                                                                        <span x-text="timeSlot.duration"
-                                                                            class="text-xs text-gray-500">
+                                                    <div class="w-full">
+                                                        <template x-if="toggleTimeSlot">
 
-                                                                        </span>
+                                                            <select class="select select-accent w-full"
+                                                                @change="selectSlot($event, sPreview)">
+                                                                <option disabled selected>Select Time </option>
+                                                                <template
+                                                                    x-for="(timeSlot, index) in sPreview.time_slot.slots"
+                                                                    :key="index">
+                                                                    <template
+                                                                        x-if="timeSlot.slot !== 'break' && timeSlot.slot !== 0">
+                                                                        <option :value="timeSlot.duration">
+                                                                            <div class="flex gap "> Time :
+                                                                                <span x-text="timeSlot.duration"
+                                                                                    class="flex-grow"></span> /
+                                                                                Slot : <span
+                                                                                    x-text="timeSlot.slot"></span>
+                                                                            </div>
+                                                                        </option>
+                                                                    </template>
+                                                                </template>
+                                                            </select>
+                                                            {{-- <div class="w-full flex flex-col gap-2">
+                                                            <template x-for="timeSlot in sPreview.time_slot"
+                                                                :key="timeSlot.id">
 
-                                                                    </div>
-                                                                    <div class="w-full flex">
-                                                                        <span x-text="timeSlot.slot"
-                                                                            class="text-xs flex-grow text-gray-500"></span>
-                                                                        <div>
-                                                                            <template
-                                                                                x-if="timeSlot.slot !== 'break' && timeSlot.slot !== 0">
+                                                                <template x-if="timeSlot.date === null">
+                                                                    <div
+                                                                        class="grid grid-cols-3 grid-flow-row gap-2 p-2">
+                                                                        <div class="w-full">
+                                                                            <span x-text="timeSlot.duration"
+                                                                                class="text-xs text-gray-500">
 
+                                                                            </span>
+
+                                                                        </div>
+                                                                        <div class="w-full flex">
+                                                                            <span x-text="timeSlot.slot"
+                                                                                class="text-xs flex-grow text-gray-500"></span>
+                                                                            <div>
                                                                                 <template
-                                                                                    x-if="selectedTimeSlot === null">
-                                                                                    <button
-                                                                                        @click="selectSlot($event, timeSlot, sPreview)">
-                                                                                        <p
-                                                                                            class="bg-accent w-7 rounded-full ">
-                                                                                            <i
-                                                                                                class="fi fi-rr-add text-3xl flex items-center text-base-100">
-                                                                                            </i>
-                                                                                        </p>
-                                                                                    </button>
+                                                                                    x-if="timeSlot.slot !== 'break' && timeSlot.slot !== 0">
+
+                                                                                    <template
+                                                                                        x-if="selectedTimeSlot === null">
+                                                                                        <button
+                                                                                            @click="selectSlot($event, timeSlot, sPreview)">
+                                                                                            <p
+                                                                                                class="bg-accent w-7 rounded-full ">
+                                                                                                <i
+                                                                                                    class="fi fi-rr-add text-3xl flex items-center text-base-100">
+                                                                                                </i>
+                                                                                            </p>
+                                                                                        </button>
+                                                                                    </template>
                                                                                 </template>
-                                                                            </template>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
-                                                                </div>
+                                                                </template>
+
                                                             </template>
-                                                        </div>
-                                                    </template>
+                                                        </div> --}}
+                                                        </template>
+                                                    </div>
                                                 </div>
-                                            </div>
                                         </template>
 
 
@@ -227,11 +250,7 @@
 
                                         </template>
 
-                                        <div class="w-full flex flex-col gap-2">
-                                            <label for="" class="text-xs">Set Date</label>
-                                            <input type="date" name="date"
-                                                class="input input-border input-accent">
-                                        </div>
+
                                         <div class="w-full p-2 flex flex-col">
                                             <label for="" class="text-xs">Upload Receipt</label>
                                             <div class="w-full h-24 flex gap-2">
@@ -295,7 +314,7 @@
                                 </div>
                             </form>
                         </div>
-                        <div class="w-1/3 h-full bg-base-100 rounded-lg shadow-sm hover:shadow-lg duration-700 p-2"
+                        <div class="w-1/3 h-full rounded-lg shadow-sm hover:shadow-lg duration-700 p-2"
                             x-init="fullCalendar">
                             <div id="calendar" class="w-full h-96 text-xs">
 
@@ -328,7 +347,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+
         </div>
     </div>
 
@@ -342,6 +361,7 @@
                     previousTimeSlotData: null,
                     rAmount: 0,
                     sDetailID: null,
+                    sDate: null,
                     sPreview: null,
                     selectedTimeSlot: null,
                     selectedService: [],
@@ -404,22 +424,53 @@
                     },
                     selectService(id, e) {
                         e.preventDefault()
+
                         const service = this.services.find((item) => {
                             return item.id == id
                         });
+
+                        console.log(service)
+
+                        let time_slot = service.time_slot.find((item) => {
+                            if (item.date === this.sDate && item.date !== null) {
+                                return item
+                            }
+                        })
+
+
+                        if (time_slot === undefined) {
+                           time_slot = service.time_slot.find((item) => {
+                                if (item.date == null) {
+                                    console.log({
+                                        date: item,
+                                        sDate: this.sDate
+                                    })
+                                    return item
+                                }
+                            })
+                        }
+
+                        // console.log(time_slot);
+
 
                         if (this.selectedService.find(item => item.id === service.id)) {
                             return
                         }
 
+
+
                         this.selectedService = [...this.selectedService, {
                             ...service,
-                            time_slot: JSON.parse(service.time_slot)
+                            time_slot: {
+                                ...time_slot,
+                                slots: JSON.parse(time_slot.slots)
+                            }
                         }]
 
-                        this.total  = this.selectedService.reduce((total, item) => total + parseInt(item.price), 0)
+                        console.log(this.selectedService)
+                        this.total = this.selectedService.reduce((total, item) => total + parseInt(item.price), 0)
 
-                        this.dTotal =  this.selectedService.reduce((total, item) => total + parseInt(item.init_payment), 0)
+                        this.dTotal = this.selectedService.reduce((total, item) => total + parseInt(item.init_payment), 0)
 
                         console.log(this.dTotal)
 
@@ -429,41 +480,81 @@
 
                         console.log(this.selectedService.length)
                     },
-                    selectSlot(e, _slot, service) {
+                    selectSlot(e, service) {
                         e.preventDefault()
+
+                        const slot = service.time_slot.slots.find((item) => {
+                            if (item.duration === e.target.value) {
+                                return item
+                            }
+                        })
+
+
+                        // if ('selectedSlot' in service) {
+                        //     service = {
+                        //         ...service,
+                        //         time_slot: service.time_slot.map((item) =>
+                        //             item = item.duration === service.selectedSlot.duration ?
+                        //             item = {
+                        //                 ...item,
+                        //                 slot: item.slot + 1
+                        //             } : item
+                        //         )
+                        //     }
+                        // }
+
+
+                        console.log(this.sDate)
 
                         if ('selectedSlot' in service) {
                             service = {
                                 ...service,
-                                time_slot: service.time_slot.map((item) =>
-                                    item = item.duration === service.selectedSlot.duration ?
-                                    item = {
-                                        ...item,
-                                        slot: item.slot + 1
-                                    } : item
-                                )
+                                time_slot: {
+                                    ...service.time_slot,
+                                    slots: service.time_slot.slots.map((item) => {
+                                        item = item.duration === service.selectedSlot.duration ?
+                                            item = {
+                                                ...item,
+                                                slot: item.slot + 1
+                                            } : item
+
+                                        return item;
+                                    })
+                                }
+
                             }
                         }
 
+
                         service = {
                             ...service,
-                            time_slot: service.time_slot.map((item) =>
-                                item = item.duration === _slot.duration ?
-                                item = {
-                                    ...item,
-                                    slot: item.slot - 1
-                                } : item
+                            time_slot: {
+                                ...service.time_slot,
+                                date: this.sDate,
+                                slots: service.time_slot.slots.map((item) => {
+                                    item = item.duration === slot.duration ?
+                                        item = {
+                                            ...item,
+                                            slot: item.slot - 1
+                                        } : item
 
-                            )
+                                    return item;
+                                })
+                            }
+
                         }
+                        console.log(service);
                         this.sDetailID = null
                         this.sPreview = null
+
+
 
                         const data = this.selectedService.filter(item => item.id !== service.id);
                         this.selectedService = [...data, {
                             ...service,
-                            selectedSlot: _slot
+                            selectedSlot: slot
                         }]
+                        console.log(this.selectedService)
                     },
                     selectedExtension(e) {
 

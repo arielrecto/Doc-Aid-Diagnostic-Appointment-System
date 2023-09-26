@@ -8,6 +8,7 @@ use App\Utilities\FileUploader;
 use App\Http\Controllers\Controller;
 use App\Mail\AppointmentResult;
 use App\Models\Appointment;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rules\Unique;
 
@@ -41,6 +42,7 @@ class ResultController extends Controller
 
        $result =  Result::create([
             'name' => $request->name,
+            'user_id' => $appointment->user->id,
             'description' => $request->description,
             'appointment_id' => $appointment->id,
             'path' => $fileUploader->getPath()

@@ -85,6 +85,20 @@
                         </div>
                         <div class="grid grid-cols-3 grid-flow-row gap-5">
                             <div class="flex flex-col gap-2">
+                                <label for="" class="capitalize text-sm text-gray-500">Age</label>
+                                <input type="text" class="input input-accent w-full" name="age" placeholder="Age">
+                                @if ($errors->has('age'))
+                                    <p class="text-xs text-error">{{ $errors->first('age') }}</p>
+                                @endif
+                            </div>
+                            <div class="flex flex-col gap-2">
+                                <label for="" class="capitalize text-sm text-gray-500">Birthdate</label>
+                                <input type="date" class="input input-accent w-full" name="birthdate" placeholder="birthdate">
+                                @if ($errors->has('birthdate'))
+                                    <p class="text-xs text-error">{{ $errors->first('birthdate') }}</p>
+                                @endif
+                            </div>
+                            <div class="flex flex-col gap-2">
                                 <label for="" class="capitalize text-sm text-gray-500">Sex</label>
                                 <select class="select select-accent w-full" name="gender">
                                     <option disabled selected>Select Sex</option>

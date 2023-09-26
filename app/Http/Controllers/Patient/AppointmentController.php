@@ -7,6 +7,7 @@ use App\Models\Appointment;
 use App\Models\Family;
 use App\Models\Service;
 use App\Models\SubscribeService;
+use App\Models\TimeSlot;
 use App\Utilities\ImageUploader;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -30,11 +31,11 @@ class AppointmentController extends Controller
     public function create()
     {
 
-        $services = Service::get()->toJSON();
-        $timeSlot = $this->timeIntervalByHour('8:00', '4:00');
+        $services = Service::with('timeSlot')->get()->toJSON();
+        // $timeSlot = $this->timeIntervalByHour('8:00', '4:00');
         $familyMembers = Family::authUserFamilyMember();
 
-        return view('users.patient.appointment.create', compact(['services', 'timeSlot', 'familyMembers']));
+        return view('users.patient.appointment.create', compact(['services', 'familyMembers']));
     }
 
     /**
@@ -43,7 +44,16 @@ class AppointmentController extends Controller
     public function store(Request $request)
     {
 
+        $request->validate([
+            'patient' => 'required',
+            'date' => 'required',
+            'receipt' => 'required',
+            'receipt_amount' => 'required',
+            'patient' => 'required'
+        ]);
+
         $services = json_decode($request->services);
+
         // $service = Service::find($request->service);
         $imageUploader = new ImageUploader();
         $imageUploader->handler($request->receipt, '/image/receipt/', 'RCPT');
@@ -62,6 +72,21 @@ class AppointmentController extends Controller
             'status' => 'pending',
             'is_extended' => $request?->is_extended === "on" ? true : false
         ]);
+
+        collect($services)->map(function ($item) {
+            $slot = $item->time_slot;
+            $t_slot = TimeSlot::where('date', $slot->date)->first();
+            if ($t_slot) {
+                $t_slot->update([
+                    'slots' => json_encode($slot->slots),
+                ]);
+            }
+            TimeSlot::create([
+                'service_id' => $item->id,
+                'slots' => json_encode($slot->slots),
+                'date' => $slot->date
+            ]);
+        });
 
         $this->processServices($services, $appointment);
         return back()->with(['message' => 'Appointment Request Sent!']);

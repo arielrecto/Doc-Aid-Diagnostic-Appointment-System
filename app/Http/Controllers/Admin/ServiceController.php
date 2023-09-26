@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Service;
+use App\Models\TimeSlot;
 use App\Utilities\ImageUploader;
 use Illuminate\Http\Request;
 use PhpParser\Node\Expr\FuncCall;
@@ -56,8 +57,6 @@ class ServiceController extends Controller
             'extension_time' => 'required',
             'extension_price' => 'required'
         ]);
-
-
         $imageUploader = new ImageUploader();
         $imageUploader->handler($request->image, '/image/services/', 'SRVCS');
 
@@ -67,10 +66,15 @@ class ServiceController extends Controller
             'price' => $request->price,
             'init_payment' => $request->initPayment,
             'image' => $imageUploader->getURL(),
-            'time_slot' => $request->timeSlot,
+            //'time_slot' => $request->timeSlot,
             'session_time' => $request->session_time,
             'extension_time' => $request->extension_time,
             'extension_price' => $request->extension_price
+        ]);
+
+        TimeSlot::create([
+            'slots' => $request->timeSlot,
+            'service_id' => $service->id
         ]);
 
 
@@ -117,7 +121,7 @@ class ServiceController extends Controller
             'price' => $request->price ?? $service->price,
             'init_payment' => $request->initPayment ?? $service->init_payment,
             'image' => $request->image !== null ? $imageUploader->getURL() : $service->image,
-            'time_slot' => $request->timeSlot ?? $request->time_slot,
+            //'time_slot' => $request->timeSlot ?? $request->time_slot,
             'session_time' => $request->session_time ?? $service->session_time,
             'extension_time' => $request->extension_time ?? $service->extension_time,
             'extension_price' => $request->extension_price ?? $service->extension_price

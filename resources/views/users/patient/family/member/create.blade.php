@@ -1,16 +1,9 @@
 <x-app-layout>
-    <div class="w-full min-h-screem m-0 p-0">
-        <div class="flex w-full h-full">
-            <div class="w-1/6">
-                <x-patient-siderbar></x-patient-siderbar>
-            </div>
-            <div class="w-full flex-grow flex flex-col gap-2 h-full">
-                <x-patient.navbar>
-                    <x-slot name="header">
-                        {{ __('Family Member - Create') }}
-                    </x-slot>
-                </x-patient.navbar>
-
+    <div class="main-screen">
+        <x-patient-siderbar/>
+        <div class="main-content">
+            <x-patient.navbar />
+            <div class="w-full flex-grow flex flex-col gap-2 h-full panel">
                 <div class="flex flex-col gap-2 p-5 w-full h-full relative">
                    @if (Session::has('message'))
                    <div class="alert alert-success">
@@ -19,7 +12,7 @@
                   </div>
                    @endif
                     <div
-                        class="w-full h-full flex flex-col gap-2 bg-base-100 rounded-lg shadow-sm hover:shadow-lg duration-700">
+                        class="w-full h-full flex flex-col gap-2 rounded-lg shadow-sm hover:shadow-lg duration-700">
                         <form action="{{ route('patient.family.members.store') }}" method="post"
                             class="flex flex-col gap-2">
                             @csrf

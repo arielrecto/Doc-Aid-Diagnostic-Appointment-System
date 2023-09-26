@@ -1,6 +1,6 @@
 <x-app-layout>
     <div class="main-screen">
-        <x-responsive-indicator/>
+     <!-- <x-responsive-indicator/> -->
         <x-admin.sidebar-new />
 
         <div class="main-content" x-data="dashboard">

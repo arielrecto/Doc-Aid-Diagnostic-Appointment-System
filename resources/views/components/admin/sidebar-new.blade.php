@@ -4,17 +4,17 @@
                 'route' => 'admin.dashboard',
                 'icon' => 'fi fi-rr-apps pt-1',
             ],
-        
+
             'Appointment' => [
                 'route' => 'admin.appointment.index',
                 'icon' => 'fi fi-rr-edit pt-1',
             ],
-        
+
             'Services' => [
                 'route' => 'admin.services.index',
                 'icon' => 'fi fi-rr-list-check pt-1',
             ],
-        
+
             'Employee' => [
                 'route' => 'admin.employee.index',
                 'icon' => 'fi fi-rr-users-alt pt-1',
