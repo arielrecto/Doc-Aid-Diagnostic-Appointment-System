@@ -20,9 +20,9 @@ class AppointmentFactory extends Factory
         return [
             'patient' => fake()->name(),
             'date' => fake()->dateTimeBetween('now', '1 year')->format('Y-m-d'),
-            'time' => fake()->time() . ' - ' . fake()->time(),
+            // 'time' => fake()->time() . ' - ' . fake()->time(),
             'type' => fake()->randomElement(['online', 'walk in']),
-            'service_id' => fake()->numberBetween(1, Service::count()),
+            // 'service_id' => fake()->numberBetween(1, Service::count()),
             'receipt_image' => fake()->imageUrl(500, 500, 'receipt'),
             'user_id' => 1,
             'status' => fake()->randomElement(['pending', 'approved']),

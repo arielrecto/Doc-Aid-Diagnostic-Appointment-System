@@ -1,6 +1,7 @@
 <x-app-layout>
 
-    <div class="flex h-full w-full" x-data="calendarData" x-init="initializeCalendar({{ $appointments }})">
+
+    <div class="flex h-full w-full" x-data="calendarData" x-init="initializeCalendar({{$appointments}})">
         <div class="w-1/6">
             <x-patient-siderbar></x-patient-siderbar>
         </div>
@@ -32,9 +33,9 @@
                                 <div class="p-2 flex flex-col gap-2">
                                     <h1 class="text-lg font-bold h-16">{{ $service->name }}</h1>
                                     <div class="flex">
-                                        <button
+                                        {{-- <button
                                             class="bg-accent px-2 py-1 rounded-lg text-base-100 hover:scale-105 duration-700 text-xs mr-auto">Set
-                                            Appointment</button>
+                                            Appointment</button> --}}
                                         <p class="text-accent text-base font-semibold">{{ $service->price }}</p>
                                     </div>
                                 </div>
@@ -62,7 +63,8 @@
                                 <thead>
                                     <tr>
                                         <th></th>
-                                        <th>Service</th>
+                                        <th>Patient</th>
+                                        <th>No. Service</th>
                                         <th>Date</th>
                                     </tr>
                                 </thead>
@@ -70,7 +72,8 @@
                                     @forelse ($todayAppointments as $appointment)
                                         <tr>
                                             <th>{{$appointment->id}}</th>
-                                            <td>{{$appointment->service->name}}</td>
+                                            <th>{{$appointment->patient}}</th>
+                                            <td>{{$appointment->subscribeServices()->count()}}</td>
                                             <td>{{date('M-d-Y', strtotime($appointment->date))}}</td>
                                         </tr>
                                     @empty
@@ -190,13 +193,13 @@
                                 this.showModal = true;
                                 console.log(this.clickedDate.toDateString())
                             },
-                            events: this.convertEvents(data)
+                           events: this.convertEvents(data)
                         });
                         calendar.render();
                     },
                     convertEvents(eventsData) {
                         return eventsData.map(event => ({
-                            title: event.service.name,
+                            title: event.patient,
                             start: new Date(event.date),
                             end: new Date(event.date),
                             backgroundColor: event.status === 'pending' ? '#fbbd23' : event.status === 'approved' ?

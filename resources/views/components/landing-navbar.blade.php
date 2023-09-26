@@ -5,7 +5,6 @@
             Doc Aid Diagnostic and medical Center
         </h1>
     </div>
-
     @if (!Auth::user())
         <div class="w-1/5 flex flex-row-reverse capitalize p-2 gap-4">
             <a href="{{ route('login') }}" class="btn btn-base-100">login</a>
@@ -21,7 +20,8 @@
         </div>
     @elseif(Auth::user()->hasRole('employee'))
         <div class="w-1/5 flex flex-row-reverse capitalize p-2 gap-4">
-            <a href="{{ route('admin.dashboard') }}" class="btn btn-base-100 capitalize">Return Dashboard</a>
+            <a href="{{ route('employee.dashboard') }}" class="btn btn-base-100 capitalize">Return Dashboard</a>
         </div>
     @endif
+
 </div>

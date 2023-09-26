@@ -1,20 +1,21 @@
 <?php
 
+use App\Models\Service;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Admin\ResultController;
 use App\Http\Controllers\Admin\ServiceController;
+use App\Http\Controllers\Admin\EmployeeController;
+use App\Http\Controllers\Patient\FamilyController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Patient\AppointmentController;
+use App\Http\Controllers\Patient\FamilyMemberController;
 use App\Http\Controllers\Admin\AppointmentController as AdminAppointmentController;
-use App\Http\Controllers\Admin\EmployeeController;
-use App\Http\Controllers\Admin\ResultController;
 use App\Http\Controllers\Patient\DashboardController as PatientDashboardController;
 use App\Http\Controllers\Employee\DashboardController as EmployeeDashboardController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\Patient\FamilyController;
-use App\Http\Controllers\Patient\FamilyMemberController;
-use App\Models\Service;
+use App\Http\Controllers\Employee\AppointmentController as EmployeeAppointmentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,7 +29,10 @@ use App\Models\Service;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+
+    $services = Service::get();
+
+    return view('welcome', compact(['services']));
 });
 
 Route::get('/home', [HomeController::class, 'home'])->name('home');
@@ -72,6 +76,9 @@ Route::middleware('auth')->group(function () {
     Route::middleware('role:employee')->prefix('employee')->as('employee.')->group(function() {
         Route::get('/dashboard', [EmployeeDashboardController::class, 'dashboard'])->name('dashboard');
         Route::get('/dashboard/filter', [EmployeeDashboardController::class, 'filter'])->name('filter');
+        Route::prefix('/appointment')->as('appointment.')->group(function () {
+            Route::get('/show/{Appointment}', [EmployeeAppointmentController::class, 'show'])->name('show');
+        });
     });
 
 

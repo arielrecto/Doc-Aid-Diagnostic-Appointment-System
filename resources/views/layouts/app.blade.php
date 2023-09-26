@@ -15,8 +15,10 @@
 
     <!-- full calendar css -->
     <script src="
-                https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js
-                "></script>
+                                    https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js
+                                    "></script>
+
+
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -40,10 +42,36 @@
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 
     <link href="https://cdn.jsdelivr.net/npm/remixicon@2.2.0/fonts/remixicon.css" rel="stylesheet">
+
+    <!-- swipper -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
 </head>
 <style>
     .fc-bg-event {
         background-color: '#04ABA3',
+    }
+
+    .swiper {
+        width: 100%;
+        height: 100%;
+    }
+
+    .swiper-slide {
+        text-align: center;
+        font-size: 18px;
+        background: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .swiper-slide img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
     }
 </style>
 
@@ -67,7 +95,39 @@
 
 
 
+
+
 <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 
+<script>
+    const swiper = new Swiper('.swiper', {
+        // Optional parameters
+        // direction: 'horizontal',
+        loop: true,
+
+        // If we need pagination
+        pagination: {
+            el: '.swiper-pagination',
+        },
+        centeredSlides: true,
+        autoplay: {
+            delay: 2500,
+            disableOnInteraction: false,
+        },
+
+        // Navigation arrows
+        // navigation: {
+        //     nextEl: '.swiper-button-next',
+        //     prevEl: '.swiper-button-prev',
+        // },
+
+        // // And if we need scrollbar
+        // scrollbar: {
+        //     el: '.swiper-scrollbar',
+        // },
+    });
+</script>
+
 @stack('js')
+
 </html>

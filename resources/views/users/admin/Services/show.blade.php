@@ -24,7 +24,7 @@
                             </div>
                             <div>
                                 <h1 class="text-xs text-gray-400 xs">Status:
-                                    <span class="text-semibold text-sm text-black">{{ $service->availability }}</span>
+                                    <span class="text-semibold text-sm text-black">{{$service->availability->name}}</span>
                                 </h1>
                             </div>
                         </div>

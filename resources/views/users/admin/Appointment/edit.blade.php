@@ -59,13 +59,13 @@
                             <div class="w-full flex flex-col gap-2 p-2" x-data="appointmentShow">
                                 <h1 class="text-base text-gray-500">Service</h1>
                                 <div class="flex space-x-4 w-full">
-                                    <img src="{{ $appointment->service->image }}" alt="" srcset=""
-                                        class="h-64 w-96 object-cover">
+                                    {{-- <img src="{{ $appointment->service->image }}" alt="" srcset=""
+                                        class="h-64 w-96 object-cover">--}}
                                     <div class="w-full h-full flex flex-col gap-2">
-                                        <div class="flex flex-col gap-2">
+                                        {{-- <div class="flex flex-col gap-2">
                                             <label for="" class="text-gray-500 text-sm">Name</label>
                                             <h1 class="font-semibold">{{ $appointment->service->name }}</h1>
-                                        </div>
+                                        </div> --}}
                                         <div class="grid grid-cols-2 grid-flow-row gap-2">
                                             <div class="flex flex-col gap-2 w-full">
                                                 <label for="" class="text-gray-500 text-sm">Time</label>
@@ -96,7 +96,7 @@
                                             <div class="flex flex-col gap-2 w-full">
                                                 <label for="" class="text-gray-500 text-sm">Session Time</label>
 
-                                                <template x-if="duration !== null">
+                                                {{-- <template x-if="duration !== null">
                                                     <h1 class="font-semibold"> <span x-text="duration"></span>
                                                         @if ($appointment->is_extended)
                                                             <span class="font-semibold text-gray-500">Extend</span>
@@ -120,7 +120,7 @@
                                                 </h1>
                                                 <label for="" class="text-gray-500 text-sm">Downpayment</label>
                                                 <h1 class="font-semibold">{{ $appointment->service->init_payment }}
-                                            </div>
+                                            </div> --}}
                                         </div>
                                         <div class="flex gap-2">
                                             <div class="flex flex-col gap-2">

@@ -9,14 +9,18 @@ use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
+    public function __construct(public Appointment $appointment)
+    {
+
+    }
     public function dashboard()
     {
         $services = Service::get();
-        $appointments = Appointment::with('service')->get()->toJson();
+        $appointments = Appointment::with('subscribeServices.service')->get()->toJson();
         $timeInterval = $this->timeIntervalByHour('8:00', '4:00');
-        $todayAppointments = Appointment::today();
+        $todayAppointments = $this->appointment->today();
 
-        return view('users.patient.dashboard', compact(['services', 'appointments', 'timeInterval', 'todayAppointments']));
+        return view('users.patient.dashboard', compact(['services', 'timeInterval', 'todayAppointments', 'appointments']));
     }
     public function timeIntervalByHour($start, $end)
     {

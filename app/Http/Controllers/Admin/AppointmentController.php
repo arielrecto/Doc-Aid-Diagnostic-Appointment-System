@@ -11,12 +11,18 @@ class AppointmentController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+    public function __construct(public Appointment $appointment)
+    {
+
+    }
+
     public function index(Request $request)
     {
         $query = $request->query('filter');
-        
+
         $appointments = Appointment::get();
-        $total = Appointment::total();
+        $total = $this->appointment->total();
         return view('users.admin.Appointment.index-new', compact(['appointments', 'total']));
     }
 
@@ -99,7 +105,7 @@ class AppointmentController extends Controller
     }
     public function filter($filter){
        $appointments = Appointment::filter($filter);
-       $total = Appointment::total();
+       $total = $this->appointment->total();
 
       return view('users.admin.Appointment.filter', compact(['appointments', 'filter', 'total']));
     }

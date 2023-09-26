@@ -6,6 +6,7 @@ namespace Database\Seeders;
 
 use App\Models\Appointment;
 use App\Models\Service;
+use App\Models\SubscribeService;
 use App\Models\User;
 use Database\Factories\ServicesFactory;
 use Illuminate\Database\Seeder;
@@ -20,9 +21,10 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
 
-        Service::factory(20)->create();
+        // Service::factory(20)->create();
 
-        Appointment::factory(200)->create();
+        // $this->call(AppointmentSeeder::class);
+
 
         $admin = User::create([
             'name' => 'Admin',

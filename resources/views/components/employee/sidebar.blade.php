@@ -1,13 +1,49 @@
-<div class="w-1/6 h-screen bg-base-100 flex flex-col space-y-2">
-    <div class="h-24 w-full p-2 flex border-b-2 border-accent">
-        <img src="{{asset('image/logo.png')}}" alt="" srcset="" class="rounded-lg w-16">
-        <p class="flex-grow text-sm font-medium text-center pt-2">
-            Doc Aid Diagnostic <br> & <br> Medical Center
-        </p>
+@php
+$routes = [
+    'Dashboard' => [
+        'route' => 'employee.dashboard',
+        'icon' => 'fi fi-rr-apps pt-1',
+    ],
+
+    // 'Appointment' => [
+    //     'route' => 'admin.appointment.index',
+    //     'icon' => 'fi fi-rr-edit pt-1',
+    // ],
+
+    // 'Services' => [
+    //     'route' => 'admin.services.index',
+    //     'icon' => 'fi fi-rr-list-check pt-1',
+    // ],
+
+    // 'Employee' => [
+    //     'route' => 'admin.employee.index',
+    //     'icon' => 'fi fi-rr-users-alt pt-1',
+    // ],
+];
+@endphp
+
+
+<div class="w-4/5 sm:w-1/2 lg:w-1/3 xl:w-1/6 overflow-hidden h-full pl-8 bg-base-100 absolute z-50 lg:static shrink-0">
+<div class="flex p-4 items-center gap-4">
+    <div class="w-16 h-16 rounded-full bg-white border shadow">
+        <img src="{{ asset('image/logo-transparent.png') }}" class="object-fill">
     </div>
-    <ul class="w-full capitalize flex flex-col gap-4">
-        <li class="text-center font-lg  p-4 duration-700 {{Route::is('employee.dashboard') ? 'text-accent border-r-4 border-accent bg-gray-100 font-bold' : 'hover:text-accent hover:border-r-4 hover:border-accent hover:bg-gray-100 hover:font-bold'}}">
-            dashboard
-        </li>
+    <span class="font-bold text-2xl capitalize">{{Auth::user()->roles()->first()->name}}</span>
+</div>
+
+{{-- Menus --}}
+<div class="flex flex-col gap-1">
+    <ul class="flex flex-col p-4">
+
+        @foreach ($routes as $name => $values)
+            <a href="{{ route($values['route']) }}"
+                class="nav-link
+    {{ Route::is($values['route']) ? 'font-bold text-primary ' : 'hover:text-accent' }} ">
+                <i class="{{ $values['icon'] }}"></i>
+                <p x-show="toggle">{{ $name }}</p>
+            </a>
+        @endforeach
+
     </ul>
+</div>
 </div>

@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Appointment;
 use App\Models\Family;
 use App\Models\Service;
+use App\Models\SubscribeService;
 use App\Utilities\ImageUploader;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -17,7 +19,8 @@ class AppointmentController extends Controller
      */
     public function index()
     {
-        $appointments = Appointment::get();
+        $appointments = Appointment::with('subscribeServices.service')->get();
+
         return view('users.patient.appointment.index', compact(['appointments']));
     }
 
@@ -39,7 +42,9 @@ class AppointmentController extends Controller
      */
     public function store(Request $request)
     {
-        $service = Service::find($request->service);
+
+        $services = json_decode($request->services);
+        // $service = Service::find($request->service);
         $imageUploader = new ImageUploader();
         $imageUploader->handler($request->receipt, '/image/receipt/', 'RCPT');
 
@@ -50,15 +55,15 @@ class AppointmentController extends Controller
             'time' => $request->timeSlot,
             'type' => 'sample',
             'user_id' => $user->id,
-            'service_id' => $service->id,
             'receipt_image' => $imageUploader->getURL(),
-            'receipt_amount'=> $request->receipt_amount,
+            'receipt_amount' => $request->receipt_amount,
             'balance' => $request->balance,
             'total' => $request->total,
             'status' => 'pending',
             'is_extended' => $request?->is_extended === "on" ? true : false
         ]);
 
+        $this->processServices($services, $appointment);
         return back()->with(['message' => 'Appointment Request Sent!']);
     }
 
@@ -106,7 +111,7 @@ class AppointmentController extends Controller
     }
     public function timeIntervalByHour($start, $end)
     {
-        $startTime = strtotime($start .'AM');
+        $startTime = strtotime($start . 'AM');
         $endTime = strtotime($end . 'PM');
 
         $timeInterval = [];
@@ -118,5 +123,23 @@ class AppointmentController extends Controller
 
         // Now $timeInterval contains an array of time intervals in the desired format
         return $timeInterval;
+    }
+    private function processServices($services, $appointment)
+    {
+        foreach ($services as $_service) {
+            list($startTime, $endTime) = explode(" - ", $_service->selectedSlot->duration);
+            $startTime = Carbon::parse($startTime);
+            $endTime = Carbon::parse($endTime);
+
+            Service::find($_service->id)->update(['time_slot' => json_encode($_service->time_slot)]);
+
+
+            SubscribeService::create([
+                'start_time' => $startTime,
+                'end_time' => $endTime,
+                'service_id' => $_service->id,
+                'appointment_id' => $appointment->id
+            ]);
+        }
     }
 }
