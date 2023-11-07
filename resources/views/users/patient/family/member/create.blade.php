@@ -14,12 +14,16 @@
                     <div
                         class="w-full h-full flex flex-col gap-2 rounded-lg shadow-sm hover:shadow-lg duration-700">
                         <form action="{{ route('patient.family.members.store') }}" method="post"
-                            class="flex flex-col gap-2">
+                            class="flex flex-col gap-2" enctype="multipart/form-data">
                             @csrf
                             <div class="w-full flex justify-center h-12 items-center border-b-2 border-gray-100">
                                 <h1 class="text-lg font-semibold capitalize">Family Member Information</h1>
                             </div>
                             <div class="w-full h-full flex flex-col space-y-10 p-5">
+                                <div class="w-full flex flex-col gap-2">
+                                    <label for="" class="capitalize text-sm text-gray-500">profile</label>
+                                    <input type="file" name="image" placeholder="image" class="file-input file-input-bordered file-input-accent w-full max-w-xs" />
+                                </div>
                                 <div class="grid grid-cols-3 grid-flow-row gap-2">
                                     <div class="flex flex-col gap-2 w-full">
                                         <label for="" class="capitalize text-sm text-gray-500">last name</label>

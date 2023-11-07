@@ -12,8 +12,7 @@
         </div>
 
         <span class="text-6xl font-bold text-white truncate max-w-[250px]">
-            {{-- {{ $total }} --}}
-            1234567890
+            {{ $total }}
         </span>
     </a>
     <a class="header-selection" href="{{ route('admin.appointment.filter', ['filter' => 'today']) }}">

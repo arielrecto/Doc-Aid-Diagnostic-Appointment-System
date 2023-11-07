@@ -15,8 +15,8 @@
 
     <!-- full calendar css -->
     <script src="
-                                    https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js
-                                    "></script>
+                                                https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js
+                                                "></script>
 
 
 
@@ -47,6 +47,12 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+
+
+    <!--veno box -->
+    <link href="
+https://cdn.jsdelivr.net/npm/venobox@2.0.4/dist/venobox.min.css
+" rel="stylesheet">
 </head>
 <style>
     .fc-bg-event {
@@ -98,6 +104,15 @@
 
 
 <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+<script src="
+https://cdn.jsdelivr.net/npm/venobox@2.0.4/dist/venobox.min.js
+"></script>
+
+<script>
+    new VenoBox({
+        selector: '.venobox'
+    });
+</script>
 
 <script>
     const swiper = new Swiper('.swiper', {

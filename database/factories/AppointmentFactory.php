@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\AppointmentStatus;
 use App\Models\Service;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -25,7 +26,7 @@ class AppointmentFactory extends Factory
             // 'service_id' => fake()->numberBetween(1, Service::count()),
             'receipt_image' => fake()->imageUrl(500, 500, 'receipt'),
             'user_id' => 1,
-            'status' => fake()->randomElement(['pending', 'approved']),
+            'status' => fake()->randomElement(AppointmentStatus::toArray()),
             'receipt_amount' => fake()->numberBetween(100, 1000),
             'balance' => fake()->numberBetween(100, 500),
             'total' => fake()->numberBetween(100, 1000)

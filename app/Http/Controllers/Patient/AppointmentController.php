@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Patient;
 
+use App\Enums\AppointmentStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Appointment;
 use App\Models\Family;
+use App\Models\Payment;
 use App\Models\Service;
 use App\Models\SubscribeService;
 use App\Models\TimeSlot;
@@ -20,7 +22,7 @@ class AppointmentController extends Controller
      */
     public function index()
     {
-        $appointments = Appointment::with('subscribeServices.service')->get();
+        $appointments = Appointment::with('subscribeServices.service')->where('status', '!=', AppointmentStatus::DONE->value)->get();
 
         return view('users.patient.appointment.index', compact(['appointments']));
     }
@@ -54,7 +56,9 @@ class AppointmentController extends Controller
             'patient' => 'required'
         ]);
 
+
         $services = json_decode($request->services);
+
 
         // $service = Service::find($request->service);
         $imageUploader = new ImageUploader();
@@ -63,7 +67,7 @@ class AppointmentController extends Controller
         $user = Auth::user();
         $appointment = Appointment::create([
             'date' => $request->date,
-            'patient' => $user->name,
+            'patient' => $request->patient,
             'time' => $request->timeSlot,
             'type' => 'sample',
             'user_id' => $user->id,
@@ -74,6 +78,15 @@ class AppointmentController extends Controller
             'total' => $request->total,
             'status' => 'pending',
             'is_extended' => $request?->is_extended === "on" ? true : false
+        ]);
+
+
+        Payment::create([
+            'ref_number' => $request->receipt_number,
+            'image' => $imageUploader->getURL(),
+            'amount' => $request->receipt_amount,
+            'type' => 'downpayment',
+            'appointment_id' => $appointment->id
         ]);
 
         collect($services)->map(function ($item) {

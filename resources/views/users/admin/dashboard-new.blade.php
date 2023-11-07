@@ -1,6 +1,6 @@
 <x-app-layout>
     <div class="main-screen">
-     <!-- <x-responsive-indicator/> -->
+        <!-- <x-responsive-indicator/> -->
         <x-admin.sidebar-new />
 
         <div class="main-content" x-data="dashboard">
@@ -23,20 +23,48 @@
             <div class="h-4/6 overflow-auto panel">
                 <div class="grid grid-cols-3 grid-flow-row gap-2 ">
                     <div class="panel h-36 bg-accent">
+                        <div class="w-full text-xl font-semibold capitalize text-white flex gap-2">
+                            <i class="fi fi-rr-stats"></i>
+                            <span>
+                                sales
+                            </span>
+                        </div>
+
+                        <span class="text-6xl font-bold text-white truncate max-w-[250px]">
+                            &#8369 {{ $sales }}
+                        </span>
                     </div>
                     <div class="panel h-36 bg-secondary-focus">
+                        <div class="w-full text-xl font-semibold capitalize text-white flex gap-2">
+                            <i class="ri-book-mark-line"></i>
+                            <span>
+                                Total Appointments - {{ $year }}
+                            </span>
+                        </div>
+
+                        <span class="text-6xl font-bold text-white truncate max-w-[250px]">
+                            {{ $totalAppointmentsInYear }}
+                        </span>
                     </div>
                     <div class="panel h-36 bg-warning">
+                        <div class="w-full text-xl font-semibold capitalize text-white flex gap-2">
+                            <i class="ri-book-mark-line"></i>
+                            <span>
+                                Total Services
+                            </span>
+                        </div>
+
+                        <span class="text-6xl font-bold text-white truncate max-w-[250px]">
+                            {{ $totalServices }}
+                        </span>
                     </div>
                 </div>
 
-                <div class="w-full flex py-5 gap-2" x-init="barChart()">
-                    <div id="barChart"
-                        class="flex-grow rounded-lg p-2 shadow-md border-2 border-secondary-focus">
+                <div class="w-full flex py-5 gap-2" x-init="barChartTwo({{ $monthlyTotal }})">
+                    <div id="barChart" class="flex-grow rounded-lg p-2 shadow-md border-2 border-secondary-focus">
 
                     </div>
-                    <div class="w-1/4 rounded-lg shadow-md p-2"
-                        x-init="calendar">
+                    <div class="w-1/3 rounded-lg shadow-md p-2" x-init="calendar({{ $calendarAppointment }})">
                         <div id="calendar" class="w-full text-xs h-full">
 
                         </div>
@@ -61,7 +89,7 @@
                                         <th>{{ $appointment->id }}</th>
                                         <th>{{ $appointment->patient }}</th>
                                         <td>{{ $appointment->subscribeServices()->count() }}</td>
-                                        <td>{{date('M-d-Y', strtotime($appointment->date))}}</td>
+                                        <td>{{ date('M-d-Y', strtotime($appointment->date)) }}</td>
                                     </tr>
                                 @empty
                                     <tr>
@@ -90,88 +118,130 @@
     @push('js')
         <script>
             function dashboard() {
+
                 return {
-                    barChart() {
+                    barChartTwo(data) {
+                        const monthlyData = Object.keys(data).map(item => ({
+                            month: item,
+                            total: data[item]
+                        }))
+
+                        console.log(monthlyData);
+                        const totalData = monthlyData.map(item => item.total);
+                        const totalLabel = monthlyData.map(item => item.month);
+                        console.log(totalData)
+
 
                         var options = {
                             series: [{
-                                name: "sales",
-                                data: [{
-                                    x: '2019/01/01',
-                                    y: 400
-                                }, {
-                                    x: '2019/04/01',
-                                    y: 430
-                                }, {
-                                    x: '2019/07/01',
-                                    y: 448
-                                }, {
-                                    x: '2019/10/01',
-                                    y: 470
-                                }, {
-                                    x: '2020/01/01',
-                                    y: 540
-                                }, {
-                                    x: '2020/04/01',
-                                    y: 580
-                                }, {
-                                    x: '2020/07/01',
-                                    y: 690
-                                }, {
-                                    x: '2020/10/01',
-                                    y: 690
-                                }]
+                                name: 'Sales',
+                                data: [...totalData]
                             }],
-                            chart: {
-                                type: 'bar',
-                                height: 380,
-                            },
-                            colors: "#04ABA3",
-                            xaxis: {
-                                type: 'category',
-                                labels: {
-                                    formatter: function(val) {
-                                        // return "Q" + dayjs(val).quarter()
-                                        return "Q" + dayjs(val)
-                                    }
-                                },
-                                group: {
-                                    style: {
-                                        fontSize: '10px',
-                                        fontWeight: 700,
-                                    },
-                                    groups: [{
-                                            title: '2019',
-                                            cols: 4
+                            annotations: {
+                                points: [{
+                                    x: 'Bananas',
+                                    seriesIndex: 0,
+                                    label: {
+                                        borderColor: '#775DD0',
+                                        offsetY: 0,
+                                        style: {
+                                            color: '#fff',
+                                            background: '#775DD0',
                                         },
-                                        {
-                                            title: '2020',
-                                            cols: 4
-                                        }
-                                    ]
-                                }
-                            },
-                            title: {
-                                text: 'Grouped Labels on the X-axis',
-                            },
-                            tooltip: {
-                                x: {
-                                    formatter: function(val) {
-                                        return "Q" + dayjs(val).quarter() + " " + dayjs(val).format("YYYY")
+                                        text: 'Bananas are good',
                                     }
+                                }]
+                            },
+                            chart: {
+                                height: 350,
+                                type: 'bar',
+                            },
+                            plotOptions: {
+                                bar: {
+                                    borderRadius: 10,
+                                    columnWidth: '50%',
                                 }
                             },
+                            dataLabels: {
+                                enabled: false
+                            },
+                            stroke: {
+                                width: 2
+                            },
+
+                            grid: {
+                                row: {
+                                    colors: ['#fff', '#f2f2f2']
+                                }
+                            },
+                            xaxis: {
+                                labels: {
+                                    rotate: -45
+                                },
+                                categories: [...totalLabel],
+                                tickPlacement: 'on'
+                            },
+                            yaxis: {
+                                title: {
+                                    text: 'Total Sales',
+                                },
+                            },
+                            fill: {
+                                type: 'gradient',
+                                gradient: {
+                                    shade: 'light',
+                                    type: "horizontal",
+                                    shadeIntensity: 0.25,
+                                    gradientToColors: undefined,
+                                    inverseColors: true,
+                                    opacityFrom: 0.85,
+                                    opacityTo: 0.85,
+                                    stops: [50, 0, 100],
+                                },
+                            }
                         };
 
                         var chart = new ApexCharts(document.querySelector("#barChart"), options);
                         chart.render();
                     },
-                    calendar() {
+                    calendar(data) {
+
+                        console.log(data);
                         const calendarElement = document.getElementById('calendar');
                         const calendar = new FullCalendar.Calendar(calendarElement, {
-                            initialView: 'dayGridMonth'
+                            initialView: 'dayGridMonth',
+                            events: this.calendarEventsMapping(data)
                         })
                         calendar.render()
+                    },
+                    calendarEventsMapping(eventData) {
+                        const appointmentsPerDay = this.countEventPerDay(eventData)
+
+
+                        const dataEvents = Object.keys(appointmentsPerDay).map(event => ({
+                            title: `${appointmentsPerDay[event]} Appointment`,
+                            start: new Date(event),
+                            end: new Date(event),
+                            allDay: true
+                        }));
+
+                        console.log(dataEvents)
+                        return dataEvents
+                    },
+                    countEventPerDay(eventData) {
+                        const appointmentsPerDay = {};
+
+                        eventData.forEach(event => {
+                            const dateKey = new Date(event.date).toISOString().split('T')[0];
+
+                            if (appointmentsPerDay[dateKey]) {
+                                appointmentsPerDay[dateKey]++;
+                            } else {
+                                appointmentsPerDay[dateKey] = 1;
+                            }
+                        });
+
+                        return appointmentsPerDay;
                     }
                 }
             }

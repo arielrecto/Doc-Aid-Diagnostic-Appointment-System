@@ -10,6 +10,7 @@ class FamilyMember extends Model
     use HasFactory;
 
     protected $fillable = [
+        'image',
         'full_name',
         'last_name',
         'first_name',

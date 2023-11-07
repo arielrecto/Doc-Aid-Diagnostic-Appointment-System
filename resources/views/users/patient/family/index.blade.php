@@ -17,8 +17,7 @@
                             </h1>
                         @endif
                     </div>
-                    <div
-                        class="w-full shadow-sm hover:shadow-lg rounded-lg duration-700 h-96 flex flex-col gap-2">
+                    <div class="w-full shadow-sm hover:shadow-lg rounded-lg duration-700 h-96 flex flex-col gap-2">
 
                         @if (Auth::user()->family !== null)
                             <div class="w-full flex justify-end p-2">
@@ -43,11 +42,21 @@
                                     <!-- row 1 -->
                                     @forelse ($members as $member)
                                         <tr class="">
-                                            <th>1</th>
+                                            <th>
+                                                <a class="venobox" href="{{ $member->image }}" target="_blank">
+                                                    <img src="{{ $member->image }}" alt="" srcset=""
+                                                        class="object h-10 w-10 object-center">
+                                                </a>
+                                            </th>
                                             <td class="capitalize">{{ $member->full_name }}</td>
                                             <td>{{ $member->email }}</td>
                                             <td>{{ $member->sex }}</td>
                                             <td>{{ $member->relationship }}</td>
+                                            <td><a
+                                                    href="{{ route('patient.family.members.show', ['member' => $member->id]) }}">
+                                                    <i class="fi fi-rr-eye text-primary"></i>
+                                                </a>
+                                            </td>
                                         </tr>
                                     @empty
                                         <tr>

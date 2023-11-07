@@ -35,7 +35,7 @@
                                     <option value="{{ Auth::user()->name }}">{{ Auth::user()->name }}</option>
                                     <option disabled> - Family Members - </option>
                                     @forelse ($familyMembers as $member)
-                                        <option value="{{ $member->full_name }}" class="capitalize">
+                                        <option value="{{$member->full_name}}" class="capitalize">
                                             {{ $member->full_name }}</option>
                                     @empty
                                         <option disabled class="text-xs">No Family Members</option>

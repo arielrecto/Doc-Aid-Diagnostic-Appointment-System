@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Patient\AppointmentController;
 use App\Http\Controllers\Patient\FamilyMemberController;
 use App\Http\Controllers\Admin\AppointmentController as AdminAppointmentController;
+use App\Http\Controllers\Admin\PaymentController;
 use App\Http\Controllers\Patient\DashboardController as PatientDashboardController;
 use App\Http\Controllers\Employee\DashboardController as EmployeeDashboardController;
 use App\Http\Controllers\Employee\AppointmentController as EmployeeAppointmentController;
@@ -50,6 +51,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/filter={filter}', [AdminAppointmentController::class, 'filter'])->name('filter');
             Route::put('/reschedule/id={appointment}', [AdminAppointmentController::class, 'reschedule'])->name('reschedule');
             Route::resource('result', ResultController::class)->except('create');
+            Route::resource('payment', PaymentController::class);
         });
         Route::prefix('/services')->as('service.')->group(function (){
             Route::patch('/availability/{Service}', [ServiceController::class, 'availability'])->name('availability');

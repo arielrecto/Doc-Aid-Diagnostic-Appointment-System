@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\AppointmentStatus;
 use App\Models\Appointment;
 use App\Models\Service;
 use App\Models\SubscribeService;
@@ -20,7 +21,7 @@ class AppointmentSeeder extends Seeder
     public function run(): void
     {
 
-        Appointment::factory(200)->create();
+        Appointment::factory(20)->create();
 
         SubscribeService::factory(Appointment::count())->create();
 
@@ -29,9 +30,22 @@ class AppointmentSeeder extends Seeder
             if ($item->subscribeService === null) {
                 SubscribeService::create([
                     'appointment_id' => $item->id,
-                    'service_id' => $this->service->first()->id,
+                    'service_id' => fake()->numberBetween(1, $this->service->count()),
                     'start_time' => fake()->time("H:i"),
                     'end_time' => fake()->time('H:i')
+                ]);
+            }
+        });
+
+
+        $appointments = Appointment::whereStatus(AppointmentStatus::DONE->value)->get();
+
+        collect($appointments)->map(function($appointment){
+            $services = $appointment->subscribeServices()->get();
+            foreach($services as $sub_service){
+                $appointment->update([
+                    'total' => $sub_service->service->price,
+                    'balance' => 0
                 ]);
             }
         });

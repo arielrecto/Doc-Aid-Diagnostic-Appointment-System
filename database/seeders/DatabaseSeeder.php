@@ -7,6 +7,7 @@ namespace Database\Seeders;
 use App\Models\Appointment;
 use App\Models\Service;
 use App\Models\SubscribeService;
+use App\Models\TimeSlot;
 use App\Models\User;
 use Database\Factories\ServicesFactory;
 use Illuminate\Database\Seeder;
@@ -20,11 +21,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-
-        // Service::factory(20)->create();
-
-        // $this->call(AppointmentSeeder::class);
-
 
         $admin = User::create([
             'name' => 'Admin',
@@ -51,5 +47,11 @@ class DatabaseSeeder extends Seeder
         $admin->assignRole($adminRole);
 
         $employee->assignRole($employeeRole);
+
+
+        $this->call([
+            ServiceSeeder::class,
+            AppointmentSeeder::class
+        ]);
     }
 }

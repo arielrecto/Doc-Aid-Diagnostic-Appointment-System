@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\AppointmentStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -20,7 +21,9 @@ class Appointment extends Model
         'receipt_amount',
         'balance',
         'total',
-        'status'
+        'status',
+        'is_family',
+        'family_member_id'
     ];
 
     public function user(){
@@ -31,6 +34,9 @@ class Appointment extends Model
     }
     public function results(){
         return $this->hasMany(Result::class);
+    }
+    public function payments(){
+        return $this->hasMany(Payment::class);
     }
     public function today(){
         $appointments  = Appointment::with('subscribeServices.service')->where('date',now('GMT+8')->format('Y-m-d'))->get();
@@ -55,6 +61,12 @@ class Appointment extends Model
     public function total() {
         $total = $this->get()->count();
 
+        return $total;
+    }
+    public function totalSaleInYear(string $year){
+        $total = $this->whereStatus(AppointmentStatus::DONE->value)
+        ->whereYear('created_at', $year)
+        ->sum('total');
         return $total;
     }
 }

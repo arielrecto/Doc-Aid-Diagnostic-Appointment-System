@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\AppointmentStatus;
 use App\Models\Profile;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
@@ -9,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\Appointment;
 use App\Models\Result;
 use App\Utilities\ImageUploader;
 
@@ -41,9 +43,10 @@ class ProfileController extends Controller
         $user = Auth::user();
 
 
-        $medicalHistory = Result::where('user_id', $user->id)->get();
-
-
+        $medicalHistory = $user->appointments()
+                        ->whereIsFamily(false)
+                        ->whereStatus(AppointmentStatus::DONE->value)
+                        ->get();
 
 
         $profile = Profile::find($id);

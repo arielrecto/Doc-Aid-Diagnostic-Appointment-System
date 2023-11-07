@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\AppointmentStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Appointment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AppointmentController extends Controller
 {
@@ -20,7 +22,6 @@ class AppointmentController extends Controller
     public function index(Request $request)
     {
         $query = $request->query('filter');
-
         $appointments = Appointment::get();
         $total = $this->appointment->total();
         return view('users.admin.Appointment.index-new', compact(['appointments', 'total']));
@@ -121,4 +122,5 @@ class AppointmentController extends Controller
 
         return back()->with(['message' => 'Appointment Date Updated']);
     }
+
 }

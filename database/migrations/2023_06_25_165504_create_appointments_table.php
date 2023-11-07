@@ -25,6 +25,8 @@ return new class extends Migration
             $table->string('receipt_amount');
             $table->string('balance');
             $table->string('total');
+            $table->boolean('is_family')->default(false);
+            $table->string('family_member_id')->nullable();
             $table->boolean('is_extended')->default(false);
             $table->softDeletes();
             $table->timestamps();

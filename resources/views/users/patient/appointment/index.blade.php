@@ -40,15 +40,15 @@
                             </div> --}}
                             <div class="w-full flex justify-between p-2">
 
-                                <label class="input-group max-w-lg">
+                                {{-- <label class="input-group max-w-lg">
                                     <input type="text" placeholder="search"
                                         class="w-1/2 input-generic rounded-lg" />
                                     <span class="bg-accent text-base-100"><i class="fi fi-rr-search"></i></span>
-                                </label>
+                                </label> --}}
 
 
                                 <a href="{{ route('patient.appointment.create') }}">
-                                    <button class="capitalized btn btn-accent">Add New Appointment</button>
+                                    <button class="btn-generic">Add New Appointment</button>
                                 </a>
                             </div>
                         </div>

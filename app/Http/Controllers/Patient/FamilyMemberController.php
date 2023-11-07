@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Patient;
 
 use App\Http\Controllers\Controller;
+use App\Models\Appointment;
 use App\Models\FamilyMember;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,6 +13,13 @@ class FamilyMemberController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+
+    public function __construct(public FamilyMember $familyMember)
+    {
+
+    }
+
     public function index()
     {
         //
@@ -30,6 +38,7 @@ class FamilyMemberController extends Controller
      */
     public function store(Request $request)
     {
+
        $request->validate([
             'last_name' => 'required',
             'first_name' => 'required',
@@ -39,11 +48,16 @@ class FamilyMemberController extends Controller
             'contact_no' => 'required'
        ]);
 
+       $imageName = 'famIMG-' . uniqid() . '.' . $request->image->extension();
+       $dir = $request->image->storeAs('/profile/Family', $imageName, 'public');
+
+
        $user = Auth::user();
 
 
        FamilyMember::create([
-        'full_name' => $request->last_name . ', ' . $request->first_name  . ' ' . $request->middle_name,
+        'image' =>  asset('/storage/' . $dir),
+        'full_name' => $request->last_name . ', ' . $request->first_name,
         'last_name' => $request->last_name,
         'first_name' => $request->first_name,
         'middle_name' => $request->middle_name === null ? 'N\A' : $request->middle,
@@ -64,7 +78,12 @@ class FamilyMemberController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $profile = $this->familyMember->where('id', $id)->first();
+
+        $medicalHistory = Appointment::where('is_family', true)->where('family_member_id', $id)->get();
+
+
+        return view('users.patient.family.member.show', compact(['profile', 'medicalHistory']));
     }
 
     /**

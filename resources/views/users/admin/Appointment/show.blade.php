@@ -7,7 +7,7 @@
 
             @if (Session::has('rejected'))
                 <div class="panel-error">
-                    <span>
+                    <span class="flex items-center normal-case">
                         {{ Session::get('rejected') }}
                     </span>
                 </div>
@@ -36,6 +36,50 @@
                         <h1 class="page-title">Appointment Details</h1>
 
                         <div class="flex p-2 justify-end gap-2 items-center">
+                            @if ($appointment->balance != 0 && $appointment->status == 'approved')
+                                <div class="w-full flex justify-center" x-data="payment">
+                                    <button id="payment-modal-trigger" @click="openToggle"
+                                        class="btn btn-accent btn-sm uppercase shadow border">
+                                        <i class="fi fi-rr-credit-card"></i>pay
+                                    </button>
+
+                                    <div id="payment-modal"
+                                        class="absolute w-1/2 h-1/2
+                            top-0 left-0 z-10"
+                                        x-cloak @click.outside="openToggle" x-show="toggle">
+                                        <form action="{{ route('admin.appointment.payment.store') }}" method="post"
+                                            class="w-full flex flex-col gap-4 p-5 bg-white
+                                    shadow-sm border h-full overflow-auto rounded-lg"
+                                            enctype="multipart/form-data">
+                                            @csrf
+                                            <h1 class="text-xl font-bold w-full">Payment</h1>
+                                            <div class="flex flex-col gap-2">
+                                                <label for="" class="c-input-label">Reference #</label>
+                                                <input type="text" class="c-input" name="ref_number">
+                                            </div>
+
+                                            <div class="flex flex-col gap-2">
+                                                <label for="" class="c-input-label">Amount</label>
+                                                <input type="text" class="c-input" name="amount">
+                                            </div>
+
+
+                                            <div class="flex flex-col gap-2">
+                                                <label for="" class="c-input-label">Upload Receipt</label>
+                                                <input type="file" name="image"
+                                                    class="file-input file-input-bordered file-input-accent w-full" />
+                                            </div>
+
+
+                                            <input type="hidden" name="appointment_id" value="{{ $appointment->id }}">
+
+                                            <button class="btn btn-accent" @click="content()">Upload</button>
+
+                                        </form>
+                                    </div>
+
+                                </div>
+                            @endif
                             <div class="w-full flex justify-center">
                                 <a href="{{ route('admin.appointment.edit', ['appointment' => $appointment->id]) }}">
                                     <button class="btn btn-accent btn-sm uppercase shadow border">
@@ -74,8 +118,8 @@
 
                                 <div id="result-mail-modal"
                                     class="absolute w-1/2 h-1/2
-                                top-0 left-0 z-10" x-cloak
-                                    @click.outside="openToggle" x-show="toggle">
+                                top-0 left-0 z-10"
+                                    x-cloak @click.outside="openToggle" x-show="toggle">
                                     <form action="{{ route('admin.appointment.result.store') }}" method="post"
                                         class="w-full flex flex-col gap-4 p-5 bg-white
                                         shadow-sm border h-full overflow-auto rounded-lg"
@@ -227,122 +271,74 @@
 
                 </div>
 
-            </div>
-            <div class="panel">
-                <h1 class="page-title">Services Availed</h1>
-                <div class="overflow-x-auto h-96">
+                <div class="flex flex-col gap-2 bg-white rounded-lg shadow-md p-4">
+                    <h1 class="page-title">Services Availed</h1>
+                    <div class="overflow-x-auto h-96">
 
 
 
 
-                    @foreach ($appointment->subscribeServices as $s_service)
-                        <table class="table">
-                            <!-- head -->
-                            <thead class="capitalize">
-                                <tr>
-                                    <th></th>
-                                    <th>Image</th>
-                                    <th>Name</th>
-                                    <th>description</th>
-                                    <th>Dowmpayment</th>
-                                    <th>Price</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- row 1 -->
-                                <tr class="">
-                                    <th>{{ $s_service->service->id }}</th>
-                                    <th><img src="{{ $s_service->service->image }}" alt="" srcset=""
-                                            class="object object-center h-10 w-10"></th>
-                                    <td>{{ $s_service->service->name }}</td>
-                                    <td>{!! $s_service->service->description !!}</td>
-                                    <td>&#8369 {{ $s_service->service->init_payment }}</td>
-                                    <td>&#8369 {{ $s_service->service->price }}</td>
+                        @foreach ($appointment->subscribeServices as $s_service)
+                            <table class="table">
+                                <!-- head -->
+                                <thead class="capitalize">
+                                    <tr>
+                                        <th></th>
+                                        <th>Image</th>
+                                        <th>Name</th>
+                                        <th>description</th>
+                                        <th>Dowmpayment</th>
+                                        <th>Price</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- row 1 -->
+                                    <tr class="">
+                                        <th>{{ $s_service->service->id }}</th>
+                                        <th><img src="{{ $s_service->service->image }}" alt=""
+                                                srcset="" class="object object-center h-10 w-10"></th>
+                                        <td>{{ $s_service->service->name }}</td>
+                                        <td>{!! $s_service->service->description !!}</td>
+                                        <td>&#8369 {{ $s_service->service->init_payment }}</td>
+                                        <td>&#8369 {{ $s_service->service->price }}</td>
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    @endforeach
+                                    </tr>
+                                </tbody>
+                            </table>
+                        @endforeach
+                    </div>
+                </div>
+
+
+                <div class="flex flex-col gap-2 bg-white rounded-lg shadow-md p-4">
+                    <h1 class="page-title">Result</h1>
+                    <div class="overflow-x-auto h-96">
+
+                        @foreach ($appointment->results as $result)
+                            <table class="table">
+                                <!-- head -->
+                                <thead class="capitalize">
+                                    <tr>
+                                        <th>Subject</th>
+                                        <th>description</th>
+                                        <th>File</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- row 1 -->
+                                    <tr class="">
+                                        <th>{{ $result->name }}</th>
+                                        <td>{!! $result->description !!}</td>
+                                        <td><a href="{{ $result->path }}" target="_blank"><i
+                                                    class="fi fi-rr-document"></i></a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        @endforeach
+                    </div>
                 </div>
 
             </div>
-
-
-            <div class="panel">
-                <h1 class="page-title">Result</h1>
-                <div class="overflow-x-auto h-96">
-
-
-
-
-                    @foreach ($appointment->results as $result)
-                        <table class="table">
-                            <!-- head -->
-                            <thead class="capitalize">
-                                <tr>
-                                    <th>Subject</th>
-                                    <th>description</th>
-                                    <th>File</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- row 1 -->
-                                <tr class="">
-                                    <th>{{ $result->name }}</th>
-                                    <td>{!! $result->description !!}</td>
-                                    <td><a href="{{ $result->path }}" target="_blank"><i
-                                                class="fi fi-rr-document"></i></a></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    @endforeach
-                </div>
-
-            </div>
-
-
-            {{-- <div class="w-full flex flex-col gap-2">
-                                        <h1 class="text-lg font-semibold w-full text-center capitalize">result</h1>
-                                        <div class="overflow-x-auto">
-
-
-                                            @foreach ($appointment->result as $result)
-                                                <table class="table">
-                                                    <!-- head -->
-                                                    <thead class="capitalize">
-                                                        <tr>
-                                                            <th></th>
-                                                            <th>Name</th>
-                                                            <th>description</th>
-                                                            <th>action</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <!-- row 1 -->
-                                                        <tr class="bg-base-200">
-                                                            <th>{{ $result->id }}</th>
-                                                            <td>{{ $result->name }}</td>
-                                                            <td>{!! $result->description !!}</td>
-                                                            <td>
-                                                                <div class="flex justify-ned p-2 gap-4">
-                                                                    <a href="{{ asset($result->path) }}"
-                                                                        target="_blank">
-                                                                        <button><i
-                                                                                class="fi fi-rr-eye text-accent"></i></button>
-                                                                    </a>
-
-                                                                    <a href="{{ asset($result->path) }}" download>
-                                                                        <button><i
-                                                                                class="fi fi-rr-download"></i></button>
-                                                                    </a>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            @endforeach
-                                        </div>
-                                    </div> --}}
         </div>
     </div>
 

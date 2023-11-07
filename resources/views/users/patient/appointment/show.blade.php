@@ -1,9 +1,9 @@
 <x-app-layout>
     <div class="main-screen">
-        <x-patient-siderbar/>
+        <x-patient-siderbar />
 
         <div class="main-content">
-            <x-patient.navbar/>
+            <x-patient.navbar />
 
             @if (Session::has('rejected'))
                 <div class="panel-error">
@@ -30,7 +30,6 @@
             @endif
 
             <div class="panel bg-transparent p-0 shadow-none rounded-none overflow-auto">
-                {{-- Appointment Details --}}
                 <div class="flex flex-col gap-2 bg-white rounded-lg shadow-md p-4">
                     <div class="flex justify-between items-center">
                         <h1 class="page-title">Appointment Details</h1>
@@ -39,11 +38,6 @@
                     </div>
 
                     <div class="grid grid-cols-3 grid-rows-2 gap-4 p-4 border shadow-sm rounded">
-                        {{-- <div class="flex flex-col gap-1">
-                            <label for="" class="text-gray-500 text-sm">Time</label>
-                            <h1>{{ $appointment->time }}</h1>
-                        </div> --}}
-
                         <div class="flex flex-col gap-2 ">
                             <label for="" class="text-gray-500 text-sm">Date</label>
                             <h1 class="font-semibold flex gap-4">
@@ -72,21 +66,6 @@
                                 </span>
                             </h1>
                         </div>
-
-                        {{-- <div class="flex flex-col gap-2 ">
-                            <label for="" class="text-gray-500 text-sm">Session Time</label>
-                            <h1 class="font-semibold">{{ $appointment->service->session_time }} -
-                                min
-                                @if ($appointment->is_extended)
-                                    <span class="font-semibold text-gray-500">Extend</span>
-                                @endif
-                            </h1>
-                        </div> --}}
-
-                        {{-- <div class="flex flex-col gap-2 ">
-                                <label for="" class="text-gray-500 text-sm">Downpayment</label>
-                                <h1 class="font-semibold">PHP {{ $appointment->subscribeServices->service->init_payment }}
-                            </div> --}}
                     </div>
                     <div class="w-full flex flex-col gap-2">
                         <label for="" class="text-gray-500 text-sm">Patient</label>
@@ -96,7 +75,8 @@
 
                 <div class="flex flex-col gap-2 bg-white rounded-lg shadow-md p-4">
                     <h1 class="page-title">Payment Status</h1>
-                    <h1 class="text-lg font-bold"> <span class="font-thin">Referrence Number :</span>{{$appointment->receipt_number}}</h1>
+                    <h1 class="text-lg font-bold"> <span class="font-thin">Referrence Number
+                            :</span>{{ $appointment->receipt_number }}</h1>
                     <div class="w-full flex flex-col gap-2 p-2">
                         <div class="w-full h-full flex flex-col gap-2">
 
@@ -143,80 +123,80 @@
 
                 </div>
 
-            </div>
-            <div class="panel">
-                <h1 class="page-title">Services Availed</h1>
-                <div class="overflow-x-auto h-96">
+
+                <div class="flex flex-col gap-2 bg-white rounded-lg shadow-md p-4">
+                    <h1 class="page-title">Services Availed</h1>
+                    <div class="overflow-x-auto h-96">
 
 
 
 
-                    @foreach ($appointment->subscribeServices as $s_service)
-                        <table class="table">
-                            <!-- head -->
-                            <thead class="capitalize">
-                                <tr>
-                                    <th></th>
-                                    <th>Image</th>
-                                    <th>Name</th>
-                                    <th>description</th>
-                                    <th>Dowmpayment</th>
-                                    <th>Price</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- row 1 -->
-                                <tr class="">
-                                    <th>{{ $s_service->service->id }}</th>
-                                    <th><img src="{{ $s_service->service->image }}" alt="" srcset=""
-                                            class="object object-center h-10 w-10"></th>
-                                    <td>{{ $s_service->service->name }}</td>
-                                    <td>{!! $s_service->service->description !!}</td>
-                                    <td>&#8369 {{ $s_service->service->init_payment }}</td>
-                                    <td>&#8369 {{ $s_service->service->price }}</td>
+                        @foreach ($appointment->subscribeServices as $s_service)
+                            <table class="table">
+                                <!-- head -->
+                                <thead class="capitalize">
+                                    <tr>
+                                        <th></th>
+                                        <th>Image</th>
+                                        <th>Name</th>
+                                        <th>description</th>
+                                        <th>Dowmpayment</th>
+                                        <th>Price</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- row 1 -->
+                                    <tr class="">
+                                        <th>{{ $s_service->service->id }}</th>
+                                        <th><img src="{{ $s_service->service->image }}" alt=""
+                                                srcset="" class="object object-center h-10 w-10"></th>
+                                        <td>{{ $s_service->service->name }}</td>
+                                        <td>{!! $s_service->service->description !!}</td>
+                                        <td>&#8369 {{ $s_service->service->init_payment }}</td>
+                                        <td>&#8369 {{ $s_service->service->price }}</td>
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    @endforeach
+                                    </tr>
+                                </tbody>
+                            </table>
+                        @endforeach
+                    </div>
+
+                </div>
+
+
+                <div class="flex flex-col gap-2 bg-white rounded-lg shadow-md p-4">
+                    <h1 class="page-title">Result</h1>
+                    <div class="overflow-x-auto h-96">
+
+
+
+
+                        @foreach ($appointment->results as $result)
+                            <table class="table">
+                                <!-- head -->
+                                <thead class="capitalize">
+                                    <tr>
+                                        <th>Subject</th>
+                                        <th>description</th>
+                                        <th>File</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- row 1 -->
+                                    <tr class="">
+                                        <th>{{ $result->name }}</th>
+                                        <td>{!! $result->description !!}</td>
+                                        <td><a href="{{ $result->path }}" target="_blank"><i
+                                                    class="fi fi-rr-document"></i></a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        @endforeach
+                    </div>
+
                 </div>
 
             </div>
-
-
-            <div class="panel">
-                <h1 class="page-title">Result</h1>
-                <div class="overflow-x-auto h-96">
-
-
-
-
-                    @foreach ($appointment->results as $result)
-                        <table class="table">
-                            <!-- head -->
-                            <thead class="capitalize">
-                                <tr>
-                                    <th>Subject</th>
-                                    <th>description</th>
-                                    <th>File</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- row 1 -->
-                                <tr class="">
-                                    <th>{{ $result->name }}</th>
-                                    <td>{!! $result->description !!}</td>
-                                    <td><a href="{{ $result->path }}" target="_blank"><i
-                                                class="fi fi-rr-document"></i></a></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    @endforeach
-                </div>
-
-            </div>
-
-
             {{-- <div class="w-full flex flex-col gap-2">
                                         <h1 class="text-lg font-semibold w-full text-center capitalize">result</h1>
                                         <div class="overflow-x-auto">
