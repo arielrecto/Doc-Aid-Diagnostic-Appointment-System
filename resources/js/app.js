@@ -214,4 +214,70 @@ Alpine.data('payment', () => ({
     },
 
 }));
+
+
+Alpine.data('carouselCreate', () => ({
+    image : null,
+    fileUploadHandler(e){
+        const {files} = e.target;
+
+        const reader = new FileReader();
+
+        reader.onload = function(){
+            this.image = reader.result;
+        }.bind(this)
+
+        reader.readAsDataURL(files[0]);
+    }
+}));
+
+Alpine.data('carouselShow', () => ({
+    isActive : null,
+    init(){
+        this.$watch('isActive', () => {
+            console.log("watchers");
+            if(this.isActive === null) return
+           this.updateActiveStatus()
+        });
+    },
+    activeToggleInit(data){
+        console.log(data);
+        const toggle = document.getElementById('isActiveToggle');
+
+        if(data === 1){
+            toggle.setAttribute('checked', true);
+            toggle.value = true;
+        }else{
+            toggle.value = false
+        }
+    },
+    activeToggleAction(e){
+        const data = e.target.value === 'true' ? true : false;
+
+        this.isActive = !data
+    },
+    async updateActiveStatus(){
+        try {
+
+            console.log('update Function')
+            const config = {
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            }
+
+            const response = await axios.get(`?is_active=${this.isActive}`, config);
+
+            this.isActive = null;
+
+        } catch (error) {
+            console.log(error)
+        //     window.sweetAlert.fire({
+        //         title: "Something went Wrong",
+        //         text: `${error.response.data.message}`,
+        //         icon: "error",
+        //       })
+         }
+    }
+}));
 Alpine.start();

@@ -17,6 +17,8 @@ use App\Http\Controllers\Admin\PaymentController;
 use App\Http\Controllers\Patient\DashboardController as PatientDashboardController;
 use App\Http\Controllers\Employee\DashboardController as EmployeeDashboardController;
 use App\Http\Controllers\Employee\AppointmentController as EmployeeAppointmentController;
+use App\Http\Controllers\ImageCarouselController;
+use App\Models\ImageCarousel;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,7 +35,9 @@ Route::get('/', function () {
 
     $services = Service::get();
 
-    return view('welcome', compact(['services']));
+    $carousels = ImageCarousel::whereActive(true)->get();
+
+    return view('welcome', compact(['services', 'carousels']));
 });
 
 Route::get('/home', [HomeController::class, 'home'])->name('home');
@@ -56,9 +60,11 @@ Route::middleware('auth')->group(function () {
         Route::prefix('/services')->as('service.')->group(function (){
             Route::patch('/availability/{Service}', [ServiceController::class, 'availability'])->name('availability');
         });
+
         Route::resource('services', ServiceController::class);
         Route::resource('appointment', AdminAppointmentController::class);
         Route::resource('employee', EmployeeController::class);
+        Route::resource('imageCarousel', ImageCarouselController::class);
     });
     Route::middleware('role:patient')->prefix('patient')->as('patient.')->group(function(){
         Route::get('/dashboard', [PatientDashboardController::class, 'dashboard'])->name('dashboard');

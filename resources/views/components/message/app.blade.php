@@ -1,65 +1,100 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doc Aid Diagnostic & Medical Center</title>
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
 
     <style>
+        :root {
+            --base-100: #f1f5f9
+        }
 
+        body {
+            margin: 0px;
+            padding: 0px;
+            background-color: var(--base-100);
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .header {
+            width: 100%;
+            padding: 2rem;
+            display: flex;
+            justify-content: center;
+        }
+
+        .header-content {
+            width: 80%;
+            display: flex;
+            align-items: center;
+            gap: 4rem;
+        }
+
+        .header-logo {
+            width: 4rem;
+            height: 4rem;
+            border-radius: 100%;
+            object-position: center;
+        }
+
+        .header-title p {
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+            font-size: smaller;
+        }
+
+        .content {
+            width: 100vw;
+            text-align: justify;
+            white-space: pre-line;
+            padding: 4rem;
+        }
+
+        .main {
+            width: 100vw;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .subject-section {
+            width: 100%;
+            padding: 4px;
+            font-weight: bold;
+            font-size: small;
+        }
     </style>
 </head>
-<style>
-    .min-h-screen{
-        min-height: 100vh;
-    }
-    .w-full {
-        width: 100%;
-    }
 
-    .flex {
-        display: flex;
-    }
-
-    .flex-col {
-        flex-direction: column;
-    }
-
-    .gap-2 {
-        gap: 0.5rem;
-    }
-
-    .text-3xl {
-        font-size: 1.875rem;
-        line-height: 2.25rem;
-    }
-    .font-semibold {
-        font-weight: 600;
-    }
-    .p-2{
-        padding: 0.5rem;
-    }
-    .text-center {
-        text-align: center;
-    }
-    .bg-gray-100 {
-        background-color: #dcd6d6;
-    }
-</style>
-
-<body class="font-sans antialiased">
-    <div class="min-h-screen bg-gray-100">
-        <main>
-            {{ $slot }}
-        </main>
-
+<body>
+    <div class="main">
+        <div class="header">
+            <div class="header-content">
+                <img src="data:image/jpeg;base64,{{ base64_encode(file_get_contents(public_path('image/logo.png'))) }}"
+                    alt="" srcset="" class="header-logo">
+                <div class="header-title">
+                    <h1>Doc Aid Diagnostic and Medical Center</h1>
+                    <p>adawda adasda asdsad asd asd asda sada as d</p>
+                </div>
+            </div>
+        </div>
+        <div class="content">
+            @if (isset($subject))
+                <div class="subject-section">
+                    <h1 class="subject-content">
+                        <span>Subject : </span> {{ $subject }}
+                    </h1>
+                </div>
+            @endif
+            <p>
+                {{ $slot }}
+            </p>
+        </div>
     </div>
-</body>
 
-<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
-@stack('js')
+</body>
 
 </html>

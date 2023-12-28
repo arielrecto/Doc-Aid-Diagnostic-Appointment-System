@@ -19,6 +19,10 @@
                 'route' => 'admin.employee.index',
                 'icon' => 'fi fi-rr-users-alt pt-1',
             ],
+            'Carousel' => [
+                'route' => 'admin.imageCarousel.index',
+                'icon' => 'fi fi-rr-copy-image pt-1',
+            ],
         ];
     @endphp
 

@@ -1,6 +1,6 @@
 @props(['services'])
 
-<div class="w-full min-h-screen flex justify-center gap-2 bg-white" data-aos="fade-right">
+<div class="w-full min-h-screen flex justify-center gap-2 bg-white" data-aos="fade-right" id="services">
 
     <div class="flex flex-col w-5/6">
 
@@ -16,7 +16,7 @@
                     </div>
                     {{-- <p class="lg:w-1/2 w-full leading-relaxed text-gray-500">Whatever cardigan tote bag tumblr hexagon brooklyn asymmetrical gentrify, subway tile poke farm-to-table. Franzen you probably haven't heard of them man bun deep jianbing selfies heirloom prism food truck ugh squid celiac humblebrag.</p> --}}
                 </div>
-                <div class="flex flex-wrap -m-4 h-96 max-h-lg overflow-y-auto">
+                <div class="flex flex-wrap -m-4 h-96 max-h-lg overflow-y-hidden">
                     @foreach ($services as $service)
                         <div class="xl:w-1/4 md:w-1/2 p-4">
                             <div class="bg-base-100 p-6 rounded-lg">

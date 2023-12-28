@@ -134,32 +134,34 @@
                         <div class="w-full flex flex-col gap-2">
                             <div class="overflow-x-auto">
                                 @forelse ($medicalHistory as $medical)
-                                <div class="w-full flex flex-col gap-2">
-                                    <div class="flex gap-2 text-sm font-semibold border-y-2 p-2 justify-between">
-                                        <h1>Appointment - <span class="">{{ $medical->date }}</span></h1>
-                                        <h1>Patient: <span>{{ $medical->patient }}</span></h1>
-                                    </div>
-                                    <h1 class="capitalize font-semibold">
-                                        result
-                                    </h1>
-                                    <div class="grid grid-flow-row grid-cols-3 gap-2 normal-case font-semibold">
-                                        <h1 class="text-center border-2">subject</h1>
-                                        <h1 class="text-center border-2">Description</h1>
-                                        <h1 class="text-center border-2">file</h1>
-                                    </div>
-                                    @foreach ($medical->results()->get() as $result)
-                                        <div class="grid grid-flow-row grid-cols-3 gap-2 normal-case">
-                                            <h1 class="text-center border-2">{{ $result->name }}</h1>
-                                            <h1 class="text-center border-2">{!! $result->description !!}</h1>
-                                            <a href="{{ $result->path }}" target="_blank"
-                                                class="text-center border-2"><i
-                                                    class="fi fi-rr-document pt-1"></i></a>
-                                    @endforeach
+                                    <div class="w-full flex flex-col gap-2">
+                                        <div class="flex gap-2 text-sm font-semibold border-y-2 p-2 justify-between">
+                                            <h1>Appointment - <span class="">{{ $medical->date }}</span></h1>
+                                            <h1>Patient: <span>{{ $medical->patient }}</span></h1>
+                                        </div>
+                                        <h1 class="capitalize font-semibold">
+                                            result
+                                        </h1>
+                                        <div class="grid grid-flow-row grid-cols-3 gap-2 normal-case font-semibold">
+                                            <h1 class="text-center border-2">subject</h1>
+                                            <h1 class="text-center border-2">Description</h1>
+                                            <h1 class="text-center border-2">file</h1>
+                                        </div>
+                                        @foreach ($medical->results()->get() as $result)
+                                            <div class="grid grid-flow-row grid-cols-3 gap-2 normal-case">
+                                                <h1 class="text-center border-2">{{ $result->name }}</h1>
+                                                <h1 class="text-center border-2 truncate">{!! $result->description !!}
+                                                </h1>
+                                                <a href="{{ $result->path }}" target="_blank"
+                                                    class="text-center border-2"><i
+                                                        class="fi fi-rr-document pt-1"></i></a>
+                                            </div>
+                                        @endforeach
 
-                                </div>
-                            @empty
-                                <h1 class="text-center">No Medical History</h1>
-                            @endforelse
+                                    </div>
+                                @empty
+                                    <h1 class="text-center">No Medical History</h1>
+                                @endforelse
 
                             </div>
                         </div>

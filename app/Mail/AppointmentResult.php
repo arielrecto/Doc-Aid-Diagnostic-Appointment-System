@@ -42,7 +42,7 @@ class AppointmentResult extends Mailable
     {
         return new Content(
             view: 'emails.appointmentResult',
-            with: ['data' => $this->data] 
+            with: ['data' => $this->data]
         );
     }
 
@@ -54,7 +54,7 @@ class AppointmentResult extends Mailable
     public function attachments(): array
     {
         return [
-          
+
         ];
     }
 }

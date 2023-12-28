@@ -174,12 +174,9 @@
                             <div class="flex flex-col gap-2">
                                 <label for="" class="capitalize text-sm text-gray-500">Contact No. <span>ex :
                                         09123456789 </span></label>
-                                <input type="text" name="contact_no" class="input input-accent w-full"
+                                <input type="text" name="contact_no" class="input input-accent input-sm w-full"
                                     oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
                                     maxlength="11" placeholder="Ex: 09123456789">
-                                @if ($errors->has('contact_no'))
-                                    <p class="text-xs text-error">{{ $errors->first('contact_no') }}</p>
-                                @endif
                             </div>
                         </div>
                         <div class="flex w-full p-5 justify-end">

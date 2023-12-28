@@ -1,4 +1,4 @@
-<div class="w-full min-h-screen flex justify-center bg-white py-5">
+<div class="w-full min-h-screen flex justify-center bg-white py-5" id="aboutus">
     <div class="w-5/6 h-full flex flex-col">
 
         <h1 class="text-4xl font-bold text-primary" data-aos="fade-right">
