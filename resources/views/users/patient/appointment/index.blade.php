@@ -1,7 +1,7 @@
 <x-app-layout>
     <div class="main-screen">
         <x-patient-siderbar />
-        <div class="main-content">
+        <div class="main-content overflow-y-auto">
             <x-patient.navbar />
             <div class="panel">
                 <div class="page-title">
@@ -99,6 +99,12 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="panel" x-data="calendar">
+                <div id="calendar" x-init="initializeCalendar({{$appointmentsData}})">
+
+                </div>
+
             </div>
         </div>
     </div>

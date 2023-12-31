@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Models\Service;
 use App\Models\TimeSlot;
-use App\Utilities\ImageUploader;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use App\Utilities\ImageUploader;
 use PhpParser\Node\Expr\FuncCall;
+use App\Http\Controllers\Controller;
+use App\Models\Day;
+use App\Models\ServiceAssignment;
 
 class ServiceController extends Controller
 {
@@ -19,7 +22,7 @@ class ServiceController extends Controller
 
         $query = $request->query();
 
-        $builder = Service::select('*');
+        $builder = Service::whereAvailability('ACTIVE');
 
         if ($query['availability'] ?? false) {
             $builder = Service::where(function ($q) use ($query) {
@@ -28,7 +31,7 @@ class ServiceController extends Controller
         }
 
         $services = $builder->paginate(4);
-        $total = Service::total();
+        $total = Service::whereAvailability('ACTIVE')->count();
         $totalInactiveServices = Service::totalBaseOnAvailability('INACTIVE');
 
         return view('users.admin.Services.index', compact(['services', 'total', 'totalInactiveServices']));
@@ -39,7 +42,13 @@ class ServiceController extends Controller
      */
     public function create()
     {
-        return view('users.admin.Services.create');
+
+
+        $days = Day::get()->toJson();
+
+
+
+        return view('users.admin.Services.create', compact(['days']));
     }
 
     /**
@@ -47,6 +56,8 @@ class ServiceController extends Controller
      */
     public function store(Request $request)
     {
+        $days = json_decode($request->service_days);
+
         $data = $request->validate([
             'image' => 'required',
             'name' => 'required',
@@ -55,8 +66,10 @@ class ServiceController extends Controller
             'initPayment' => 'required',
             'session_time' => 'required',
             'extension_time' => 'required',
-            'extension_price' => 'required'
+            'extension_price' => 'required',
+            'service_days' => 'required'
         ]);
+
         $imageUploader = new ImageUploader();
         $imageUploader->handler($request->image, '/image/services/', 'SRVCS');
 
@@ -76,6 +89,13 @@ class ServiceController extends Controller
             'slots' => $request->timeSlot,
             'service_id' => $service->id
         ]);
+
+
+
+        collect($days)->map(function($day) use ($service){
+            $day_data = Day::find($day->id);
+           $day_data->services()->attach($service);
+        });
 
 
         return back()->with(['message' => 'Medical Service Added Successfully']);
@@ -141,7 +161,8 @@ class ServiceController extends Controller
 
         return redirect(route('admin.services.index'));
     }
-    public function availability(Request $request, $id) {
+    public function availability(Request $request, $id)
+    {
 
         $service = Service::find($id);
 

@@ -17,7 +17,7 @@
                 </div>
             @endif
 
-            <div class="flex flex-col gap-2 p-5 w-full h-full relative panel">
+            <div class="flex flex-col gap-2 p-5 w-full h-full relative panel overflow-y-auto">
                 <div class="flex h-full w-full gap-2">
                     <div
                         class="flex-grow w-full h-full rounded-lg shadow-sm hover:shadow-lg

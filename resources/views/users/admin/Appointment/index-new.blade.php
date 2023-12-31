@@ -20,7 +20,7 @@
                 </div>
             @endif
 
-            <div class="panel">
+            <div class="panel overflow-y-auto">
                 <h1 class="page-title">Appointments</h1>
                 <div class="flex flex-col gap-2 py-5 w-full h-full">
                     <x-admin.appointment.header-selection :total="$total" />
@@ -100,6 +100,13 @@
                                     </tr>
                                 </tfoot>
                             </table>
+                        </div>
+                    </div>
+
+
+                    <div class="panel" x-data="calendar(`{{Auth::user()->roles()->first()->name}}`)" x-init="initializeCalendar({{$calendarAppointment}})">
+                        <div id="calendar">
+
                         </div>
                     </div>
                 </div>

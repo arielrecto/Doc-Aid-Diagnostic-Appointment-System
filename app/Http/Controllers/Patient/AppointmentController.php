@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Patient;
 use App\Enums\AppointmentStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Appointment;
+use App\Models\Day;
 use App\Models\Family;
 use App\Models\Payment;
 use App\Models\Service;
+use App\Models\ServiceAssignment;
 use App\Models\SubscribeService;
 use App\Models\TimeSlot;
 use App\Utilities\ImageUploader;
@@ -22,9 +24,16 @@ class AppointmentController extends Controller
      */
     public function index()
     {
-        $appointments = Appointment::with('subscribeServices.service')->where('status', '!=', AppointmentStatus::DONE->value)->get();
 
-        return view('users.patient.appointment.index', compact(['appointments']));
+        $user = Auth::user();
+
+        $appointments = Appointment::with('subscribeServices.service')
+        ->where('status', '!=', AppointmentStatus::DONE->value)
+        ->whereId($user->id)->get();
+
+        $appointmentsData = Appointment::with('subscribeServices.service')->whereId($user->id)->get()->toJson();
+
+        return view('users.patient.appointment.index', compact(['appointments', 'appointmentsData']));
     }
 
     /**
@@ -33,7 +42,15 @@ class AppointmentController extends Controller
     public function create()
     {
 
-        $services = Service::with('timeSlot')->get()->toJSON();
+        // $services = Service::with('timeSlot')->get()->toJSON();
+
+        $today = Carbon::now()->timezone('GMT+8')->format('l');
+
+
+        $day = Day::where('name', $today)->first();
+
+        $services = $day->services()->with(['timeSlot'])->get();
+
         // $timeSlot = $this->timeIntervalByHour('8:00', '4:00');
         $familyMembers = Family::authUserFamilyMember();
 

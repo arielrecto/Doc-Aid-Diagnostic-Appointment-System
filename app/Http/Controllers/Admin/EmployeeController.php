@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Profile;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 
 class EmployeeController extends Controller
@@ -32,20 +34,52 @@ class EmployeeController extends Controller
      */
     public function store(Request $request)
     {
-      $data = $request->validate([
-        'name' => 'required',
-        'email' => 'required',
-        'password' => 'required|confirmed'
-       ]);
+        $data = $request->validate([
+            // 'name' => 'required',
+            'email' => 'required',
+            'password' => 'required|confirmed',
+            'last_name' => 'required',
+            'first_name' => 'required',
+            'gender' => 'required',
+            'birthdate' => 'required',
+            'age' => 'required',
+            'street' => 'required',
+            'barangay' => 'required',
+            'municipality' => 'required',
+            'region' => 'required',
+            'contact_no' => 'required',
+            'zip_code' => 'required'
+        ]);
 
-       $user = User::create($data);
+        $user = User::create([
+            'name' => $request->last_name . ' ,' . $request->first_name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password)
+        ]);
 
-       $role = Role::where('name', 'employee')->first();
+        Profile::create([
+            'avatar' => asset('image/logo.jpg'),
+            'full_name' => $request->last_name . ' ,' . $request->first_name,
+            'last_name' => $request->last_name,
+            'first_name' => $request->first_name,
+            'gender' => $request->gender,
+            'birthdate' => $request->birthdate,
+            'age' => $request->age,
+            'street' => $request->street,
+            'barangay' => $request->barangay,
+            'municipality' => $request->municipality,
+            'region' => $request->region,
+            'contact_no' => $request->contact_no,
+            'zip_code' => $request->zip_code,
+            'user_id' => $user->id
+        ]);
 
-       $user->assignRole($role);
+        $role = Role::where('name', 'employee')->first();
+
+        $user->assignRole($role);
 
 
-       return back()->with(['message' => 'Employee Account Created !']);
+        return back()->with(['message' => 'Employee Account Created !']);
     }
 
     /**

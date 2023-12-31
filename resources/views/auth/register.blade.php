@@ -26,6 +26,12 @@
                             required autocomplete="new-password" />
 
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
+            <div class="flex flex-col gap-2">
+                <p class="text-xs text-gray-500">At least one alphabetical character</p>
+                <p class="text-xs text-gray-500">At least one digit</p>
+                <p class="text-xs text-gray-500">At least one special character </p>
+                <p class="text-xs text-gray-500">A minimum length of 8 characters</p>
+            </div>
         </div>
 
         <!-- Confirm Password -->

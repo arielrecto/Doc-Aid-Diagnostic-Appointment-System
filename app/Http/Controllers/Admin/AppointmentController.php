@@ -24,7 +24,8 @@ class AppointmentController extends Controller
         $query = $request->query('filter');
         $appointments = Appointment::get();
         $total = $this->appointment->total();
-        return view('users.admin.Appointment.index-new', compact(['appointments', 'total']));
+        $calendarAppointment  = json_encode($this->appointment->get());
+        return view('users.admin.Appointment.index-new', compact(['appointments', 'total', 'calendarAppointment']));
     }
 
     /**

@@ -2,23 +2,23 @@
 
 <div class="w-full min-h-screen flex justify-center gap-2 bg-white" data-aos="fade-right" id="services">
 
-    <div class="flex flex-col w-5/6">
+    <div class="flex flex-col w-full mt-24 md:w-5/6">
 
         <section class="text-gray-600 body-font">
-            <div class="container px-5 py-24 mx-auto">
+            <div class="container md:px-5 py-18 md:py-24 mx-auto">
                 <div class="flex flex-wrap w-full mb-20">
                     <div class="lg:w-1/2 w-full mb-6 lg:mb-0">
-                        <h1 class="sm:text-3xl text-2xl font-medium title-font mb-2 text-gray-900 flex flex-col gap-2">
+                        <h1 class="text-lg lg:text-3xl md:text-2xl font-medium title-font mb-2 text-gray-900 flex flex-col gap-2">
                             <span class="text-primary font-bold">Doc Aid Medial & Diagnostics</span>
-                            <span class="text-xl border-b-2 border-primary">Services Offered</span>
+                            <span class="text-sm md:text-xl border-b-2 border-primary">Services Offered</span>
                         </h1>
 
                     </div>
                     {{-- <p class="lg:w-1/2 w-full leading-relaxed text-gray-500">Whatever cardigan tote bag tumblr hexagon brooklyn asymmetrical gentrify, subway tile poke farm-to-table. Franzen you probably haven't heard of them man bun deep jianbing selfies heirloom prism food truck ugh squid celiac humblebrag.</p> --}}
                 </div>
-                <div class="flex flex-wrap -m-4 h-96 max-h-lg overflow-y-hidden">
+                <div class="flex flex-wrap -m-4 h-96 max-h-lg overflow-x-hidden md:overflow-y-hidden">
                     @foreach ($services as $service)
-                        <div class="xl:w-1/4 md:w-1/2 p-4">
+                        <div class="xl:w-1/4 md:w-1/2 p-4 w-full">
                             <div class="bg-base-100 p-6 rounded-lg">
                                 <img class="h-40 rounded w-full object-cover object-center mb-6"
                                     src="{{$service->image}}" alt="content">
@@ -37,8 +37,8 @@
 
 
 <div class="w-full min-h-screen flex justify-center gap-2">
-    <div class="w-5/6 flex flex-col gap-2 py-5">
-        <h1 class="text-4xl font-bold text-primary capitalize" data-aos="fade-left"> your health our passion
+    <div class="w-full md:w-5/6 flex flex-col gap-2 py-5">
+        <h1 class="text-lg md:text-2xl lg:text-4xl font-bold text-primary capitalize" data-aos="fade-left"> your health our passion
         </h1>
         {{-- <div class="card lg:card-side shadow-xl bg-white">
             <figure><img src="https://www.liveandinvestoverseas.com/wp-content/uploads/2019/10/best-health-care-overseas.jpg" alt="Album"/></figure>

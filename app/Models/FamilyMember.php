@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 
 class FamilyMember extends Model
 {
-    use HasFactory;
+    use HasFactory, Notifiable;
 
     protected $fillable = [
         'image',
@@ -15,6 +16,7 @@ class FamilyMember extends Model
         'last_name',
         'first_name',
         'middle_name',
+        'birthdate',
         'sex',
         'contact_no',
         'email',

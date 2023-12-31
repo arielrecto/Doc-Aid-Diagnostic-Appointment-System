@@ -64,4 +64,7 @@ class Service extends Model
     public function timeSlot(){
         return $this->hasMany(TimeSlot::class);
     }
+    public function days(){
+        return $this->belongsToMany(Day::class);
+    }
 }

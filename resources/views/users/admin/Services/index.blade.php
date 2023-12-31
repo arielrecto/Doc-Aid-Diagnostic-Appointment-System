@@ -16,7 +16,7 @@
                             <div class="header-selection bg-accent">
                                 <div class="header-title">
                                     <i class="fi fi-rr-person-dolly"></i>
-                                    Total Services
+                                   Services
                                 </div>
 
                                 <span class="text-6xl font-bold text-white truncate max-w-[250px]">
@@ -27,7 +27,7 @@
                         <a href="{{ route('admin.services.index', ['availability' => 'INACTIVE']) }}">
                             <div class="header-selection">
                                 <span class="header-title">
-                                    total of not availble services
+                                   Archive
                                 </span>
                                 <span class="text-6xl font-bold text-white truncate max-w-[250px]">
                                     {{ $totalInactiveServices }}
@@ -57,7 +57,7 @@
                                         <th>Description</th>
                                         <th>Price</th>
                                         <th>Session Time</th>
-                                        <th>Status</th>
+                                        {{-- <th>Status</th> --}}
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -71,7 +71,7 @@
                                             <td>{!! $service->description !!}</td>
                                             <td>{{ $service->price }}</td>
                                             <td>{{ $service->session_time }} min</td>
-                                            <td>{{ $service->availability->name }}</td>
+                                            {{-- <td>{{ $service->availability->name }}</td> --}}
                                             <td>
                                                 <a href="{{route('admin.services.show', ['service' => $service->id])}}">
                                                     <i class="fi fi-rr-eye hover:font-bold text-primary"></i>

@@ -1,22 +1,24 @@
 <div class="w-full p-4 flex bg-primary rounded-lg justify-between">
-    <div class="flex gap-2">
-        <img src="{{ asset('image/logo.png') }}" alt="" srcset=""
-            class="h-10 w-10 rounded-full object object-center">
-        <p class="capitalize text-base text-center font-semibold flex items-center text-base-100 gap-2">
-            <span class="uppercase">Doc aid </span> <span>diagnostic Center & medical clinic</span>
+    <div class="flex flex-col justify-center gap-2 md:flex-row lg:gap-2">
+        <div class="w-full md:w-10 md:h-10 flex justify-center">
+            <img src="{{ asset('image/logo.png') }}" alt="" srcset=""
+            class="h-5 w-5 md:h-full md:w-full rounded-full object object-center">
+        </div>
+        <p class="capitalize text-xs lg:text-base text-center font-semibold flex flex-col md:flex-row md:items-center text-base-100 gap-2">
+            <span class="uppercase">Doc aid </span> <span class="hidden md:flex">diagnostic Center & medical clinic</span>
         </p>
     </div>
     <div class="flex gap-2 items-center">
         <a href="#services">
             <h1
-                class="text-base-100 font-thin capitalize  text-sm hover:font-bold duration-700 px-2 border-base-100">
+                class="text-base-100 font-thin capitalize text-xs text-center md:text-sm hover:font-bold duration-700 px-2 border-base-100">
                 Services
             </h1>
         </a>
         <a href="#aboutus">
             <h1
-                class="text-base-100 font-thin capitalize  text-sm hover:font-bold duration-700 px-2 border-base-100">
-                About Us
+                class="text-base-100 font-thin capitalize text-xs text-center md:text-sm hover:font-bold duration-700 px-2 border-base-100">
+                About
             </h1>
         </a>
 
@@ -31,11 +33,11 @@
     </div>
     <div class="flex items-center gap-2">
         <a href="{{ route('login') }}"
-            class="text-base-100 font-thin capitalize  text-sm hover:font-bold duration-700 px-2">
-            log in
+            class="text-base-100 font-thin capitalize text-xs md:text-sm hover:font-bold duration-700 px-2">
+            login
         </a>
-        <a href="{{ route('register') }}" class="btn btn-sm btn-secondary font-bold text-base-100 capitalize">
-            Sign up Now
+        <a href="{{ route('register') }}" class="btn btn-xs md:btn-sm btn-secondary font-bold text-base-100 capitalize">
+            Signup
         </a>
     </div>
 </div>

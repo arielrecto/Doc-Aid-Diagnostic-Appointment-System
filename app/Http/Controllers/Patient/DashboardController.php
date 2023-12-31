@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Appointment;
 use App\Models\Service;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
@@ -15,12 +16,16 @@ class DashboardController extends Controller
     }
     public function dashboard()
     {
-        $services = Service::get();
-        $appointments = Appointment::with('subscribeServices.service')->get()->toJson();
+
+        $user = Auth::user();
+
+        // $services = Service::get();
+        $appointments = Appointment::with('subscribeServices.service')->whereId($user->id)->get()->toJson();
         $timeInterval = $this->timeIntervalByHour('8:00', '4:00');
         $todayAppointments = $this->appointment->today();
+        $totalAppointments = $this->appointment->whereId($user->id)->count();
 
-        return view('users.patient.dashboard', compact(['services', 'timeInterval', 'todayAppointments', 'appointments']));
+        return view('users.patient.dashboard', compact(['timeInterval', 'todayAppointments', 'appointments', 'totalAppointments']));
     }
     public function timeIntervalByHour($start, $end)
     {

@@ -3,7 +3,7 @@
         <x-patient-siderbar/>
         <div class="main-content">
             <x-patient.navbar />
-            <div class="w-full flex-grow flex flex-col gap-2 h-full panel">
+            <div class="w-full flex-grow flex flex-col gap-2 h-full panel overflow-y-auto">
                 <div class="flex flex-col gap-2 p-5 w-full h-full relative">
                    @if (Session::has('message'))
                    <div class="alert alert-success">
@@ -59,6 +59,14 @@
                                 </div>
                                 <div class="grid grid-cols-3 grid-flow-row gap-2">
                                     <div class="flex flex-col gap-2 w-full">
+                                        <label for="" class="capitalize text-sm text-gray-500">birthdate</label>
+                                        <input type="date" name="birthdate" id=""
+                                            class="input input-accent w-full" placeholder="Contact #">
+                                        @if ($errors->has('birthdate'))
+                                            <p class="w-full text-xs text-error">The Contact Number is required</p>
+                                        @endif
+                                    </div>
+                                    <div class="flex flex-col gap-2 w-full">
                                         <label for="" class="capitalize text-sm text-gray-500">Contact #</label>
                                         <input type="text" name="contact_no" id=""
                                             class="input input-accent w-full" placeholder="Contact #">
@@ -79,12 +87,31 @@
                                     </div>
                                     <div class="flex flex-col gap-2 w-full">
                                         <label for=""
+                                        class="capitalize text-sm text-gray-500">Relationship</label>
+                                        <select class="select select-accent w-full max-w-xs"  name="relationship">
+                                            <option disabled selected>Relationship ? </option>
+                                            <option value="Grandmother">Grandmother</option>
+                                            <option value="Husband">Husband</option>
+                                            <option value="Mother">Mother</option>
+                                            <option value="Grandparent">Grandparent</option>
+                                            <option value="Sister">Sister</option>
+                                            <option value="Aunt">Aunt</option>
+                                            <option value="Cousins">Cousins</option>
+                                            <option value="Brother">Brother</option>
+                                            <option value="Father">Father</option>
+
+                                          </select>
+                                          @if ($errors->has('relationship'))
+                                            <p class="w-full text-xs text-error">{{ $errors->first('relationship') }}</p>
+                                        @endif
+
+                                        {{-- <label for=""
                                             class="capitalize text-sm text-gray-500">Relationship</label>
                                         <input type="text" name="relationship" id=""
                                             class="input input-accent w-full" placeholder="Relationship">
                                         @if ($errors->has('relationship'))
                                             <p class="w-full text-xs text-error">{{ $errors->first('relationship') }}</p>
-                                        @endif
+                                        @endif --}}
                                     </div>
                                 </div>
                                 <div class="w-full p-5 flex justify-end">

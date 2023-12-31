@@ -38,14 +38,14 @@
                         <button class="btn-generic">Edit</button>
                     </a>
 
-                    <form action="{{ route('admin.services.destroy', ['service' => $service->id]) }}" method="POST">
+                    {{-- <form action="{{ route('admin.services.destroy', ['service' => $service->id]) }}" method="POST">
 
                         @csrf
                         @method('DELETE')
 
                         <button
                         class="btn btn-sm btn-error capitalize border border-error shadow shadow-error font-bold">Delete</button>
-                    </form>
+                    </form> --}}
 
 
                     @if ($service->availability->name == 'INACTIVE')
@@ -55,7 +55,7 @@
                             @method('patch')
                             <input type="hidden" name="availability" value="ACTIVE">
                             <button
-                                class="btn btn-sm btn-accent capitalize border border-accent shadow shadow-accent font-bold">Enable</button>
+                                class="btn btn-sm btn-accent capitalize border border-accent shadow shadow-accent font-bold">Restor</button>
 
                         @else
                             <form action="{{ route('admin.service.availability', ['Service' => $service->id]) }}" method="POST">
@@ -64,7 +64,7 @@
                                 @method('patch')
                                 <input type="hidden" name="availability" value="INACTIVE">
                                 <button
-                                    class="btn btn-sm btn-accent capitalize border border-accent shadow shadow-accent font-bold">Disable</button>
+                                    class="btn btn-sm btn-accent capitalize border border-accent shadow shadow-accent font-bold">Archive</button>
                             </form>
                     @endif
                 </div>

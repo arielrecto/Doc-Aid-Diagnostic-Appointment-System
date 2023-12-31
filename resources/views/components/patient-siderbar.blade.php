@@ -93,7 +93,11 @@
 <div class="w-4/5 sm:w-1/2 lg:w-1/3 xl:w-1/6 overflow-hidden h-full pl-8 bg-base-100 absolute z-50 lg:static shrink-0">
     <div class="flex p-4 items-center gap-4">
         <div class="w-16 h-16 rounded-full bg-white border shadow">
-            <img src="{{ asset('image/logo-transparent.png') }}" class="object-fill">
+            @if (Auth::user()->profile !== null)
+                <img src="{{ Auth::user()->profile->avatar }}" class="object object-top h-16 w-16 object-cover">
+            @else
+                <img src="{{ asset('image/logo-transparent.png') }}" class="object object-center h-16 w-16">
+            @endif
         </div>
         <span class="font-bold text-2xl">{{ Auth::user()->name }}</span>
     </div>
@@ -110,10 +114,10 @@
                     <p>{{ $name }}</p>
                 </a>
             @endforeach
-            <a href="{{route('patient.profile.show', ['profile' => Auth::user()->profile->id ?? 0])}}"
+            <a href="{{ route('patient.profile.show', ['profile' => Auth::user()->profile->id ?? 0]) }}"
                 class="nav-link
             {{ Route::is('patient.profile.show') || Route::is('patient.profile.create') ? 'font-bold text-primary ' : 'hover:text-accent' }} ">
-            <i class="ri-profile-line pt-1"></i>
+                <i class="ri-profile-line pt-1"></i>
                 <p>Profile</p>
             </a>
         </ul>

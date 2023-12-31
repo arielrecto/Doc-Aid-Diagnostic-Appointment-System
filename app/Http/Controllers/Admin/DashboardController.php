@@ -25,7 +25,7 @@ class DashboardController extends Controller
         $year = now()->format('Y');
 
         $sales = $this->appointment->totalSaleInYear($year);
-        $totalAppointmentsInYear = $this->appointment->whereYear('date', $year)->count();
+        $totalPendingAppointment = $this->appointment->whereStatus(AppointmentStatus::PENDING->value)->count();
         $appointments = $this->appointment->paginate(30);
         $calendarAppointment  = json_encode($this->appointment->get());
         $totalServices = $this->service->count();
@@ -34,7 +34,7 @@ class DashboardController extends Controller
         return view('users.admin.dashboard-new', compact([
             'appointments',
             'sales',
-            'totalAppointmentsInYear',
+            'totalPendingAppointment',
             'year',
             'totalServices',
             'monthlyTotal',

@@ -45,7 +45,8 @@ class FamilyMemberController extends Controller
             'sex' => 'required',
             'email' => 'required',
             'relationship' => 'required',
-            'contact_no' => 'required'
+            'contact_no' => 'required',
+            'birthdate' => 'required'
        ]);
 
        $imageName = 'famIMG-' . uniqid() . '.' . $request->image->extension();
@@ -60,12 +61,13 @@ class FamilyMemberController extends Controller
         'full_name' => $request->last_name . ', ' . $request->first_name,
         'last_name' => $request->last_name,
         'first_name' => $request->first_name,
-        'middle_name' => $request->middle_name === null ? 'N\A' : $request->middle,
+        'middle_name' => $request->middle_name,
         'sex' => $request->sex,
         'relationship' => $request->relationship,
         'contact_no' => $request->contact_no,
         'email' => $request->email,
-        'family_id' => $user->family->id
+        'family_id' => $user->family->id,
+        'birthdate' => $request->birthdate
        ]);
 
 

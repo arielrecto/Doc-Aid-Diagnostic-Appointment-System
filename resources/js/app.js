@@ -70,8 +70,8 @@ Alpine.data("phLocation", () => ({
             `https://psgc.gitlab.io/api/regions/${code}/districts/`
         );
         return {
-            cities : cities.data,
-            districts : districts.data
+            cities: cities.data,
+            districts: districts.data,
         };
     },
     async getData() {
@@ -82,7 +82,7 @@ Alpine.data("phLocation", () => ({
     async fillSelectionCityByRegion(e) {
         const regionName = e.target.value;
 
-        const region = this.regions.find(item => item.name === regionName)
+        const region = this.regions.find((item) => item.name === regionName);
 
         const data = await this.fetchByRegion(region.code);
         console.log(data);
@@ -92,46 +92,42 @@ Alpine.data("phLocation", () => ({
     async fillSelectionBarangayByCity(e) {
         const cityName = e.target.value;
 
-        const city = this.cities.find(item => item.name === cityName)
+        const city = this.cities.find((item) => item.name === cityName);
 
-        const _barangays = await axios.get(`https://psgc.gitlab.io/api/cities/${city.code}/barangays/`)
-        this.barangays = [..._barangays.data]
-    }
+        const _barangays = await axios.get(
+            `https://psgc.gitlab.io/api/cities/${city.code}/barangays/`
+        );
+        this.barangays = [..._barangays.data];
+    },
 }));
 
-
-Alpine.data('result', () => ({
+Alpine.data("result", () => ({
     toggle: false,
     description: null,
     cleanupUI: null,
 
     init() {
-        const button = document.getElementById('result-mail-modal-trigger');
-        const tooltip = document.getElementById('result-mail-modal');
+        const button = document.getElementById("result-mail-modal-trigger");
+        const tooltip = document.getElementById("result-mail-modal");
 
-        this.cleanupUI = window.FloatingUI.autoUpdate(button, tooltip,
-            () => this.spawnModal(button, tooltip))
+        this.cleanupUI = window.FloatingUI.autoUpdate(button, tooltip, () =>
+            this.spawnModal(button, tooltip)
+        );
 
-        this.$watch('toggle', () => {
+        this.$watch("toggle", () => {
             this.spawnModal(button, tooltip);
         });
     },
 
     spawnModal(button, tooltip) {
-        const {
-            computePosition,
-            autoPlacement
-        } = window.FloatingUI;
+        const { computePosition, autoPlacement } = window.FloatingUI;
 
         computePosition(button, tooltip, {
-            placement: 'bottom-end',
+            placement: "bottom-end",
             // middleware: [
             //     autoPlacement()
             // ],
-        }).then(({
-            x,
-            y
-        }) => {
+        }).then(({ x, y }) => {
             Object.assign(tooltip.style, {
                 left: `${x}px`,
                 top: `${y}px`,
@@ -140,56 +136,51 @@ Alpine.data('result', () => ({
     },
 
     openToggle() {
-        this.toggle = !this.toggle
+        this.toggle = !this.toggle;
     },
 
     quillEditor() {
-        const editor = document.getElementById('editor');
+        const editor = document.getElementById("editor");
         const quill = new Quill(editor, {
-            theme: 'snow'
-        })
+            theme: "snow",
+        });
     },
 
     content() {
-        const desription = document.getElementById('editor').querySelector(".ql-editor").innerHTML;
+        const desription = document
+            .getElementById("editor")
+            .querySelector(".ql-editor").innerHTML;
         this.description = desription;
     },
-
 }));
 
-
-Alpine.data('payment', () => ({
+Alpine.data("payment", () => ({
     toggle: false,
     description: null,
     cleanupUI: null,
 
     init() {
-        const button = document.getElementById('payment-modal-trigger');
-        const tooltip = document.getElementById('payment-modal');
+        const button = document.getElementById("payment-modal-trigger");
+        const tooltip = document.getElementById("payment-modal");
 
-        this.cleanupUI = window.FloatingUI.autoUpdate(button, tooltip,
-            () => this.spawnModal(button, tooltip))
+        this.cleanupUI = window.FloatingUI.autoUpdate(button, tooltip, () =>
+            this.spawnModal(button, tooltip)
+        );
 
-        this.$watch('toggle', () => {
+        this.$watch("toggle", () => {
             this.spawnModal(button, tooltip);
         });
     },
 
     spawnModal(button, tooltip) {
-        const {
-            computePosition,
-            autoPlacement
-        } = window.FloatingUI;
+        const { computePosition, autoPlacement } = window.FloatingUI;
 
         computePosition(button, tooltip, {
-            placement: 'bottom-end',
+            placement: "bottom-end",
             // middleware: [
             //     autoPlacement()
             // ],
-        }).then(({
-            x,
-            y
-        }) => {
+        }).then(({ x, y }) => {
             Object.assign(tooltip.style, {
                 left: `${x}px`,
                 top: `${y}px`,
@@ -198,86 +189,133 @@ Alpine.data('payment', () => ({
     },
 
     openToggle() {
-        this.toggle = !this.toggle
+        this.toggle = !this.toggle;
     },
 
     quillEditor() {
-        const editor = document.getElementById('editor');
+        const editor = document.getElementById("editor");
         const quill = new Quill(editor, {
-            theme: 'snow'
-        })
+            theme: "snow",
+        });
     },
 
     content() {
-        const desription = document.getElementById('editor').querySelector(".ql-editor").innerHTML;
+        const desription = document
+            .getElementById("editor")
+            .querySelector(".ql-editor").innerHTML;
         this.description = desription;
     },
-
 }));
 
-
-Alpine.data('carouselCreate', () => ({
-    image : null,
-    fileUploadHandler(e){
-        const {files} = e.target;
+Alpine.data("carouselCreate", () => ({
+    image: null,
+    fileUploadHandler(e) {
+        const { files } = e.target;
 
         const reader = new FileReader();
 
-        reader.onload = function(){
+        reader.onload = function () {
             this.image = reader.result;
-        }.bind(this)
+        }.bind(this);
 
         reader.readAsDataURL(files[0]);
-    }
+    },
 }));
 
-Alpine.data('carouselShow', () => ({
-    isActive : null,
-    init(){
-        this.$watch('isActive', () => {
+Alpine.data("carouselShow", () => ({
+    isActive: null,
+    init() {
+        this.$watch("isActive", () => {
             console.log("watchers");
-            if(this.isActive === null) return
-           this.updateActiveStatus()
+            if (this.isActive === null) return;
+            this.updateActiveStatus();
         });
     },
-    activeToggleInit(data){
+    activeToggleInit(data) {
         console.log(data);
-        const toggle = document.getElementById('isActiveToggle');
+        const toggle = document.getElementById("isActiveToggle");
 
-        if(data === 1){
-            toggle.setAttribute('checked', true);
+        if (data === 1) {
+            toggle.setAttribute("checked", true);
             toggle.value = true;
-        }else{
-            toggle.value = false
+        } else {
+            toggle.value = false;
         }
     },
-    activeToggleAction(e){
-        const data = e.target.value === 'true' ? true : false;
+    activeToggleAction(e) {
+        const data = e.target.value === "true" ? true : false;
 
-        this.isActive = !data
+        this.isActive = !data;
     },
-    async updateActiveStatus(){
+    async updateActiveStatus() {
         try {
-
-            console.log('update Function')
+            console.log("update Function");
             const config = {
                 headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            }
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+            };
 
-            const response = await axios.get(`?is_active=${this.isActive}`, config);
+            const response = await axios.get(
+                `?is_active=${this.isActive}`,
+                config
+            );
 
             this.isActive = null;
-
         } catch (error) {
-            console.log(error)
-        //     window.sweetAlert.fire({
-        //         title: "Something went Wrong",
-        //         text: `${error.response.data.message}`,
-        //         icon: "error",
-        //       })
-         }
-    }
+            console.log(error);
+            //     window.sweetAlert.fire({
+            //         title: "Something went Wrong",
+            //         text: `${error.response.data.message}`,
+            //         icon: "error",
+            //       })
+        }
+    },
+}));
+
+Alpine.data("calendar", (role) => ({
+    showModal: false,
+    clickedDate: null,
+    authRole: role,
+    initializeCalendar(data) {
+        var calendarEl = document.getElementById("calendar");
+
+        console.log(this.authRole);
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: "dayGridMonth",
+            eventClick: (info) => {
+                this.clickedDate = info.date;
+                this.showModal = true;
+                console.log(info);
+            },
+            events: this.convertEvents(data),
+        });
+        calendar.render();
+    },
+    convertEvents(eventsData) {
+        return eventsData.map((event) => {
+
+            let base_url = '#';
+
+            if(this.authRole === 'admin'){
+                base_url = `/admin/appointment/${event.id}`
+            }
+
+            return {
+                title: event.patient,
+                url: base_url,
+                start: new Date(event.date),
+                end: new Date(event.date),
+                backgroundColor:
+                    event.status === "pending"
+                        ? "#fbbd23"
+                        : event.status === "approved"
+                        ? "#04ABA3"
+                        : "#f87272",
+            };
+        });
+    },
 }));
 Alpine.start();

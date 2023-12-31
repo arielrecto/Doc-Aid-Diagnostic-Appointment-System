@@ -38,12 +38,12 @@
                         <div class="w-full text-xl font-semibold capitalize text-white flex gap-2">
                             <i class="ri-book-mark-line"></i>
                             <span>
-                                Total Appointments - {{ $year }}
+                                Pending Appointments
                             </span>
                         </div>
 
                         <span class="text-6xl font-bold text-white truncate max-w-[250px]">
-                            {{ $totalAppointmentsInYear }}
+                            {{ $totalPendingAppointment }}
                         </span>
                     </div>
                     <div class="panel h-36 bg-warning">

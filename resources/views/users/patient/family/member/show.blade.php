@@ -41,6 +41,7 @@
                         <div class="grid grid-cols-3 grid-flow-row">
                             <div class="flex flex-col gap-2 capitalize">
                                 <label for="" class="text-xs text-gray-500">Birthdate</label>
+
                                 <h1 class="font-bold">{{ date('F d, Y', strtotime($profile->birthdate)) }}</h1>
                             </div>
                             <div class="flex flex-col gap-2 capitalize">

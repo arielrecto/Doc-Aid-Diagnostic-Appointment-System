@@ -8,7 +8,7 @@
             <x-patient.navbar />
 
 
-            <div class="panel" x-data="profile">
+            <div class="panel overflow-y-auto" x-data="profile">
                 <div class="w-full h-full shadow-sm hover:shadow-lg duration-700">
                     <form action="{{ route('patient.profile.store') }}" method="post"
                         class="p-5 flex flex-col gap-5 w-full h-full" enctype="multipart/form-data">
