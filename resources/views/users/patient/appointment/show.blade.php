@@ -2,7 +2,7 @@
     <div class="main-screen">
         <x-patient-siderbar />
 
-        <div class="main-content">
+        <div class="main-content w-5/6 md:w-full">
             <x-patient.navbar />
 
             @if (Session::has('rejected'))
@@ -37,17 +37,17 @@
 
                     </div>
 
-                    <div class="grid grid-cols-3 grid-rows-2 gap-4 p-4 border shadow-sm rounded">
+                    <div class="grid grid-cols-1 md:grid-cols-3 grid-rows-2 gap-4 p-4 border shadow-sm rounded">
                         <div class="flex flex-col gap-2 ">
                             <label for="" class="text-gray-500 text-sm">Date</label>
-                            <h1 class="font-semibold flex gap-4">
+                            <h1 class="font-semibold flex gap-4 text-xs lg:text-base">
                                 {{ date('M-d-Y', strtotime($appointment->date)) }}
                                 <span x-data="appointmentShow">
                                     <button id="resched-modal-trigger" @click="openReschedModal">
                                         <i class="fi fi-rr-edit text-accent"></i>
                                     </button>
 
-                                    <div id="resched-modal" class="absolute top-0 left-0 w-96"
+                                    <div id="resched-modal" class="absolute top-0 left-0 lg:w-96 w-64"
                                         @click.outside="openReschedModal" x-cloak x-show="reschedModal">
                                         <div class="rounded-lg bg-white border shadow-md p-5">
                                             <form
@@ -55,9 +55,9 @@
                                                 method="post" class="flex flex-col gap-2">
                                                 @csrf
                                                 @method('put')
-                                                <h1 class="text-lg font-bold text-left">Reschedule</h1>
+                                                <h1 class="text-sm lg:text-lg font-bold text-left">Reschedule</h1>
                                                 <p class="text-xs text-gray-500">Date</p>
-                                                <input type="date" name="date" class="c-input">
+                                                <input type="date" name="date" class="c-input input-xs">
                                                 <button class="btn-generic uppercase">Save</button>
                                             </form>
                                         </div>
@@ -75,7 +75,7 @@
 
                 <div class="flex flex-col gap-2 bg-white rounded-lg shadow-md p-4">
                     <h1 class="page-title">Payment Status</h1>
-                    <h1 class="text-lg font-bold"> <span class="font-thin">Referrence Number
+                    <h1 class="text-lg font-bold"> <span class="text-sm md:text-base font-thin">Referrence Number
                             :</span>{{ $appointment->receipt_number }}</h1>
                     <div class="w-full flex flex-col gap-2 p-2">
                         <div class="w-full h-full flex flex-col gap-2">
@@ -126,13 +126,13 @@
 
                 <div class="flex flex-col gap-2 bg-white rounded-lg shadow-md p-4">
                     <h1 class="page-title">Services Availed</h1>
-                    <div class="overflow-x-auto h-96">
+                    <div class="overflow-x-auto h-96 w-full">
 
 
 
 
                         @foreach ($appointment->subscribeServices as $s_service)
-                            <table class="table">
+                            <table class="table w-[64rem] lg:w-full">
                                 <!-- head -->
                                 <thead class="capitalize">
                                     <tr>
@@ -147,10 +147,10 @@
                                 <tbody>
                                     <!-- row 1 -->
                                     <tr class="">
-                                        <th>{{ $s_service->service->id }}</th>
+                                        <th{{ $s_service->service->id }}</th>
                                         <th><img src="{{ $s_service->service->image }}" alt=""
                                                 srcset="" class="object object-center h-10 w-10"></th>
-                                        <td>{{ $s_service->service->name }}</td>
+                                        <td class="text-xs md:text-sm">{{ $s_service->service->name }}</td>
                                         <td>{!! $s_service->service->description !!}</td>
                                         <td>&#8369 {{ $s_service->service->init_payment }}</td>
                                         <td>&#8369 {{ $s_service->service->price }}</td>

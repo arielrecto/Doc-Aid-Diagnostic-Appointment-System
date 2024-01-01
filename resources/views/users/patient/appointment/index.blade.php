@@ -15,7 +15,7 @@
                     </x-slot>
                 </x-patient.navbar> --}}
                 <div class="flex w-full p-5 flex-col space-y-2 h-full">
-                    <div class="w-full grid grid-cols-2 grid-flow-row gap-2">
+                    <div class="w-full grid grid-cols-1 md:grid-cols-2 grid-flow-row gap-2">
                         <div class="header-selection bg-accent">
                             <h1 class="header-title">total appointment</h1>
                             <span
@@ -54,7 +54,7 @@
                         </div>
                         <div class="w-full h-full p-2">
                             <div class="overflow-x-auto h-64 w-full">
-                                <table class="table">
+                                <table class="table text-xs lg:text-base w-[64rem]">
                                     <!-- head -->
                                     <thead>
                                         <tr>
@@ -80,12 +80,14 @@
                                                     <div class="flex justify-center w-full">
                                                         <p
                                                             class="{{ $appointment->status === 'pending' ? 'bg-orange-300' : ($appointment->status === 'approved' ? 'bg-accent' : 'bg-red-400') }}
-                                                            p-2 rounded-lg text-center capitalize">
+                                                            p md:p-2 rounded-lg text-sm md:text-base text-center capitalize">
                                                             {{ $appointment->status }}
                                                         </p>
                                                     </div>
                                                 </td>
-                                            <td><a href="{{route('patient.appointment.show', ['appointment' => $appointment->id])}}"><i class="fi fi-rr-eye"></i></a></td>
+                                                <td><a
+                                                        href="{{ route('patient.appointment.show', ['appointment' => $appointment->id]) }}"><i
+                                                            class="fi fi-rr-eye"></i></a></td>
                                             </tr>
                                         @empty
 
@@ -100,8 +102,8 @@
                     </div>
                 </div>
             </div>
-            <div class="panel" x-data="calendar">
-                <div id="calendar" x-init="initializeCalendar({{$appointmentsData}})">
+            <div class="panel hidden md:block" x-data="calendar">
+                <div id="calendar" x-init="initializeCalendar({{ $appointmentsData }})">
 
                 </div>
 

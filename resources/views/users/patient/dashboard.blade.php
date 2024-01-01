@@ -33,23 +33,23 @@
             </div>
 
             <div class="panel overflow-none">
-                <div class="grid grid-cols-2 grid-flow-row gap-2">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-flow-row gap-2">
                     <div class="header-selection">
                         <h1 class="header-title">total appointment today </h1>
                         <span
-                            class="text-6xl font-bold text-white truncate max-w-[250px]">{{ $todayAppointments->count() }}</span>
+                            class="text-3xl lg:text-6xl font-bold text-white truncate max-w-[250px]">{{ $todayAppointments->count() }}</span>
                     </div>
                     <div class="header-selection bg-primary">
                         <h1 class="header-title">total appointment</h1>
                         <span
-                            class="text-6xl font-bold text-white truncate max-w-[250px]">{{ $totalAppointments }}</span>
+                            class="text-3xl lg:text-6xl font-bold text-white truncate max-w-[250px]">{{ $totalAppointments }}</span>
                     </div>
                 </div>
 
                 <div class="flex gap-2 min-h-[25rem] max-h-screen overflow-hidden">
                     <div
                         class="flex-grow h-full flex flex-col gap-2 bg-base-100 rounded-lg shadow-sm hover:shadow-lg duration-700 p-2">
-                        <h1 class="font-semibold text-base">Today Appointment - {{ now('GMT+8')->format('M-d-Y') }}
+                        <h1 class="font-semibold text-sm lg:text-base">Today Appointment - {{ now('GMT+8')->format('M-d-Y') }}
                         </h1>
                         <div class="overflow-x-auto">
                             <table class="table table-zebra">

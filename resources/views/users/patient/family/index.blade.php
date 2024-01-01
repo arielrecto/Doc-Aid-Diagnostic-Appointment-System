@@ -2,7 +2,7 @@
     <div class="main-screen">
         <x-patient-siderbar />
         <div class="flex w-full h-full">
-            <div class="main-content">
+            <div class="main-content w-5/6">
                 <x-patient.navbar />
 
                 <div class="fl  ex flex-col gap-2 p-5 w-full h-full relative panel" x-data="familyIndex">
@@ -26,8 +26,8 @@
                                 </a>
                             </div>
                         @endif
-                        <div class="overflow-x-auto">
-                            <table class="table">
+                        <div class="overflow-auto w-full">
+                            <table class="table w-[32rem]">
                                 <!-- head -->
                                 <thead>
                                     <tr>

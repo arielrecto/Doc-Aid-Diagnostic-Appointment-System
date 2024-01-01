@@ -3,7 +3,7 @@
 
         <x-patient-siderbar />
 
-        <div class="main-content">
+        <div class="main-content w-5/6">
 
             <x-patient.navbar />
 
@@ -56,7 +56,7 @@
                                 @endif
                             </div>
                         </div>
-                        <div class="grid grid-cols-3 grid-flow-row gap-5">
+                        <div class="grid grid-cols-1 md:grid-cols-3 grid-flow-row gap-5">
                             <div class="flex flex-col gap-2">
                                 <label for="" class="capitalize text-sm text-gray-500">last name</label>
                                 <input type="text" name="last_name" class="input input-accent w-full"
@@ -80,7 +80,7 @@
                                     oninput="this.value = this.value.replace(/[0-9]/g, '');" placeholder="Middle Name">
                             </div>
                         </div>
-                        <div class="grid grid-cols-3 grid-flow-row gap-5">
+                        <div class="grid grid-cols-1 md:grid-cols-3 grid-flow-row gap-5">
                             <div class="flex flex-col gap-2">
                                 <label for="" class="capitalize text-sm text-gray-500">Age</label>
                                 <input type="text" class="input input-accent w-full" name="age"
@@ -117,7 +117,7 @@
                                 <p class="text-xs text-error">{{ $errors->first('street') }}</p>
                             @endif
                         </div>
-                        <div class="grid grid-cols-3 grid-flow-row gap-5" x-data="phLocation">
+                        <div class="grid grid-cols-1 md:grid-cols-3 grid-flow-row gap-5" x-data="phLocation">
                             <div class="flex flex-col gap-2">
                                 <label for="" class="capitalize text-sm text-gray-500">Region</label>
                                 <select class="select select-accent w-full" name="region" id="region-dropdown"
@@ -170,7 +170,7 @@
                                 @endif
                             </div>
                         </div>
-                        <div class="grid grid-cols-3 grid-flow-row gap-5">
+                        <div class="grid grid-cols-1 md:grid-cols-3 grid-flow-row gap-5">
                             <div class="flex flex-col gap-2">
                                 <label for="" class="capitalize text-sm text-gray-500">Contact No. <span>ex :
                                         09123456789 </span></label>

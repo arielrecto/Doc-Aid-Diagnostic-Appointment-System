@@ -61,7 +61,7 @@
     }
 
     .page-title {
-        @apply font-bold text-2xl text-primary
+        @apply font-bold text-lg md:text-xl lg:text-2xl text-primary
     }
 
     .main-screen {
@@ -77,10 +77,10 @@
     }
 
     .header-selection {
-        @apply panel bg-secondary h-32;
+        @apply panel bg-secondary h-auto lg:h-32;
 
         .header-title {
-            @apply w-full text-xl font-semibold text-white capitalize;
+            @apply w-full text-lg lg:text-xl font-semibold text-white capitalize;
         }
     }
 

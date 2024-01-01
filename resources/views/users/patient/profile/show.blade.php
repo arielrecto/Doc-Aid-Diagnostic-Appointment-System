@@ -3,14 +3,14 @@
 
         <x-patient-siderbar />
 
-        <div class="main-content">
+        <div class="main-content w-5/6">
 
             <x-patient.navbar />
 
 
-            <div class="panel">
-                <div class="full h-full flex space-x-2">
-                    <div class="w-1/3 p-2 h-full flex flex-col gap-5 border-r-2 border-gray-100">
+            <div class="panel overflow-y-auto">
+                <div class="full h-full flex flex-col lg:flex-row space-x-2">
+                    <div class="w-full lg:w-1/3 p-2 h-full flex flex-col gap-5 border-r-2 border-gray-100">
                         <div class="w-full flex flex-col gap-2 items-center">
                             <a class="venobox" href="{{ $profile->avatar }}">
                                 <img src="{{ $profile->avatar }}" alt=""
@@ -23,7 +23,7 @@
                     </div>
                     <div class="flex-grow w-full h-full flex flex-col space-y-5 p-5">
                         <h1 class="w-full text-center text-lg font-semibold">Personal Information</h1>
-                        <div class="grid grid-cols-3 grid-flow-row gap-5">
+                        <div class="grid grid-cols-2 md:grid-cols-3 grid-flow-row gap-5">
                             <div class="flex flex-col gap-2 capitalize">
                                 <label for="" class="text-xs text-gray-500">Last Name</label>
                                 <h1 class="font-bold">{{ $profile->last_name }}</h1>
@@ -37,7 +37,7 @@
                                 <h1 class="font-bold">{{ $profile->middle_name }}</h1>
                             </div>
                         </div>
-                        <div class="grid grid-cols-3 grid-flow-row">
+                        <div class="grid grid-cols-2 md:grid-cols-3 grid-flow-row">
                             <div class="flex flex-col gap-2 capitalize">
                                 <label for="" class="text-xs text-gray-500">Age</label>
                                 <h1 class="font-bold">{{ $profile->age }}</h1>
@@ -52,7 +52,7 @@
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-3 grid-flow-row gap-5">
+                        <div class="grid grid-cols-1 md:grid-cols-3 grid-flow-row gap-5">
                             <div class="flex flex-col gap-2 capitalize">
                                 <label for="" class="text-xs text-gray-500">Street</label>
                                 <h1 class="font-bold">{{ $profile->street }}</h1>

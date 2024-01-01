@@ -3,6 +3,7 @@ import "./bootstrap";
 import Alpine from "alpinejs";
 import * as FloatingUI from "@floating-ui/dom";
 import axios from "axios";
+import collapse from '@alpinejs/collapse';
 
 window.Alpine = Alpine;
 window.FloatingUI = FloatingUI;
@@ -318,4 +319,15 @@ Alpine.data("calendar", (role) => ({
         });
     },
 }));
+
+Alpine.data('sidebarAction', () => ({
+    toggle : false,
+    toggleAction(){
+        this.toggle !== this.toggle
+    }
+}))
+
+Alpine.plugin(collapse)
+
+
 Alpine.start();

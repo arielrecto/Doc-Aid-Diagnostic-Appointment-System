@@ -18,9 +18,9 @@
             @endif
 
             <div class="flex flex-col gap-2 p-5 w-full h-full relative panel overflow-y-auto">
-                <div class="flex h-full w-full gap-2">
+                <div class="flex flex-col md:flex-row h-full w-full md:gap-2">
                     <div
-                        class="flex-grow w-full h-full rounded-lg shadow-sm hover:shadow-lg
+                        class="flex-grow w-full lg:w-1/2 md:w-1/2 h-full rounded-lg shadow-sm hover:shadow-lg
                              duration-700 p-2 flex flex-col gap-2">
                         <h1 class="w-full text-lg font-semibold text-center py-2">Set Appointment</h1>
                         <form action="{{ route('patient.appointment.store') }}" method="POST"
@@ -29,13 +29,13 @@
 
                             <div class="w-full flex flex-col gap-2">
                                 <label for="" class="text-xs">Patient</label>
-                                <select class="select select-accent w-full" id="interval" name="patient"
+                                <select class="select select-accent w-full " id="interval" name="patient"
                                     @change="setTimeItervalForm">
                                     <option disabled selected>Patient</option>
                                     <option value="{{ Auth::user()->name }}">{{ Auth::user()->name }}</option>
                                     <option disabled> - Family Members - </option>
                                     @forelse ($familyMembers as $member)
-                                        <option value="{{$member->full_name}}" class="capitalize">
+                                        <option value="{{ $member->full_name }}" class="capitalize">
                                             {{ $member->full_name }}</option>
                                     @empty
                                         <option disabled class="text-xs">No Family Members</option>
@@ -67,47 +67,43 @@
                                         </div>
                                     </div>
                                     <template x-if="selectedService.length > 0">
-                                        <div class="flex gap-2 h-auto max-h-sx w-full p-2 overflow-y-auto">
-                                            <div class="w-full h-24">
-                                                <table class="table table-xs">
-                                                    <thead>
+                                        <div class="flex gap-2 h-auto max-h-sx w-full p-2 overflow-scroll">
+                                            <table class="table table-xs">
+                                                <thead>
+                                                    <tr>
+                                                        <th></th>
+                                                        <th>Service</th>
+                                                        <th>Time</th>
+                                                        <th>price</th>
+                                                        <th>Downpayment</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <template x-for="service in selectedService" :key="service.id">
                                                         <tr>
-                                                            <th></th>
-                                                            <th>Service</th>
-                                                            <th>Time</th>
-                                                            <th>price</th>
-                                                            <th>Downpayment</th>
+                                                            <th>1</th>
+                                                            <td><span x-text="service.name"></span></td>
+                                                            <td><span x-text="service?.selectedSlot?.duration"></span>
+                                                            </td>
+                                                            <td>&#8369 <span x-text="service.price"></span></td>
+                                                            <td>&#8369 <span x-text="service.init_payment"></span>
+                                                            </td>
+                                                            <td>
+                                                                <button
+                                                                    @click="openDetail($event, service.id)">open</button>
+                                                            </td>
                                                         </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <template x-for="service in selectedService"
-                                                            :key="service.id">
-                                                            <tr>
-                                                                <th>1</th>
-                                                                <td><span x-text="service.name"></span></td>
-                                                                <td><span
-                                                                        x-text="service?.selectedSlot?.duration"></span>
-                                                                </td>
-                                                                <td>&#8369 <span x-text="service.price"></span></td>
-                                                                <td>&#8369 <span x-text="service.init_payment"></span>
-                                                                </td>
-                                                                <td>
-                                                                    <button
-                                                                        @click="openDetail($event, service.id)">open</button>
-                                                                </td>
-                                                            </tr>
-                                                        </template>
-                                                        <input type="hidden" name="services"
-                                                            :value="JSON.stringify(selectedService)">
-                                                    </tbody>
-                                                    <tfoot>
-                                                        <tr>
-                                                            <th></th>
-                                                            <th>Service</th>
-                                                        </tr>
-                                                    </tfoot>
-                                                </table>
-                                            </div>
+                                                    </template>
+                                                    <input type="hidden" name="services"
+                                                        :value="JSON.stringify(selectedService)">
+                                                </tbody>
+                                                <tfoot>
+                                                    <tr>
+                                                        <th></th>
+                                                        <th>Service</th>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
                                         </div>
                                     </template>
                                     <template x-if="sDetailID !== null  ">
@@ -338,15 +334,16 @@
 
                         </form>
                     </div>
-                    <div class="w-1/3 h-full rounded-lg shadow-sm hover:shadow-lg duration-700 p-2"
+                    <div class="hidden md:block w-full md:w-1/2   h-full rounded-lg shadow-sm hover:shadow-lg duration-700 p-2"
                         x-init="fullCalendar">
                         <div id="calendar" class="w-full h-96 text-xs">
 
                         </div>
                     </div>
                 </div>
-                <div class="w-full flex justify-center z-10 absolute" x-show="toggle" x-transition.duration.700ms>
-                    <div class="w-1/2 flex flex-col gap-2 bg-base-100 rounded-lg shadow-lg p-2">
+                <div class="w-full flex justify-center z-10 absolute" x-show="toggle" x-transition.duration.700ms
+                    x-cloak @click.outside="openToggle">
+                    <div class="w-5/6 lg:w-1/2 flex flex-col gap-2 bg-base-100 rounded-lg shadow-lg p-2">
                         <div class="flex w-full flex-row-reverse">
                             <button @click="openToggle" class="text-accent text-lg">
                                 <i class="fi fi-rr-circle-xmark"></i>
