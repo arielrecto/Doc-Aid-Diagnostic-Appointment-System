@@ -29,7 +29,7 @@ class DatabaseSeeder extends Seeder
         $admin = User::create([
             'name' => 'Admin',
             'email' => 'admin@gmail.com',
-            'password' => Hash::make('ariel123')
+            'password' => Hash::make('DOCAIDdcmc_0422')
         ]);
 
         $adminRole = Role::create([
@@ -42,15 +42,15 @@ class DatabaseSeeder extends Seeder
             'name' => 'employee'
         ]);
 
-        $employee = User::create([
-            'name' => 'employee one',
-            'email' => 'employee@employee.com',
-            'password' => Hash::make('ariel123')
-        ]);
+        // $employee = User::create([
+        //     'name' => 'employee one',
+        //     'email' => 'employee@employee.com',
+        //     'password' => Hash::make('DOCAIDdcmc_0422')
+        // ]);
 
         $admin->assignRole($adminRole);
 
-        $employee->assignRole($employeeRole);
+        // $employee->assignRole($employeeRole);
 
 
         $daysOfWeek = [];
