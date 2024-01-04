@@ -67,9 +67,9 @@ class DatabaseSeeder extends Seeder
             ]);
         });
 
-        $this->call([
-            ServiceSeeder::class,
-            AppointmentSeeder::class
-        ]);
+        // $this->call([
+        //     ServiceSeeder::class,
+        //     AppointmentSeeder::class
+        // ]);
     }
 }
