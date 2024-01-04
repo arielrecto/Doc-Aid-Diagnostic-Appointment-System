@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('image');
             $table->string('name');
             $table->string('price');
-            $table->string('description');
+            $table->longText('description');
             $table->string('init_payment');
             $table->string('session_time');
             $table->string('availability')->default('ACTIVE');
