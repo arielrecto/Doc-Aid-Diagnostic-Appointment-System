@@ -2,7 +2,7 @@
     <div class="main-screen">
         <x-employee.sidebar />
 
-        <div class="main-content">
+        <div class="main-content overflow-y-auto">
             <x-employee.navbar />
 
             @if (Session::has('rejected'))
@@ -29,7 +29,7 @@
                 </div>
             @endif
 
-            <div class="panel bg-transparent p-0 shadow-none rounded-none overflow-auto">
+            <div class="panel bg-transparent p-0 shadow-none rounded-none">
                 {{-- Appointment Details --}}
                 <div class="flex flex-col gap-2 bg-white rounded-lg shadow-md p-4">
                     <div class="flex justify-between items-center">

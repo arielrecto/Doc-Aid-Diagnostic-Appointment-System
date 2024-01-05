@@ -37,7 +37,9 @@
                                 <a href="{{route('admin.imageCarousel.show', ['imageCarousel' => $image->id])}}" class=" btn btn-sm btn-accent capitalize border border-accent shadow shadow-accent font-bold">
                                     <i class="fi fi-rr-eye"></i>
                                 </a>
-                                <form action="" method="post">
+                                <form action="{{route('admin.imageCarousel.destroy', ['imageCarousel' => $image->id])}}" method="post">
+                                    @csrf
+                                    @method('delete')
                                     <button class=" btn btn-sm btn-error capitalize border border-error shadow shadow-error font-bold"><i class="fi fi-rr-trash"></i></button>
                                 </form>
                             </div>

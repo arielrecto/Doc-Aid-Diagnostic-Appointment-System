@@ -54,7 +54,7 @@
     <div class="flex p-4 items-center gap-4 relative">
         <div class="w-16 h-16 rounded-full bg-white border shadow">
             @if (Auth::user()->profile !== null)
-                <img src="{{ Auth::user()->profile->avatar }}" class="object object-top h-16 w-16 object-cover">
+                <img src="{{ Auth::user()->profile->avatar }}" class="object object-top h-16 w-16 object-cover rounded-full">
             @else
                 <img src="{{ asset('image/logo-transparent.png') }}" class="object object-center h-16 w-16">
             @endif

@@ -12,8 +12,22 @@
                                 <button class="btn btn-accent" @click="openToggle">Add Family</button>
                             </h1>
                         @else
-                            <h1 class="text-lg font-bold capitalize">
-                                family - {{ Auth::user()->family->name }}
+                            <h1 class="text-lg font-bold capitalize" >
+                                <span class="flex items-center gap-5">
+                                    family - {{ Auth::user()->family->name }}
+                                    <button class="btn btn-xs btn-ghost" @click="editToggleAction">
+                                        <i class="fi fi-rr-edit"></i>
+                                    </button>
+                                </span>
+
+                                <span class="w-full" x-show="editToggle" x-transition.duration.600 x-cloak>
+                                    <form action="{{route('patient.family.update', ['family' => Auth::user()->family->id])}}" method="POST">
+                                        @method('put')
+                                        <input type="text" name="name" class="input input-xs input-accent">
+                                        @csrf
+                                        <button class="btn btn-xs btn-accent">Update</button>
+                                    </form>
+                                </span>
                             </h1>
                         @endif
                     </div>
@@ -68,7 +82,7 @@
                         </div>
                     </div>
                     <div class="h-64 w-1/2 absolute z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 shadow-lg rounded-lg bg-base-100"
-                        x-show="toggle">
+                        x-show="toggle" x-cloak>
                         <form action="{{ route('patient.family.store') }}" method="post"
                             class="h-full w-full p-2 flex flex-col space-y-5">
                             @csrf
@@ -96,8 +110,12 @@
             function familyIndex() {
                 return {
                     toggle: false,
+                    editToggle : false,
                     openToggle() {
                         this.toggle = !this.toggle
+                    },
+                    editToggleAction(){
+                        this.editToggle = !this.editToggle
                     }
                 }
             }

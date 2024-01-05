@@ -95,7 +95,10 @@ class EmployeeController extends Controller
      */
     public function edit(string $id)
     {
-        //
+
+        $employee = User::find($id);
+
+        return view('users.admin.Employee.edit', compact(['employee']));
     }
 
     /**
@@ -103,7 +106,43 @@ class EmployeeController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $user = User::find($id);
+
+
+
+        $request->validate([
+            'password' => 'confirmed'
+        ]);
+
+
+        $user->update([
+            'name' => $request->name ?? $user->name,
+            'email' => $request->email ?? $user->email,
+            'password' => $request->password ?? $user->password,
+        ]);
+
+
+        $profile = $user->profile;
+
+
+        $profile->update([
+            'last_name' => $request->last_name ?? $profile->last_name,
+            'full_name' => $request->last_name . ' ,' . $request->first_name ?? $profile->full_name,
+            'first_name' => $request->first_name ?? $profile->first_name,
+            'middle_name' => $request->middle_name ?? $profile->middle_name,
+            'birthdate' => $request->birthdate ?? $profile->birthdate,
+            'age' => $request->age ?? $profile->age,
+            'street' => $request->street ?? $profile->street,
+            'barangay' => $request->barangay ?? $profile->barangay,
+            'municipality' => $request->municipality ?? $profile->municipality,
+            'region' => $request->region ?? $profile->region,
+            'contact_no' => $request->contact_no ?? $profile->contact_no,
+            'zip_code' => $request->zip_code ?? $profile->zip_code,
+        ]);
+
+
+
+        return back()->with(['message' => 'Data Updated!']);
     }
 
     /**
@@ -111,6 +150,11 @@ class EmployeeController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $employee = User::find($id);
+
+        $employee->delete();
+
+
+        return back()->with(['message' => 'Employee Account Deleted!']);
     }
 }

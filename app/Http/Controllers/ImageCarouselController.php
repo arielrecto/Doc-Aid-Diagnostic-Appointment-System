@@ -65,6 +65,17 @@ class ImageCarouselController extends Controller
     }
     public function destroy(string $id){
 
+        $image = ImageCarousel::find($id);
+
+
+        $image->delete();
+
+
+        return back()->with(
+            [
+                'message' => 'Image Deleted'
+            ]
+        );
 
     }
 }

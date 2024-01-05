@@ -40,6 +40,7 @@
                                         <th>Name</th>
                                         <th>Email</th>
                                         <th>Created At</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -49,6 +50,22 @@
                                             <td>{{ $employee->name }}</td>
                                             <td>{{ $employee->email }}</td>
                                             <td>{{ $employee->created_at->format('M-d-Y') }}</td>
+                                            <td>
+                                                <div class="flex items-center gap-5">
+                                                    <a href="{{ route('admin.employee.edit', ['employee' => $employee->id]) }}"
+                                                        class="btn btn-accent btn-xs">
+                                                        <i class="fi fi-rr-edit"></i>
+                                                    </a>
+                                                    <form action="{{route('admin.employee.destroy', ['employee' => $employee->id])}}" method="post">
+                                                        @csrf
+                                                        @method('delete')
+                                                        <button class="btn btn-xs btn-error">
+                                                            <i class="fi fi-rr-trash"></i>
+                                                        </button>
+                                                    </form>
+
+                                                </div>
+                                            </td>
                                         </tr>
                                     @empty
                                         <tr class="bg-base-200">

@@ -22,7 +22,13 @@
                         </div>
                     </div>
                     <div class="flex-grow w-full h-full flex flex-col space-y-5 p-5">
-                        <h1 class="w-full text-center text-lg font-semibold">Personal Information</h1>
+                        <div class="flex items-center justify-between">
+                            <h1 class="w-full  text-lg font-semibold">Personal Information</h1>
+                            <a href="{{route('patient.profile.edit', ['profile' => $profile->id])}}" class="btn btn-xs btn-accent">
+                                <i class="fi fi-rr-edit"></i>
+                            </a>
+                        </div>
+
                         <div class="grid grid-cols-2 md:grid-cols-3 grid-flow-row gap-5">
                             <div class="flex flex-col gap-2 capitalize">
                                 <label for="" class="text-xs text-gray-500">Last Name</label>

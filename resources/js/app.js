@@ -327,7 +327,10 @@ Alpine.data('sidebarAction', () => ({
     }
 }))
 
-Alpine.plugin(collapse)
+Alpine.plugin([
+    collapse,
+])
+
 
 
 Alpine.start();

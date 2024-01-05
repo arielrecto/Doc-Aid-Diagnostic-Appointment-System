@@ -18,6 +18,7 @@ use App\Http\Controllers\Patient\DashboardController as PatientDashboardControll
 use App\Http\Controllers\Employee\DashboardController as EmployeeDashboardController;
 use App\Http\Controllers\Employee\AppointmentController as EmployeeAppointmentController;
 use App\Http\Controllers\ImageCarouselController;
+use App\Http\Controllers\Patient\ProfileController as PatientProfileController;
 use App\Models\ImageCarousel;
 
 /*
@@ -79,6 +80,8 @@ Route::middleware('auth')->group(function () {
             Route::get('/show/id={profile}', [ProfileController::class, 'show'])->name('show');
             Route::post('/', [ProfileController::class, 'store'])->name('store');
         });
+
+        Route::resource('profile', PatientProfileController::class)->except('create', 'show', 'store');
 
     });
     Route::middleware('role:employee')->prefix('employee')->as('employee.')->group(function() {

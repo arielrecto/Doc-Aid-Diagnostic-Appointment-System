@@ -17,6 +17,7 @@
         "vite": "^4.0.0"
     },
     "dependencies": {
+        "@alpinejs/anchor": "^3.13.3",
         "@alpinejs/collapse": "^3.13.3",
         "@floating-ui/dom": "^1.5.3"
     }
