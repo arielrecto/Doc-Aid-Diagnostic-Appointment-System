@@ -19,6 +19,7 @@ class Appointment extends Model
         'receipt_number',
         'receipt_image',
         'receipt_amount',
+        'payment_type',
         'balance',
         'total',
         'status',

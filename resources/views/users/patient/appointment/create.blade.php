@@ -16,6 +16,17 @@
                     <span>{{ Session::get('message') }}</span>
                 </div>
             @endif
+            @if (Session::has('reject'))
+                <div class="alert alert-error">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+
+                    <span>{{ Session::get('reject') }}</span>
+                </div>
+            @endif
 
             <div class="flex flex-col gap-2 p-5 w-full h-full relative panel overflow-y-auto">
                 <div class="flex flex-col md:flex-row h-full w-full md:gap-2">
@@ -23,8 +34,10 @@
                         class="flex-grow w-full lg:w-1/2 md:w-1/2 h-full rounded-lg shadow-sm hover:shadow-lg
                              duration-700 p-2 flex flex-col gap-2">
                         <h1 class="w-full text-lg font-semibold text-center py-2">Set Appointment</h1>
-                        <form action="{{ route('patient.appointment.store') }}" method="POST"
-                            class="w-full h-full flex flex-col gap-2">
+                        <form
+                            :action="isPayPal ? `{{ route('patient.paypal.paypal') }}` :
+                                `{{ route('patient.appointment.store') }}`"
+                            method="POST" class="w-full h-full flex flex-col gap-2">
                             @csrf
 
                             <div class="w-full flex flex-col gap-2">
@@ -243,70 +256,88 @@
                                         </div>
 
                                     </template>
-
-                                    <div class="w-full p-2 flex flex-col gap-2">
-                                        <label for="" class="text-xs">Bank Account:</label>
-                                        <div class="text-sm font-bold">
-                                            <h1>Account Number: <span> 4025 3000 0199 4950</span></h1>
-                                            <h1> Account Name: <span> Stephen Bacolor</span></h1>
+                                    <div class="w-full h-auto flex flex-col gap-2">
+                                        <div class="flex items-center gap-2">
+                                            <input type="checkbox" class="checkbox" @change="checkIsPayPal($event)"
+                                                class=""> <img src="{{ asset('image/paypal.png') }}"
+                                                alt="" srcset="" class="object object-center h-12 w-12">
                                         </div>
+                                        <template x-if="!isPayPal">
+                                            <div>
+                                                <div class="w-full p-2 flex flex-col gap-2">
+                                                    <label for="" class="text-xs">Bank Account:</label>
+                                                    <div class="text-sm font-bold">
+                                                        <h1>Account Number: <span> 4025 3000 0199 4950</span></h1>
+                                                        <h1> Account Name: <span> Stephen Bacolor</span></h1>
+                                                    </div>
 
-                                        <label for="" class="text-xs">For G-Cash Payment:</label>
-                                        <div class="text-sm font-bold">
-                                            <h1>Account Number: <span>0905-710-4039 </span></h1>
-                                            <h1> Account Name: <span> Stephen Bacolor</span></h1>
-                                        </div>
+                                                    <label for="" class="text-xs">For G-Cash Payment:</label>
+                                                    <div class="text-sm font-bold">
+                                                        <h1>Account Number: <span>0905-710-4039 </span></h1>
+                                                        <h1> Account Name: <span> Stephen Bacolor</span></h1>
+                                                    </div>
 
 
-                                    </div>
-
-                                    <div class="w-full p-2 flex flex-col">
-                                        <label for="" class="text-xs">Upload Receipt</label>
-                                        <div class="w-full h-24 flex gap-2">
-                                            <template x-if="image !== null">
-                                                <div class="h-full w-24 relative">
-                                                    <img :src="image" alt=""
-                                                        class="h-full w-full object-cover">
-                                                    <button @click="closeImage($event)"
-                                                        class="absolute top-1 right-1">
-                                                        <i class="fi fi-rr-circle-xmark text-accent"></i>
-                                                    </button>
                                                 </div>
-                                            </template>
-                                            <div class="h-full flex items-center">
-                                                <input type="hidden" x-model="image" name="receipt">
-                                                <label>
-                                                    <input type="file" id="" class="hidden"
-                                                        @change="uploadImageHandler($event)">
-                                                    <p class="bg-accent w-7 rounded-full ">
-                                                        <i
-                                                            class="fi fi-rr-add text-3xl flex items-center text-base-100">
-                                                        </i>
-                                                    </p>
-                                                </label>
+
+                                                <div class="w-full p-2 flex flex-col">
+                                                    <label for="" class="text-xs">Upload Receipt</label>
+                                                    <div class="w-full h-24 flex gap-2">
+                                                        <template x-if="image !== null">
+                                                            <div class="h-full w-24 relative">
+                                                                <img :src="image" alt=""
+                                                                    class="h-full w-full object-cover">
+                                                                <button @click="closeImage($event)"
+                                                                    class="absolute top-1 right-1">
+                                                                    <i class="fi fi-rr-circle-xmark text-accent"></i>
+                                                                </button>
+                                                            </div>
+                                                        </template>
+                                                        <div class="h-full flex items-center">
+                                                            <input type="hidden" x-model="image" name="receipt">
+                                                            <label>
+                                                                <input type="file" id="" class="hidden"
+                                                                    @change="uploadImageHandler($event)">
+                                                                <p class="bg-accent w-7 rounded-full ">
+                                                                    <i
+                                                                        class="fi fi-rr-add text-3xl flex items-center text-base-100">
+                                                                    </i>
+                                                                </p>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <template x-if="image !== null">
+                                                        <div class="w-full flex flex-col gap-2">
+                                                            <div class="flex flex-col gap-2">
+                                                                <label for=""
+                                                                    class="text-xs text-gray-500">Reference
+                                                                    Number</label>
+                                                                <input type="text" name="receipt_number"
+                                                                    class="input input-accent"
+                                                                    placeholder="Reference Number">
+                                                            </div>
+                                                            <div class="flex flex-col gap-2">
+                                                                <label for=""
+                                                                    class="text-xs text-gray-500">Receipt
+                                                                    Amount</label>
+                                                                <input type="text" name="receipt_amount"
+                                                                    class="input input-accent" placeholder="Amount"
+                                                                    @change="computation($event)" x-model="rAmount">
+                                                            </div>
+                                                        </div>
+
+                                                    </template>
+                                                </div>
                                             </div>
-                                        </div>
-
-
-                                        <template x-if="image !== null">
-                                            <div class="w-full flex flex-col gap-2">
-                                                <div class="flex flex-col gap-2">
-                                                    <label for="" class="text-xs text-gray-500">Reference
-                                                        Number</label>
-                                                    <input type="text" name="receipt_number"
-                                                        class="input input-accent" placeholder="Reference Number">
-                                                </div>
-                                                <div class="flex flex-col gap-2">
-                                                    <label for="" class="text-xs text-gray-500">Receipt
-                                                        Amount</label>
-                                                    <input type="text" name="receipt_amount"
-                                                        class="input input-accent" placeholder="Amount"
-                                                        @change="computation($event)" x-model="rAmount">
-                                                </div>
-                                            </div>
-
                                         </template>
+
+                                        <input type="hidden" name="payment_type"
+                                            :value="isPayPal ? 'paypal' : 'other'">
+
                                     </div>
+
                                     <div class="flex justify-end p-5 gap-2">
                                         <div class="flex flex-col gap-2">
                                             <label for="" class="text-sm text-gray-500">balance</label>
@@ -328,11 +359,20 @@
                                     </div>
                                 </div>
                                 <div class="w-full flex flex-row-reverse">
-                                    <button class="btn btn-accent">Set</button>
+                                    <button class="btn btn-accent">
+                                        <span x-text="isPayPal ? 'Set with Paypal' : 'Set'">
+                                        </span>
+                                    </button>
                                 </div>
                             </div>
 
                         </form>
+                        {{-- <form action="{{ route('patient.paypal.paypal') }}" method="POST">
+                            @csrf
+                            <h1>paypal</h1>
+                            <input type="text" name="price">
+                            <button>pay</button>
+                        </form> --}}
                     </div>
                     <div class="hidden md:block w-full md:w-1/2   h-full rounded-lg shadow-sm hover:shadow-lg duration-700 p-2"
                         x-init="fullCalendar">
@@ -392,6 +432,7 @@
                     toggleTimeSlot: true,
                     total: 0,
                     dTotal: 0,
+                    isPayPal: false,
                     computation(e) {
                         const amount = e.target.value;
                         this.rAmount = amount;
@@ -610,6 +651,9 @@
                         }.bind(this)
 
                         reader.readAsDataURL(files[0]);
+                    },
+                    checkIsPayPal(e) {
+                        this.isPayPal = e.target.checked
                     }
                 }
             }

@@ -67,11 +67,16 @@ class AppointmentController extends Controller
         $request->validate([
             'patient' => 'required',
             'date' => 'required',
-            'receipt_number' => 'required',
-            'receipt' => 'required',
-            'receipt_amount' => 'required',
             'patient' => 'required'
         ]);
+
+        $otherDate = Carbon::createFromFormat('Y-m-d', $request->date);
+
+
+        if($otherDate->lt(now())){
+            return back()->with(['reject' => 'Appointment cannot be made since the selected date has passed.']);
+        }
+
 
 
         $services = json_decode($request->services);

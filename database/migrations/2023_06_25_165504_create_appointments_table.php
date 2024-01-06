@@ -18,11 +18,12 @@ return new class extends Migration
             $table->string('patient');
             $table->string('date');
             $table->string('type');
-            $table->string('receipt_image');
+            $table->string('receipt_image')->nullable();
             $table->foreignIdFor(User::class);
             $table->string('status');
             $table->string('receipt_number')->nullable();
             $table->string('receipt_amount');
+            $table->string('payment_type');
             $table->string('balance');
             $table->string('total');
             $table->boolean('is_family')->default(false);
