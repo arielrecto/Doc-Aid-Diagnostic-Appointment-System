@@ -2,7 +2,7 @@
     <div class="m-0 p-0 w-full min-h-screen flex flex-col">
         <x-landing-page.header :carousels="$carousels"/>
         <x-landing-page.services :services="$services" />
-        <x-landing-page.about/>
+        <x-landing-page.about :feedbacks="$feedbacks"/>
         <x-landing-page.contact />
         <x-landing-page.footer/>
     </div>

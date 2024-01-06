@@ -14,6 +14,10 @@
             'route' => 'patient.family.index',
             'icon' => 'ri-group-line pt-1',
         ],
+        'Feedback' => [
+            'route' => 'patient.feedbacks.create',
+            'icon' => 'ri-group-line pt-1',
+        ],
 
         // 'Profile' => [
         //     'route' => "patient.profile.show', ['profile' => Auth::user()->profile->id ?? 0]",

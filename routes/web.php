@@ -18,7 +18,9 @@ use App\Http\Controllers\Patient\DashboardController as PatientDashboardControll
 use App\Http\Controllers\Employee\DashboardController as EmployeeDashboardController;
 use App\Http\Controllers\Employee\AppointmentController as EmployeeAppointmentController;
 use App\Http\Controllers\ImageCarouselController;
+use App\Http\Controllers\Patient\FeedbackController;
 use App\Http\Controllers\Patient\ProfileController as PatientProfileController;
+use App\Models\FeedBack;
 use App\Models\ImageCarousel;
 
 /*
@@ -38,7 +40,9 @@ Route::get('/', function () {
 
     $carousels = ImageCarousel::whereActive(true)->get();
 
-    return view('welcome', compact(['services', 'carousels']));
+    $feedbacks = FeedBack::latest()->limit(4)->get();
+
+    return view('welcome', compact(['services', 'carousels', 'feedbacks']));
 });
 
 Route::get('/home', [HomeController::class, 'home'])->name('home');
@@ -80,6 +84,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/show/id={profile}', [ProfileController::class, 'show'])->name('show');
             Route::post('/', [ProfileController::class, 'store'])->name('store');
         });
+        Route::resource('feedbacks', FeedbackController::class)->only(['store', 'create']);
 
         Route::resource('profile', PatientProfileController::class)->except('create', 'show', 'store');
 

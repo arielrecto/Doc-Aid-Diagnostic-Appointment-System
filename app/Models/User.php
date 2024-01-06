@@ -56,4 +56,7 @@ class User extends Authenticatable
     public function medicalResults () {
         return $this->hasMany(Result::class);
     }
+    public function feedbacks(){
+        return $this->hasMany(FeedBack::class);
+    }
 }

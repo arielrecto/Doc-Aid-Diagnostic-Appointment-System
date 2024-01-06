@@ -8,14 +8,14 @@
             @if (Session::has('rejected'))
                 <div class="panel-error">
                     <span>
-                        CODE ERROR - Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis, dolor?
+                        {{Sessiong::get('rejected')}}
                     </span>
                 </div>
             @endif
             @if (Session::has('approved'))
                 <div class="panel-success">
                     <span>
-                        CODE SUCCESS - Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate, voluptatum?
+                       {{ Sessiong::get('approved')}}
                     </span>
                 </div>
             @endif

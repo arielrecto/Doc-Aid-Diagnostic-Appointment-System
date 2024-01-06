@@ -3,7 +3,7 @@ import "./bootstrap";
 import Alpine from "alpinejs";
 import * as FloatingUI from "@floating-ui/dom";
 import axios from "axios";
-import collapse from '@alpinejs/collapse';
+import collapse from "@alpinejs/collapse";
 
 window.Alpine = Alpine;
 window.FloatingUI = FloatingUI;
@@ -297,11 +297,10 @@ Alpine.data("calendar", (role) => ({
     },
     convertEvents(eventsData) {
         return eventsData.map((event) => {
+            let base_url = "#";
 
-            let base_url = '#';
-
-            if(this.authRole === 'admin'){
-                base_url = `/admin/appointment/${event.id}`
+            if (this.authRole === "admin") {
+                base_url = `/admin/appointment/${event.id}`;
             }
 
             return {
@@ -320,17 +319,41 @@ Alpine.data("calendar", (role) => ({
     },
 }));
 
-Alpine.data('sidebarAction', () => ({
-    toggle : false,
-    toggleAction(){
-        this.toggle !== this.toggle
-    }
-}))
+Alpine.data("sidebarAction", () => ({
+    toggle: false,
+    toggleAction() {
+        this.toggle !== this.toggle;
+    },
+}));
 
-Alpine.plugin([
-    collapse,
-])
+Alpine.data("starRating", () => ({
+    rating: 0,
+    hoverRating: 0,
+    ratings: [
+        { amount: 1, label: "Terrible" },
+        { amount: 2, label: "Bad" },
+        { amount: 3, label: "Okay" },
+        { amount: 4, label: "Good" },
+        { amount: 5, label: "Great" },
+    ],
+    rate(amount) {
+        console.log(amount);
+        if (this.rating == amount) {
+            this.rating = 0;
+        } else this.rating = amount;
+    },
+    currentLabel() {
+        let r = this.rating;
+        if (this.hoverRating != this.rating) r = this.hoverRating;
+        let i = this.ratings.findIndex((e) => e.amount == r);
+        if (i >= 0) {
+            return this.ratings[i].label;
+        } else {
+            return "";
+        }
+    },
+}));
 
-
+Alpine.plugin([collapse]);
 
 Alpine.start();
