@@ -5,11 +5,11 @@
                 class="h-10 w-10 object object-center rounded-full">
             <span class="ml-3 text-xl text-base-100">Doc Aid Medial & Diagnostic</span>
         </a>
-        <p class="text-sm text-base-100 sm:ml-6 sm:mt-0 mt-4">© 2020 Doc Aid Medial & Diagnostic —
-            <a href="https://twitter.com/knyttneve" rel="noopener noreferrer" class="text-base-100 ml-1"
-                target="_blank">@knyttneve</a>
+        <p class="text-sm text-base-100 sm:ml-6 sm:mt-0 mt-4">© DOC AID Diagnostic Center & Medical Clinic
+            {{-- <a href="https://twitter.com/knyttneve" rel="noopener noreferrer" class="text-base-100 ml-1"
+                target="_blank">@docAid</a> --}}
         </p>
-        <span class="inline-flex sm:ml-auto sm:mt-0 mt-4 justify-center sm:justify-start">
+        {{-- <span class="inline-flex sm:ml-auto sm:mt-0 mt-4 justify-center sm:justify-start">
             <a class="text-base-100">
                 <svg fill="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     class="w-5 h-5" viewBox="0 0 24 24">
@@ -40,6 +40,6 @@
                     <circle cx="4" cy="4" r="2" stroke="none"></circle>
                 </svg>
             </a>
-        </span>
+        </span> --}}
     </div>
 </footer>

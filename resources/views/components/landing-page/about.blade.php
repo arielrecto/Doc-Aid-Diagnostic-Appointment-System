@@ -15,7 +15,7 @@
             <div class="container px-5 py-24 mx-auto flex flex-wrap">
                 <div class="lg:w-1/2 w-full mb-10 lg:mb-0 rounded-lg overflow-hidden" data-aos="fade-right">
                     <img alt="feature" class="object-cover object-center h-full w-full"
-                        src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bWVkaWNhbCUyMGNsaW5pY3xlbnwwfHwwfHx8MA%3D%3D&w=1000&q=80">
+                        src="{{asset('image/doc.jpg')}}">
                 </div>
                 <div class="flex flex-col flex-wrap lg:py-6 -mb-10 lg:w-1/2 lg:pl-12 lg:text-left text-center">
                     <div class="flex flex-col mb-10 lg:items-start items-center" data-aos="fade-left">
@@ -69,7 +69,7 @@
                                 <circle cx="12" cy="7" r="4"></circle>
                             </svg>
                         </div> --}}
-                        <div class="flex-grow">
+                        {{-- <div class="flex-grow">
                             <h2 class="text-gray-900 text-lg title-font font-medium mb-3">History</h2>
                             <p class="leading-relaxed text-base">Blue bottle crucifix vinyl post-ironic four dollar
                                 toast vegan taxidermy. Gastropub indxgo juice poutine.</p>
@@ -79,7 +79,7 @@
                                     <path d="M5 12h14M12 5l7 7-7 7"></path>
                                 </svg>
                             </a>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>

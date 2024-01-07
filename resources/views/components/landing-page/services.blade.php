@@ -22,7 +22,7 @@
                             <div class="bg-base-100 p-6 rounded-lg">
                                 <img class="h-40 rounded w-full object-cover object-center mb-6"
                                     src="{{$service->image}}" alt="content">
-                                <h3 class="tracking-widest text-indigo-500 text-xs font-medium title-font">SUBTITLE</h3>
+                                {{-- <h3 class="tracking-widest text-indigo-500 text-xs font-medium title-font">SUBTITLE</h3> --}}
                                 <h2 class="text-lg text-gray-900 font-medium title-font mb-4">{{$service->name}}</h2>
                                 <p class="leading-relaxed text-base truncate">{!!$service->description!!}</p>
                             </div>
