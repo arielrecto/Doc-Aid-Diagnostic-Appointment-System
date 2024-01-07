@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('image_carousels', function (Blueprint $table) {
             $table->id();
             $table->string('image');
-            $table->string('title');
-            $table->string('description');
+            $table->string('title')->nullable();
+            $table->string('description')->nullable();
             $table->boolean('active')->default(true);
             $table->timestamps();
         });

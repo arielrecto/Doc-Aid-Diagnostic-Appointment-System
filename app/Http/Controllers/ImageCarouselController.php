@@ -27,8 +27,6 @@ class ImageCarouselController extends Controller
 
         $request->validate([
             'image' => 'required',
-            'title' => 'required',
-            'description' => 'required'
         ]);
 
         $imageName = 'carouselIMG-' . uniqid() . '.' . $request->image->extension();
