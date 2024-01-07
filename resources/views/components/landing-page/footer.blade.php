@@ -3,7 +3,7 @@
         <a class="flex title-font font-medium items-center md:justify-start justify-center text-gray-900">
             <img src="{{ asset('image/logo.png') }}" alt="" srcset=""
                 class="h-10 w-10 object object-center rounded-full">
-            <span class="ml-3 text-xl text-base-100">Doc Aid Medical & Diagnostic</span>
+            <span class="ml-3 text-xl text-base-100">Doc Aid</span>
         </a>
         <p class="text-sm text-base-100 sm:ml-6 sm:mt-0 mt-4">© DOC AID Diagnostic Center & Medical Clinic
             {{-- <a href="https://twitter.com/knyttneve" rel="noopener noreferrer" class="text-base-100 ml-1"
