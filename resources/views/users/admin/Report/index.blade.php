@@ -43,7 +43,7 @@
                     </div>
 
                     <div class="mt-24 w-full flex justify-end">
-                        <h1 class="">Prepared By:</h1>
+                        <h1 class="font-bold text-lg">Prepared By: <span>{{Auth::user()->name}}</span></h1>
                     </div>
                 </div>
 
