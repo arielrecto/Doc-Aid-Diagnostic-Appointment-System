@@ -148,7 +148,7 @@ class PaypalController extends Controller
     public function cancel(Request $request)
     {
 
-        dd($request);
+       return view('components.paypal.cancel');
 
     }
     private function processServices($services, $appointment)
