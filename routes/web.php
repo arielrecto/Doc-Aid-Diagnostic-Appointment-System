@@ -14,6 +14,7 @@ use App\Http\Controllers\Patient\AppointmentController;
 use App\Http\Controllers\Patient\FamilyMemberController;
 use App\Http\Controllers\Admin\AppointmentController as AdminAppointmentController;
 use App\Http\Controllers\Admin\PaymentController;
+use App\Http\Controllers\Admin\SalesReportController;
 use App\Http\Controllers\Patient\DashboardController as PatientDashboardController;
 use App\Http\Controllers\Employee\DashboardController as EmployeeDashboardController;
 use App\Http\Controllers\Employee\AppointmentController as EmployeeAppointmentController;
@@ -65,6 +66,10 @@ Route::middleware('auth')->group(function () {
         });
         Route::prefix('/services')->as('service.')->group(function () {
             Route::patch('/availability/{Service}', [ServiceController::class, 'availability'])->name('availability');
+        });
+
+        Route::prefix('/sales/report')->as('report.')->group(function (){
+            Route::get('/', [SalesReportController::class,'index'])->name('index');
         });
 
         Route::resource('services', ServiceController::class);
