@@ -48,12 +48,15 @@ class ResultController extends Controller
             return back()->with(['rejected' => 'appointment has remaining balance: ₱ ' . $appointment->balance]);
         }
 
+        $patient = null;
+        if($appointment->user->members !== null) {
+            $patient = $appointment->user
+            ->family
+            ->members()
+            ->whereFullName($appointment->patient)
+            ->first();
+        }
 
-        $patient = $appointment->user
-                    ->family
-                    ->members()
-                    ->whereFullName($appointment->patient)
-                    ->first();
 
         if($patient !== null) {
             $appointment->update([

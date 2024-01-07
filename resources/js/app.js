@@ -354,6 +354,22 @@ Alpine.data("starRating", () => ({
     },
 }));
 
+Alpine.data("printReport", () => ({
+    elem: null,
+    init() {
+        this.elem = this.$refs.printElem;
+        console.log(this.elem);
+    },
+    printElement() {
+        const opt = {
+            margin: 1,
+            filename: "Sales Report",
+        };
+
+        const html2pdf = window.html2pdf().set(opt).from(this.elem).save();
+    },
+}));
+
 Alpine.plugin([collapse]);
 
 Alpine.start();

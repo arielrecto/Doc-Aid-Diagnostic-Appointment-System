@@ -29,9 +29,9 @@ class AppointmentController extends Controller
 
         $appointments = Appointment::with('subscribeServices.service')
         ->where('status', '!=', AppointmentStatus::DONE->value)
-        ->whereId($user->id)->get();
+        ->whereUserId($user->id)->get();
 
-        $appointmentsData = Appointment::with('subscribeServices.service')->whereId($user->id)->get()->toJson();
+        $appointmentsData = Appointment::with('subscribeServices.service')->whereUserId($user->id)->get()->toJson();
 
         return view('users.patient.appointment.index', compact(['appointments', 'appointmentsData']));
     }
@@ -98,6 +98,7 @@ class AppointmentController extends Controller
             'receipt_amount' => $request->receipt_amount,
             'balance' => $request->balance,
             'total' => $request->total,
+            'payment_type' => $request->payment_type,
             'status' => 'pending',
             'is_extended' => $request?->is_extended === "on" ? true : false
         ]);
