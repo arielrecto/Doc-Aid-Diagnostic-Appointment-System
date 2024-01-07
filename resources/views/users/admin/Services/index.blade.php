@@ -46,7 +46,7 @@
                     </div>
 
                     <div class="bg-base-100 rounded-lg shadow-sm hover:shadow-lg duration-700 flex flex-col gap-2">
-                        <div class="overflow-x-auto">
+                        <div class="overflow-y-auto">
                             <table class="table table-zebra">
                                 <!-- head -->
                                 <thead>
