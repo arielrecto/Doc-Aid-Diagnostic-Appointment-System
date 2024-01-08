@@ -9,7 +9,7 @@
                 <div class="flex flex-wrap w-full mb-20">
                     <div class="lg:w-1/2 w-full mb-6 lg:mb-0">
                         <h1 class="text-lg lg:text-3xl md:text-2xl font-medium title-font mb-2 text-gray-900 flex flex-col gap-2">
-                            <span class="text-primary font-bold">Doc Aid Medial & Diagnostics</span>
+                            <span class="text-primary font-bold">Doc Aid Medical & Diagnostics</span>
                             <span class="text-sm md:text-xl border-b-2 border-primary">Services Offered</span>
                         </h1>
 
