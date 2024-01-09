@@ -77,7 +77,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('employee', EmployeeController::class);
         Route::resource('imageCarousel', ImageCarouselController::class);
     });
-    Route::middleware('role:patient')->prefix('patient')->as('patient.')->group(function () {
+    Route::middleware(['role:patient', 'verified'])->prefix('patient')->as('patient.')->group(function () {
         Route::get('/dashboard', [PatientDashboardController::class, 'dashboard'])->name('dashboard');
         Route::resource('appointment', AppointmentController::class);
         Route::prefix('family')->as('family.')->group(function () {
