@@ -28,8 +28,8 @@ class AppointmentController extends Controller
         $user = Auth::user();
 
         $appointments = Appointment::with('subscribeServices.service')
-        ->where('status', '!=', AppointmentStatus::DONE->value)
-        ->whereUserId($user->id)->get();
+            ->where('status', '!=', AppointmentStatus::DONE->value)
+            ->whereUserId($user->id)->get();
 
         $appointmentsData = Appointment::with('subscribeServices.service')->whereUserId($user->id)->get()->toJson();
 
@@ -47,6 +47,7 @@ class AppointmentController extends Controller
         $today = Carbon::now()->timezone('GMT+8')->format('l');
 
 
+
         $day = Day::where('name', $today)->first();
 
         $services = $day->services()->with(['timeSlot'])->get();
@@ -62,7 +63,11 @@ class AppointmentController extends Controller
      */
     public function store(Request $request)
     {
+        $user = Auth::user();
 
+
+
+        $services = json_decode($request->services);
 
         $request->validate([
             'patient' => 'required',
@@ -70,23 +75,40 @@ class AppointmentController extends Controller
             'patient' => 'required'
         ]);
 
+
         $otherDate = Carbon::createFromFormat('Y-m-d', $request->date);
 
 
-        if($otherDate->lt(now())){
+        if ($otherDate->lt(now())) {
             return back()->with(['reject' => 'Appointment cannot be made since the selected date has passed.']);
+        }
+
+        $hasAppointment = Appointment::where('date', $request->date)
+            ->where('user_id', $user->id)
+            ->where('status', '!=',  AppointmentStatus::DONE->value)->first();
+
+
+        if ($hasAppointment !== null &&  $hasAppointment->subscribeServices !== null) {
+
+            $subscribeService = $hasAppointment->subscribeServices->first();
+
+            foreach ($services as $service) {
+                if ($service->id === $subscribeService->service_id) {
+                    return back()->with(['reject' => 'You have Already Appointment with service and date']);
+                }
+            }
         }
 
 
 
-        $services = json_decode($request->services);
+
 
 
         // $service = Service::find($request->service);
         $imageUploader = new ImageUploader();
         $imageUploader->handler($request->receipt, '/image/receipt/', 'RCPT');
 
-        $user = Auth::user();
+
         $appointment = Appointment::create([
             'date' => $request->date,
             'patient' => $request->patient,

@@ -8,6 +8,7 @@ use App\Models\TimeSlot;
 use App\Models\Appointment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use App\Enums\AppointmentStatus;
 use App\Models\SubscribeService;
 use Illuminate\Support\Facades\Auth;
 use Srmklive\PayPal\Services\PayPal as PayPalClient;
@@ -17,6 +18,11 @@ class PaypalController extends Controller
 {
     public function paypal(Request $request)
     {
+
+        $services = json_decode($request->services);
+
+
+        $user = Auth::user();
 
         $request->validate([
             'date' => 'required',
@@ -28,6 +34,24 @@ class PaypalController extends Controller
         if($otherDate->lt(now())){
             return back()->with(['reject' => 'Appointment cannot be made since the selected date has passed.']);
         }
+
+
+        $hasAppointment = Appointment::where('date', $request->date)
+        ->where('user_id', $user->id)
+        ->where('status', '!=',  AppointmentStatus::DONE->value)->first();
+
+
+    if ($hasAppointment !== null &&  $hasAppointment->subscribeServices !== null) {
+
+        $subscribeService = $hasAppointment->subscribeServices->first();
+
+        foreach ($services as $service) {
+            if ($service->id === $subscribeService->service_id) {
+                return back()->with(['reject' => 'You have Already Appointment with service and date']);
+            }
+        }
+    }
+
 
 
 
