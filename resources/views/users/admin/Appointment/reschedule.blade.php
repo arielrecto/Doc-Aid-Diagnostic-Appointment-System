@@ -8,7 +8,7 @@
             @if (Session::has('rejected'))
                 <div class="panel-error">
                     <span>
-                        CODE ERROR - Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis, dolor?
+                       {{Session::get('reject')}}
                     </span>
                 </div>
             @endif
@@ -16,7 +16,7 @@
             @if (Session::has('approved'))
                 <div class="panel-success">
                     <span>
-                        CODE SUCCESS - Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate, voluptatum?
+                       {{Session::get('approved')}}
                     </span>
                 </div>
             @endif
@@ -31,6 +31,65 @@
 
             <div class="panel bg-transparent p-0 shadow-none rounded-none overflow-auto">
                 <div class="flex flex-col gap-2 bg-white rounded-lg shadow-md p-4">
+                    <div class="flex items-center justify-between">
+                        <h1 class="page-title">Reschedule Request</h1>
+                        <div class="flex items-center gap-2">
+                            <form action="{{route('admin.appointment.reschedule.approve')}}" method="post">
+
+                                @csrf
+                                @method('put')
+                                <input type="hidden" name="reschedule_id" value="{{$reschedule->id}}">
+                                <button class="btn btn-accent btn-sm uppercase shadow border">
+                                    Approved
+                                </button>
+                            </form>
+
+                            <form action="{{route('admin.appointment.reschedule.reject')}}" method="post">
+
+                                @csrf
+                                @method('put')
+                                <input type="hidden" name="reschedule_id" value="{{$reschedule->id}}">
+                                <button class="btn btn-error btn-sm uppercase shadow border">
+                                    Reject
+                                </button>
+                            </form>
+
+
+                        </div>
+                    </div>
+                    <div class="flex w-full h-auto gap-5">
+                        <div class="text-sm w-1/3 h-auto" x-data="calendar" x-init="initializeCalendar({{$appointments}})">
+                            <div id="calendar">
+
+                            </div>
+                        </div>
+                        <div class="w-4/6 p-2 rounded-lg border-2 border-gray-200 flex flex-col gap-2">
+                            <div class="grid grid-cols-2 grid-flow-row gap-2">
+                                <div class="flex flex-col gap-2">
+                                    <label for="" class="c-input-label">Date:</label>
+                                    <p>{{date('F d, Y',  strtotime($reschedule->date))}}</p>
+                                </div>
+                                <div class="grid grid-cols-2 grid-flow-row gap-2">
+                                    <div class="flex flex-col gap-2">
+                                        <label for="" class="c-input-label">Start</label>
+                                        <p>{{date('g:i A',  strtotime($reschedule->start_time))}}</p>
+                                    </div>
+                                    <div class="flex flex-col gap-2">
+                                        <label for="" class="c-input-label">End</label>
+                                        <p>{{date('g:i A',  strtotime($reschedule->end_time))}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="w-full bg-gray-100 rounded-lg h-full p-2">
+                                <p>{{$reschedule->remark}}</p>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+                <div class="flex flex-col gap-2 bg-white rounded-lg shadow-md p-4">
                     <div class="flex justify-between items-center">
                         <h1 class="page-title">Appointment Details</h1>
 
@@ -42,31 +101,7 @@
                             <label for="" class="text-gray-500 text-sm">Date</label>
                             <h1 class="font-semibold flex gap-4 text-xs lg:text-base">
                                 {{ date('M-d-Y', strtotime($appointment->date)) }}
-                                <span>
-                                    <a href="{{route('patient.appointment.reschedule.create', ['appointment' => $appointment->id])}}">
-                                        <button id="resched-modal-trigger" @click="openReschedModal">
-                                            <i class="fi fi-rr-edit text-accent"></i>
-                                        </button>
-                                    </a>
 
-
-                                    {{-- <div id="resched-modal" class="absolute top-0 left-0 lg:w-96 w-64"
-                                        @click.outside="openReschedModal" x-cloak x-show="reschedModal">
-                                        <div class="rounded-lg bg-white border shadow-md p-5">
-                                            <form
-                                                action="{{ route('admin.appointment.reschedule', ['appointment' => $appointment->id]) }}"
-                                                method="post" class="flex flex-col gap-2">
-                                                @csrf
-                                                @method('put')
-                                                <h1 class="text-sm lg:text-lg font-bold text-left">Reschedule</h1>
-                                                <p class="text-xs text-gray-500">Date</p>
-                                                <input type="date" name="date" class="c-input input-xs">
-                                                <button class="btn-generic uppercase">Save</button>
-                                            </form>
-                                        </div>
-                                    </div> --}}
-
-                                </span>
                             </h1>
                         </div>
                         <div class="flex flex-col gap-2 ">
@@ -150,8 +185,7 @@
                             </div>
 
                         </div>
-
-                        @else
+                    @else
                         <div class="w-full flex flex-col gap-2">
                             <label for="" class="text-gray-500 text-sm">Patient</label>
                             <div class="flex gap-5 w-full">
@@ -177,10 +211,7 @@
                                             <h3 class="text-sm">{{ $profile->middle_name }}</h3>
                                         </div>
 
-                                        {{-- <div class="flex flex-col gap-2">
-                                            <label for="" class="text-sm font-bold">Age : </label>
-                                            <h3 class="text-sm">{{ $profile->age }}</h3>
-                                        </div> --}}
+
                                         <div class="flex flex-col gap-2">
                                             <label for="" class="text-sm font-bold">Sex : </label>
                                             <h3 class="text-sm">{{ $profile->sex }}</h3>
@@ -190,31 +221,6 @@
                                             <h3 class="text-sm">{{ date('F d, Y', strtotime($profile->birthdate)) }}
                                             </h3>
                                         </div>
-                                        {{-- <div class="flex flex-col gap-2">
-                                            <label for="" class="text-sm font-bold">Street : </label>
-                                            <h3 class="text-sm">{{ $profile->street }}</h3>
-                                        </div>
-                                        <div class="flex flex-col gap-2">
-                                            <label for="" class="text-sm font-bold">Barangay: </label>
-                                            <h3 class="text-sm">{{ $profile->barangay }}</h3>
-                                        </div>
-                                        <div class="flex flex-col gap-2">
-                                            <label for="" class="text-sm font-bold">Municipality : </label>
-                                            <h3 class="text-sm">{{ $profile->municipality }}</h3>
-                                        </div>
-                                        <div class="flex flex-col gap-2">
-                                            <label for="" class="text-sm font-bold">Region : </label>
-                                            <h3 class="text-sm">{{ $profile->region }}</h3>
-                                        </div>
-                                        <div class="flex flex-col gap-2">
-                                            <label for="" class="text-sm font-bold">Municipality : </label>
-                                            <h3 class="text-sm">{{ $profile->zip_code }}</h3>
-                                        </div>
-                                        <div class="flex flex-col gap-2">
-
-                                            <label for="" class="text-sm font-bold">Contact #: </label>
-                                            <h3 class="text-sm">{{ $profile->contact_no }}</h3>
-                                        </div> --}}
 
                                     </div>
                                 </div>
@@ -224,11 +230,19 @@
                     @endif
                 </div>
 
-                <div class="flex flex-col gap-2 bg-white rounded-lg shadow-md p-4">
+                <div class="flex flex-col gap-2 bg-white rounded-lg shadow-md p-4" x-data="{ toggle: false }">
+                    <div class="w-full h-auto ">
+
+                    </div>
                     <h1 class="page-title">Payment Status</h1>
-                    <h1 class="text-lg font-bold"> <span class="text-sm md:text-base font-thin">Referrence Number
+                    <div class="flex justify-between">
+                        <h1 class="text-lg font-bold"> <span class="text-sm md:text-base font-thin">Referrence Number
                             :</span>{{ $appointment->receipt_number }}</h1>
-                    <div class="w-full flex flex-col gap-2 p-2">
+                            <button @click="toggle = !toggle" class="btn-generic">open</button>
+                    </div>
+
+
+                    <div class="w-full flex flex-col gap-2 p-2" x-show="toggle" x-cloak>
                         <div class="w-full h-full flex flex-col gap-2">
 
                             <div class="flex gap-2">
@@ -243,41 +257,43 @@
 
                             </div>
                         </div>
-
-
-
-
-                    </div>
-                    <div class="flex flex-col gap-1">
-                        <h1 class="text-sm text-gray-500">Patient</h1>
-                        <h1 class="text-lg font-bold">{{ $appointment->patient }}</h1>
-                    </div>
-
-                    <div class="flex-grow flex items-center space-x-5">
-                        <div class="flex flex-col gap-2">
-                            <h1 class="text-sm text-gray-500">
-                                Balance
-                            </h1>
-                            <p class="font-semibold">
-                                PHP {{ $appointment->balance }}
-                            </p>
+                        <div class="flex flex-col gap-1">
+                            <h1 class="text-sm text-gray-500">Patient</h1>
+                            <h1 class="text-lg font-bold">{{ $appointment->patient }}</h1>
                         </div>
-                        <div class="flex flex-col gap-2">
-                            <h1 class="text-sm text-gray-500">
-                                Total
-                            </h1>
-                            <p class="font-semibold">
-                                PHP {{ $appointment->total }}
-                            </p>
+
+                        <div class="flex-grow flex items-center space-x-5">
+                            <div class="flex flex-col gap-2">
+                                <h1 class="text-sm text-gray-500">
+                                    Balance
+                                </h1>
+                                <p class="font-semibold">
+                                    PHP {{ $appointment->balance }}
+                                </p>
+                            </div>
+                            <div class="flex flex-col gap-2">
+                                <h1 class="text-sm text-gray-500">
+                                    Total
+                                </h1>
+                                <p class="font-semibold">
+                                    PHP {{ $appointment->total }}
+                                </p>
+                            </div>
                         </div>
+
                     </div>
 
                 </div>
 
 
-                <div class="flex flex-col gap-2 bg-white rounded-lg shadow-md p-4">
-                    <h1 class="page-title">Services Availed</h1>
-                    <div class="overflow-x-auto h-96 w-full">
+                <div class="flex flex-col gap-2 bg-white rounded-lg shadow-md p-4" x-data="{toggle : false}">
+
+                    <div class="flex justify-between">
+                        <h1 class="page-title">Services Availed</h1>
+                        <button class="btn-generic" @click="toggle = !toggle">open</button>
+                    </div>
+
+                    <div class="overflow-x-auto h-96 w-full" x-show="toggle" x-cloak>
 
 
 
@@ -315,81 +331,7 @@
                 </div>
 
 
-                <div class="flex flex-col gap-2 bg-white rounded-lg shadow-md p-4">
-                    <h1 class="page-title">Result</h1>
-                    <div class="overflow-x-auto h-96">
-
-
-
-
-                        @foreach ($appointment->results as $result)
-                            <table class="table">
-                                <!-- head -->
-                                <thead class="capitalize">
-                                    <tr>
-                                        <th>Subject</th>
-                                        <th>description</th>
-                                        <th>File</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <!-- row 1 -->
-                                    <tr class="">
-                                        <th>{{ $result->name }}</th>
-                                        <td>{!! $result->description !!}</td>
-                                        <td><a href="{{ $result->path }}" target="_blank"><i
-                                                    class="fi fi-rr-document"></i></a></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        @endforeach
-                    </div>
-
-                </div>
-
             </div>
-            {{-- <div class="w-full flex flex-col gap-2">
-                                        <h1 class="text-lg font-semibold w-full text-center capitalize">result</h1>
-                                        <div class="overflow-x-auto">
-
-
-                                            @foreach ($appointment->result as $result)
-                                                <table class="table">
-                                                    <!-- head -->
-                                                    <thead class="capitalize">
-                                                        <tr>
-                                                            <th></th>
-                                                            <th>Name</th>
-                                                            <th>description</th>
-                                                            <th>action</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <!-- row 1 -->
-                                                        <tr class="bg-base-200">
-                                                            <th>{{ $result->id }}</th>
-                                                            <td>{{ $result->name }}</td>
-                                                            <td>{!! $result->description !!}</td>
-                                                            <td>
-                                                                <div class="flex justify-ned p-2 gap-4">
-                                                                    <a href="{{ asset($result->path) }}"
-                                                                        target="_blank">
-                                                                        <button><i
-                                                                                class="fi fi-rr-eye text-accent"></i></button>
-                                                                    </a>
-
-                                                                    <a href="{{ asset($result->path) }}" download>
-                                                                        <button><i
-                                                                                class="fi fi-rr-download"></i></button>
-                                                                    </a>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            @endforeach
-                                        </div>
-                                    </div> --}}
         </div>
     </div>
 

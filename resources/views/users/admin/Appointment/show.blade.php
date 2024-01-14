@@ -1,3 +1,7 @@
+@php
+    use App\Enums\AppointmentStatus;
+@endphp
+
 <x-app-layout>
     <div class="main-screen">
         <x-admin.sidebar-new />
@@ -36,6 +40,15 @@
                         <h1 class="page-title">Appointment Details</h1>
 
                         <div class="flex p-2 justify-end gap-2 items-center">
+                            @if ($appointment->status === AppointmentStatus::RESCHEDULE->value)
+                                <a class="btn btn-warning btn-sm uppercase shadow border"
+                                    href="{{ route('admin.appointment.reschedule', ['appointment' => $appointment->rescheduleRequest->id]) }}">
+
+                                    <i class="fi fi-rr-edit hover:bold"></i> Reschedule Request
+                                    ({{ $appointment->rescheduleRequest->where('status', AppointmentStatus::PENDING->value)->count() }})
+
+                                </a>
+                            @endif
                             @if ($appointment->balance != 0 && $appointment->status == 'approved')
                                 <div class="w-full flex justify-center" x-data="payment">
                                     <button id="payment-modal-trigger" @click="openToggle"
@@ -175,7 +188,7 @@
                             <label for="" class="text-gray-500 text-sm">Date</label>
                             <h1 class="font-semibold flex gap-4">
                                 {{ date('M-d-Y', strtotime($appointment->date)) }}
-                                <span x-data="appointmentShow">
+                                {{-- <span x-data="appointmentShow">
                                     <button id="resched-modal-trigger" @click="openReschedModal">
                                         <i class="fi fi-rr-edit text-accent"></i>
                                     </button>
@@ -196,7 +209,7 @@
                                         </div>
                                     </div>
 
-                                </span>
+                                </span> --}}
                             </h1>
                         </div>
                         <div class="flex flex-col gap-2 ">

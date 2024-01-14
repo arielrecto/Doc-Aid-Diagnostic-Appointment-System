@@ -9,6 +9,7 @@ enum AppointmentStatus: string
     case APPROVED = 'approved';
     case DONE = 'done';
     case CANCEL = 'cancel';
+    case RESCHEDULE = 'reschedule';
 
     public static function toArray(): array
     {

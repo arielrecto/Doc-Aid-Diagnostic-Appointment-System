@@ -21,7 +21,9 @@ use App\Http\Controllers\Employee\AppointmentController as EmployeeAppointmentCo
 use App\Http\Controllers\ImageCarouselController;
 use App\Http\Controllers\Patient\FeedbackController;
 use App\Http\Controllers\Patient\ProfileController as PatientProfileController;
+use App\Http\Controllers\Patient\RescheduleController;
 use App\Http\Controllers\PaypalController;
+use App\Models\appointmentReschedule;
 use App\Models\FeedBack;
 use App\Models\ImageCarousel;
 
@@ -60,7 +62,9 @@ Route::middleware('auth')->group(function () {
             Route::post('/approved/{id}', [AdminAppointmentController::class, 'approved'])->name('approved');
             Route::post('/reject/{id}', [AdminAppointmentController::class, 'reject'])->name('reject');
             Route::get('/filter={filter}', [AdminAppointmentController::class, 'filter'])->name('filter');
-            Route::put('/reschedule/id={appointment}', [AdminAppointmentController::class, 'reschedule'])->name('reschedule');
+            Route::put('/reschedule/approve', [AdminAppointmentController::class, 'approvedReschedule'])->name('reschedule.approve');
+            Route::put('/reschedule/reject', [AdminAppointmentController::class, 'rejectReschedule'])->name('reschedule.reject');
+            Route::get('/reschedule/id={appointment}', [AdminAppointmentController::class, 'reschedule'])->name('reschedule');
             Route::resource('result', ResultController::class)->except('create');
             Route::resource('payment', PaymentController::class);
         });
@@ -79,6 +83,10 @@ Route::middleware('auth')->group(function () {
     });
     Route::middleware(['role:patient', 'verified'])->prefix('patient')->as('patient.')->group(function () {
         Route::get('/dashboard', [PatientDashboardController::class, 'dashboard'])->name('dashboard');
+        Route::prefix('appointment/reschedule')->as('appointment.reschedule.')->group(function(){
+            Route::get('{appointment}/create', [RescheduleController::class, 'create'])->name('create');
+            Route::post('/', [RescheduleController::class, 'store'])->name('store');
+        });
         Route::resource('appointment', AppointmentController::class);
         Route::prefix('family')->as('family.')->group(function () {
             Route::resource('members', FamilyMemberController::class);

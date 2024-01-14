@@ -73,4 +73,7 @@ class Appointment extends Model
     public function family_member(){
         return $this->belongsTo(FamilyMember::class);
     }
+    public function rescheduleRequest(){
+        return $this->hasOne(appointmentReschedule::class);
+    }
 }

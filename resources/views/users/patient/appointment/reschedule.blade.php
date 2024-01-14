@@ -42,31 +42,28 @@
                             <label for="" class="text-gray-500 text-sm">Date</label>
                             <h1 class="font-semibold flex gap-4 text-xs lg:text-base">
                                 {{ date('M-d-Y', strtotime($appointment->date)) }}
-                                <span>
-                                    <a href="{{route('patient.appointment.reschedule.create', ['appointment' => $appointment->id])}}">
+                                    {{-- <span x-data="appointmentShow">
                                         <button id="resched-modal-trigger" @click="openReschedModal">
                                             <i class="fi fi-rr-edit text-accent"></i>
                                         </button>
-                                    </a>
 
-
-                                    {{-- <div id="resched-modal" class="absolute top-0 left-0 lg:w-96 w-64"
-                                        @click.outside="openReschedModal" x-cloak x-show="reschedModal">
-                                        <div class="rounded-lg bg-white border shadow-md p-5">
-                                            <form
-                                                action="{{ route('admin.appointment.reschedule', ['appointment' => $appointment->id]) }}"
-                                                method="post" class="flex flex-col gap-2">
-                                                @csrf
-                                                @method('put')
-                                                <h1 class="text-sm lg:text-lg font-bold text-left">Reschedule</h1>
-                                                <p class="text-xs text-gray-500">Date</p>
-                                                <input type="date" name="date" class="c-input input-xs">
-                                                <button class="btn-generic uppercase">Save</button>
-                                            </form>
+                                        <div id="resched-modal" class="absolute top-0 left-0 lg:w-96 w-64"
+                                            @click.outside="openReschedModal" x-cloak x-show="reschedModal">
+                                            <div class="rounded-lg bg-white border shadow-md p-5">
+                                                <form
+                                                    action="{{ route('admin.appointment.reschedule', ['appointment' => $appointment->id]) }}"
+                                                    method="post" class="flex flex-col gap-2">
+                                                    @csrf
+                                                    @method('put')
+                                                    <h1 class="text-sm lg:text-lg font-bold text-left">Reschedule</h1>
+                                                    <p class="text-xs text-gray-500">Date</p>
+                                                    <input type="date" name="date" class="c-input input-xs">
+                                                    <button class="btn-generic uppercase">Save</button>
+                                                </form>
+                                            </div>
                                         </div>
-                                    </div> --}}
 
-                                </span>
+                                    </span> --}}
                             </h1>
                         </div>
                         <div class="flex flex-col gap-2 ">
@@ -150,8 +147,7 @@
                             </div>
 
                         </div>
-
-                        @else
+                    @else
                         <div class="w-full flex flex-col gap-2">
                             <label for="" class="text-gray-500 text-sm">Patient</label>
                             <div class="flex gap-5 w-full">
@@ -224,11 +220,19 @@
                     @endif
                 </div>
 
-                <div class="flex flex-col gap-2 bg-white rounded-lg shadow-md p-4">
+                <div class="flex flex-col gap-2 bg-white rounded-lg shadow-md p-4" x-data="{ toggle: false }">
+                    <div class="w-full h-auto ">
+
+                    </div>
                     <h1 class="page-title">Payment Status</h1>
-                    <h1 class="text-lg font-bold"> <span class="text-sm md:text-base font-thin">Referrence Number
+                    <div class="flex justify-between">
+                        <h1 class="text-lg font-bold"> <span class="text-sm md:text-base font-thin">Referrence Number
                             :</span>{{ $appointment->receipt_number }}</h1>
-                    <div class="w-full flex flex-col gap-2 p-2">
+                            <button @click="toggle = !toggle" class="btn-generic">open</button>
+                    </div>
+
+
+                    <div class="w-full flex flex-col gap-2 p-2" x-show="toggle" x-cloak>
                         <div class="w-full h-full flex flex-col gap-2">
 
                             <div class="flex gap-2">
@@ -243,41 +247,43 @@
 
                             </div>
                         </div>
-
-
-
-
-                    </div>
-                    <div class="flex flex-col gap-1">
-                        <h1 class="text-sm text-gray-500">Patient</h1>
-                        <h1 class="text-lg font-bold">{{ $appointment->patient }}</h1>
-                    </div>
-
-                    <div class="flex-grow flex items-center space-x-5">
-                        <div class="flex flex-col gap-2">
-                            <h1 class="text-sm text-gray-500">
-                                Balance
-                            </h1>
-                            <p class="font-semibold">
-                                PHP {{ $appointment->balance }}
-                            </p>
+                        <div class="flex flex-col gap-1">
+                            <h1 class="text-sm text-gray-500">Patient</h1>
+                            <h1 class="text-lg font-bold">{{ $appointment->patient }}</h1>
                         </div>
-                        <div class="flex flex-col gap-2">
-                            <h1 class="text-sm text-gray-500">
-                                Total
-                            </h1>
-                            <p class="font-semibold">
-                                PHP {{ $appointment->total }}
-                            </p>
+
+                        <div class="flex-grow flex items-center space-x-5">
+                            <div class="flex flex-col gap-2">
+                                <h1 class="text-sm text-gray-500">
+                                    Balance
+                                </h1>
+                                <p class="font-semibold">
+                                    PHP {{ $appointment->balance }}
+                                </p>
+                            </div>
+                            <div class="flex flex-col gap-2">
+                                <h1 class="text-sm text-gray-500">
+                                    Total
+                                </h1>
+                                <p class="font-semibold">
+                                    PHP {{ $appointment->total }}
+                                </p>
+                            </div>
                         </div>
+
                     </div>
 
                 </div>
 
 
-                <div class="flex flex-col gap-2 bg-white rounded-lg shadow-md p-4">
-                    <h1 class="page-title">Services Availed</h1>
-                    <div class="overflow-x-auto h-96 w-full">
+                <div class="flex flex-col gap-2 bg-white rounded-lg shadow-md p-4" x-data="{toggle : false}">
+
+                    <div class="flex justify-between">
+                        <h1 class="page-title">Services Availed</h1>
+                        <button class="btn-generic" @click="toggle = !toggle">open</button>
+                    </div>
+
+                    <div class="overflow-x-auto h-96 w-full" x-show="toggle" x-cloak>
 
 
 
@@ -314,82 +320,41 @@
 
                 </div>
 
+                <div class="flex flex-col gap-2 bg-white rounded-lg shadow-md p-4" >
+                    <h1 class="page-title">Reschedule Request</h1>
+                    <form action="{{route('patient.appointment.reschedule.store')}}" method="post">
+                        @csrf
+                        <input type="hidden" name="appointment_id" value="{{$appointment->id}}">
+                        <div class="flex flex-col gap-2">
+                            <label for="" class="c-input-label">Date:</label>
+                            <input type="date" name="date" class="c-input">
+                        </div>
+                        <label for="" class="c-input-label">Setup Time:</label>
+                        <div class="grid grid-cols-2 grid-flow-row gap-2">
+                            <div class="flex flex-col gap-2">
+                                <label for="" class="c-input-label">Start </label>
+                                <input type="time" name="start_time" class="c-input">
+                            </div>
+                            <div class="flex flex-col gap-2">
+                                <label for="" class="c-input-label">End</label>
+                                <input type="time" name="end_time" class="c-input">
+                            </div>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <h1 class="c-input-label">
+                                Remark
+                            </h1>
+                            <textarea class="textarea-accent" name="remark" placeholder="remark">
 
-                <div class="flex flex-col gap-2 bg-white rounded-lg shadow-md p-4">
-                    <h1 class="page-title">Result</h1>
-                    <div class="overflow-x-auto h-96">
+                            </textarea>
+                        </div>
+                        <div class="w-full flex items-center p-2 justify-end">
+                            <button class="btn-generic">Submit</button>
+                        </div>
 
-
-
-
-                        @foreach ($appointment->results as $result)
-                            <table class="table">
-                                <!-- head -->
-                                <thead class="capitalize">
-                                    <tr>
-                                        <th>Subject</th>
-                                        <th>description</th>
-                                        <th>File</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <!-- row 1 -->
-                                    <tr class="">
-                                        <th>{{ $result->name }}</th>
-                                        <td>{!! $result->description !!}</td>
-                                        <td><a href="{{ $result->path }}" target="_blank"><i
-                                                    class="fi fi-rr-document"></i></a></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        @endforeach
-                    </div>
-
+                    </form>
                 </div>
-
             </div>
-            {{-- <div class="w-full flex flex-col gap-2">
-                                        <h1 class="text-lg font-semibold w-full text-center capitalize">result</h1>
-                                        <div class="overflow-x-auto">
-
-
-                                            @foreach ($appointment->result as $result)
-                                                <table class="table">
-                                                    <!-- head -->
-                                                    <thead class="capitalize">
-                                                        <tr>
-                                                            <th></th>
-                                                            <th>Name</th>
-                                                            <th>description</th>
-                                                            <th>action</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <!-- row 1 -->
-                                                        <tr class="bg-base-200">
-                                                            <th>{{ $result->id }}</th>
-                                                            <td>{{ $result->name }}</td>
-                                                            <td>{!! $result->description !!}</td>
-                                                            <td>
-                                                                <div class="flex justify-ned p-2 gap-4">
-                                                                    <a href="{{ asset($result->path) }}"
-                                                                        target="_blank">
-                                                                        <button><i
-                                                                                class="fi fi-rr-eye text-accent"></i></button>
-                                                                    </a>
-
-                                                                    <a href="{{ asset($result->path) }}" download>
-                                                                        <button><i
-                                                                                class="fi fi-rr-download"></i></button>
-                                                                    </a>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            @endforeach
-                                        </div>
-                                    </div> --}}
         </div>
     </div>
 

@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Enums\AppointmentStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Appointment;
+use App\Models\AppointmentReschedule;
+use App\Models\Service;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -114,14 +116,63 @@ class AppointmentController extends Controller
     }
     public function reschedule(Request $request, String $id) {
 
-        $appointment = Appointment::find($id);
+        $reschedule = AppointmentReschedule::find($id);
 
-        $appointment->update([
-            'date' => $request->date,
-            'status' => 'RESCHEDULE'
+
+        $appointment = $reschedule->appointment;
+
+        $appointments = Appointment::get()->toJson();
+
+
+        return view('users.admin.Appointment.reschedule', compact(['reschedule', 'appointment', 'appointments']));
+    }
+    public function approvedReschedule(Request $request){
+
+
+        $reschedule = AppointmentReschedule::find($request->reschedule_id);
+
+
+        $reschedule->update([
+            'status' => AppointmentStatus::APPROVED->value
         ]);
 
-        return back()->with(['message' => 'Appointment Date Updated']);
-    }
 
+        $appointment = $reschedule->appointment;
+
+
+        $appointment->update([
+            'status' => AppointmentStatus::APPROVED->value,
+            'date' => $reschedule->date
+        ]);
+
+        $subscribeService = $appointment->subscribeServices->first();
+
+
+        $subscribeService->update([
+            'start_time' => $reschedule->start_time,
+            'end_time' => $reschedule->end_time
+        ]);
+
+        $reschedule->delete();
+
+        return to_route('admin.appointment.show', ['appointment' => $appointment->id])->with(['message' => 'Appointment Reschedule Approved']);
+    }
+    public function rejectReschedule(Request $request){
+
+
+        $reschedule = AppointmentReschedule::find($request->reschedule_id);
+
+
+        $appointment = $reschedule->appointment;
+
+
+        $appointment->update([
+            'status' => AppointmentStatus::APPROVED->value,
+        ]);
+
+
+        $reschedule->delete();
+
+        return to_route('admin.appointment.show', ['appointment' => $appointment->id])->with(['rejected' => 'Appointment Reschedule reject']);
+    }
 }
