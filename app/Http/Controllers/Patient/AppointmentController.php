@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Appointment;
 use App\Models\Day;
 use App\Models\Family;
+use App\Models\FamilyMember;
 use App\Models\Payment;
 use App\Models\Service;
 use App\Models\ServiceAssignment;
@@ -104,6 +105,7 @@ class AppointmentController extends Controller
 
 
 
+
         // $service = Service::find($request->service);
         $imageUploader = new ImageUploader();
         $imageUploader->handler($request->receipt, '/image/receipt/', 'RCPT');
@@ -148,6 +150,18 @@ class AppointmentController extends Controller
                 'date' => $slot->date
             ]);
         });
+
+
+        $familyMember = FamilyMember::where('full_name', $request->patient)->first();
+
+        if($familyMember !== null){
+
+            $appointment->update([
+                'is_family' => true,
+                'family_member_id' => $familyMember->id
+            ]);
+        }
+
 
         $this->processServices($services, $appointment);
         return back()->with(['message' => 'Appointment Request Sent!']);

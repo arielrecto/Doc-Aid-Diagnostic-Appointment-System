@@ -66,11 +66,159 @@
                                 </span>
                             </h1>
                         </div>
+                        <div class="flex flex-col gap-2 ">
+                            <label for="" class="text-gray-500 text-sm">Time:</label>
+                            <h1 class="font-semibold flex gap-4 text-xs lg:text-base">
+                                @php
+                                    $service = $appointment->subscribeServices->first();
+                                @endphp
+                                {{ date('g:i A', strtotime($service->start_time)) }} -
+                                {{ date('g:i A', strtotime($service->end_time)) }}
+                            </h1>
+                        </div>
                     </div>
-                    <div class="w-full flex flex-col gap-2">
-                        <label for="" class="text-gray-500 text-sm">Patient</label>
-                        <h1 class="text-lg font-bold">{{ $appointment->patient }}</h1>
-                    </div>
+
+
+                    @if (!$appointment->is_family)
+                        <div class="w-full flex flex-col gap-2">
+                            <label for="" class="text-gray-500 text-sm">Patient</label>
+                            <div class="flex gap-5 w-full">
+                                <img src="{{ $appointment->user->profile->avatar }}" alt="" srcset=""
+                                    class="h-36 w-auto object object-center">
+                                <div class="w-full h-auto flex flex-col gap-2 bg-gray-100 rounded-lg p-2">
+
+                                    @php
+                                        $profile = $appointment->user->profile;
+                                    @endphp
+                                    <div class="grid grid-cols-3 grid-flow-row gap-2 w-full">
+                                        <div class="flex flex-col gap-2">
+                                            <label for="" class="text-sm font-bold">Last Name</label>
+                                            <h3 class="text-sm">{{ $profile->last_name }}</h3>
+                                        </div>
+                                        <div class="flex flex-col gap-2">
+                                            <label for="" class="text-sm font-bold">First Name</label>
+                                            <h3 class="text-sm">{{ $profile->first_name }}</h3>
+                                        </div>
+                                        <div class="flex flex-col gap-2">
+                                            <label for="" class="text-sm font-bold">Middle Name</label>
+                                            <h3 class="text-sm">{{ $profile->middle_name }}</h3>
+                                        </div>
+                                        <div class="flex flex-col gap-2">
+                                            <label for="" class="text-sm font-bold">Age : </label>
+                                            <h3 class="text-sm">{{ $profile->age }}</h3>
+                                        </div>
+                                        <div class="flex flex-col gap-2">
+                                            <label for="" class="text-sm font-bold">Sex : </label>
+                                            <h3 class="text-sm">{{ $profile->gender }}</h3>
+                                        </div>
+                                        <div class="flex flex-col gap-2">
+                                            <label for="" class="text-sm font-bold">Birthdate : </label>
+                                            <h3 class="text-sm">{{ date('F d, Y', strtotime($profile->birthdate)) }}
+                                            </h3>
+                                        </div>
+                                        <div class="flex flex-col gap-2">
+                                            <label for="" class="text-sm font-bold">Street : </label>
+                                            <h3 class="text-sm">{{ $profile->street }}</h3>
+                                        </div>
+                                        <div class="flex flex-col gap-2">
+                                            <label for="" class="text-sm font-bold">Barangay: </label>
+                                            <h3 class="text-sm">{{ $profile->barangay }}</h3>
+                                        </div>
+                                        <div class="flex flex-col gap-2">
+                                            <label for="" class="text-sm font-bold">Municipality : </label>
+                                            <h3 class="text-sm">{{ $profile->municipality }}</h3>
+                                        </div>
+                                        <div class="flex flex-col gap-2">
+                                            <label for="" class="text-sm font-bold">Region : </label>
+                                            <h3 class="text-sm">{{ $profile->region }}</h3>
+                                        </div>
+                                        <div class="flex flex-col gap-2">
+                                            <label for="" class="text-sm font-bold">Municipality : </label>
+                                            <h3 class="text-sm">{{ $profile->zip_code }}</h3>
+                                        </div>
+                                        <div class="flex flex-col gap-2">
+
+                                            <label for="" class="text-sm font-bold">Contact #: </label>
+                                            <h3 class="text-sm">{{ $profile->contact_no }}</h3>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        @else
+                        <div class="w-full flex flex-col gap-2">
+                            <label for="" class="text-gray-500 text-sm">Patient</label>
+                            <div class="flex gap-5 w-full">
+                                <img src="{{ $appointment->family_member->image }}" alt="" srcset=""
+                                    class="h-36 w-auto object object-center">
+                                <div class="w-full h-auto flex flex-col gap-2 bg-gray-100 rounded-lg p-2">
+
+                                    @php
+                                        $profile = $appointment->family_member;
+                                    @endphp
+
+                                    <div class="grid grid-cols-3 grid-flow-row gap-2 w-full">
+                                        <div class="flex flex-col gap-2">
+                                            <label for="" class="text-sm font-bold">Last Name</label>
+                                            <h3 class="text-sm">{{ $profile->last_name }}</h3>
+                                        </div>
+                                        <div class="flex flex-col gap-2">
+                                            <label for="" class="text-sm font-bold">First Name</label>
+                                            <h3 class="text-sm">{{ $profile->first_name }}</h3>
+                                        </div>
+                                        <div class="flex flex-col gap-2">
+                                            <label for="" class="text-sm font-bold">Middle Name</label>
+                                            <h3 class="text-sm">{{ $profile->middle_name }}</h3>
+                                        </div>
+
+                                        {{-- <div class="flex flex-col gap-2">
+                                            <label for="" class="text-sm font-bold">Age : </label>
+                                            <h3 class="text-sm">{{ $profile->age }}</h3>
+                                        </div> --}}
+                                        <div class="flex flex-col gap-2">
+                                            <label for="" class="text-sm font-bold">Sex : </label>
+                                            <h3 class="text-sm">{{ $profile->sex }}</h3>
+                                        </div>
+                                        <div class="flex flex-col gap-2">
+                                            <label for="" class="text-sm font-bold">Birthdate : </label>
+                                            <h3 class="text-sm">{{ date('F d, Y', strtotime($profile->birthdate)) }}
+                                            </h3>
+                                        </div>
+                                        {{-- <div class="flex flex-col gap-2">
+                                            <label for="" class="text-sm font-bold">Street : </label>
+                                            <h3 class="text-sm">{{ $profile->street }}</h3>
+                                        </div>
+                                        <div class="flex flex-col gap-2">
+                                            <label for="" class="text-sm font-bold">Barangay: </label>
+                                            <h3 class="text-sm">{{ $profile->barangay }}</h3>
+                                        </div>
+                                        <div class="flex flex-col gap-2">
+                                            <label for="" class="text-sm font-bold">Municipality : </label>
+                                            <h3 class="text-sm">{{ $profile->municipality }}</h3>
+                                        </div>
+                                        <div class="flex flex-col gap-2">
+                                            <label for="" class="text-sm font-bold">Region : </label>
+                                            <h3 class="text-sm">{{ $profile->region }}</h3>
+                                        </div>
+                                        <div class="flex flex-col gap-2">
+                                            <label for="" class="text-sm font-bold">Municipality : </label>
+                                            <h3 class="text-sm">{{ $profile->zip_code }}</h3>
+                                        </div>
+                                        <div class="flex flex-col gap-2">
+
+                                            <label for="" class="text-sm font-bold">Contact #: </label>
+                                            <h3 class="text-sm">{{ $profile->contact_no }}</h3>
+                                        </div> --}}
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    @endif
                 </div>
 
                 <div class="flex flex-col gap-2 bg-white rounded-lg shadow-md p-4">
@@ -147,13 +295,13 @@
                                 <tbody>
                                     <!-- row 1 -->
                                     <tr class="">
-                                        <th{{ $s_service->service->id }}</th>
-                                        <th><img src="{{ $s_service->service->image }}" alt=""
-                                                srcset="" class="object object-center h-10 w-10"></th>
-                                        <td class="text-xs md:text-sm">{{ $s_service->service->name }}</td>
-                                        <td>{!! $s_service->service->description !!}</td>
-                                        <td>&#8369 {{ $s_service->service->init_payment }}</td>
-                                        <td>&#8369 {{ $s_service->service->price }}</td>
+                                        <th{{ $s_service->service->id }}< /th>
+                                            <th><img src="{{ $s_service->service->image }}" alt=""
+                                                    srcset="" class="object object-center h-10 w-10"></th>
+                                            <td class="text-xs md:text-sm">{{ $s_service->service->name }}</td>
+                                            <td>{!! $s_service->service->description !!}</td>
+                                            <td>&#8369 {{ $s_service->service->init_payment }}</td>
+                                            <td>&#8369 {{ $s_service->service->price }}</td>
 
                                     </tr>
                                 </tbody>
