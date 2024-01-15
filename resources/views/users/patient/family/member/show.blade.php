@@ -19,6 +19,10 @@
                             <h1 class="text-sm capitalize"><span>
                                     <p class="text-sm text-gray-500">Date Joined</p>
                                 </span>{{ $profile->created_at->format('M-d-Y') }}</h1>
+                                <a href="{{route('patient.family.members.edit', ['member' => $profile->id])}}" class="flex items-center gap-2 text-sm">
+                                    <span><i class="fi fi-rr-edit"></i></span>
+                                    <span>Edit</span>
+                                </a>
                         </div>
                     </div>
                     <div class="flex-grow w-full h-full flex flex-col space-y-5 p-5">

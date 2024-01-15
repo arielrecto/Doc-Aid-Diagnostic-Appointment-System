@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Family;
+use App\Models\FamilyMember;
 use Illuminate\Support\Facades\Auth;
 
 class FamilyController extends Controller
@@ -60,7 +61,7 @@ class FamilyController extends Controller
      */
     public function edit(string $id)
     {
-        //
+
     }
 
     /**

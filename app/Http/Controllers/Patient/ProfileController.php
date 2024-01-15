@@ -65,6 +65,25 @@ class ProfileController extends Controller
         }
 
 
+        if ($request->hasFile('valid_id_image')) {
+            $validID = 'vld-' . $request->last_name . '-' . uniqid() . '.' . $request->valid_id_image->extension();
+            $validID_dir = $request->valid_id_image->storeAs('/profile/Family/ID', $validID, 'public');
+        }
+
+        $fullName = $request->last_name . ', ' . $request->first_name;
+
+        if ($request->last_name !== null) {
+            $fullName = $request->last_name . ', ' . $profile->first_name;
+        } else {
+            $fullName = $profile->last_name . ', ' . $request->first_name;
+
+        }
+
+        if ($request->last_name === null && $request->first_name === null) {
+            $fullName = $profile->full_name;
+        }
+
+
         $profile->update([
             'avatar' => $request->hasFile('avatar') ? asset('/storage/' . $dir) : $profile->avatar,
             'last_name' => $request->last_name ?? $profile->last_name,
@@ -79,6 +98,9 @@ class ProfileController extends Controller
             'region' => $request->region ?? $profile->region,
             'contact_no' => $request->contact_no ?? $profile->contact_no,
             'zip_code' => $request->zip_code ?? $profile->zip_code,
+            'valid_id_image' => $request->valid_id_image !== null ? asset('/storage/' . $validID_dir) : $profile->valid_id_image,
+            'valid_id_type' => $request->valid_id_type ?? $profile->valid_id_type,
+            'valid_id_number' => $request->valid_id_number ?? $profile->valid_id_number
         ]);
 
         $profile->update([

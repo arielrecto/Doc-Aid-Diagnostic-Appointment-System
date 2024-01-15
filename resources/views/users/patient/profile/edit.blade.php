@@ -180,6 +180,42 @@
                                     maxlength="11" placeholder="Ex: 09123456789">
                             </div>
                         </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 grid-flow-row gap-5">
+                            <div class="flex flex-col gap-2">
+                                <label for="" class="capitalize text-sm text-gray-500">Valid ID<span
+                                        class="text-xs text-gray-400">
+                                        (School ID, Philhead, SSS, etc.)
+                                    </span></label>
+                                <input type="file" name="valid_id_image" class="file-input file-input-accent">
+                                @if ($errors->has('valid_id_image'))
+                                    <p class="text-xs text-error">{{ $errors->first('valid_id_image') }}</p>
+                                @endif
+                            </div>
+                            <div class="flex flex-col gap-2">
+                                <label for="" class="capitalize text-sm text-gray-500">ID Type</label>
+                                <select class="select select-accent w-full" name="valid_id_type"
+                                    id="region-dropdown">
+                                    <option selected value="{{null}}">Select Type</option>
+                                    <option value="sss">SSS</option>
+                                    <option value="sss">Phil Health</option>
+                                    <option value="sss">Voters</option>
+                                    <option value="sss">Barangay</option>
+                                    <option value="sss">School Id</option>
+
+                                </select>
+                                @if ($errors->has('valid_id_type'))
+                                    <p class="text-xs text-error">{{ $errors->first('valid_id_type') }}</p>
+                                @endif
+                            </div>
+                            <div class="flex flex-col gap-2">
+                                <label for="" class="capitalize text-sm text-gray-500">ID Number</label>
+                                <input type="text" name="valid_id_number" class="input input-accent w-full"
+                                    placeholder="ID Number">
+                                @if ($errors->has('valid_id_number'))
+                                    <p class="text-xs text-error">{{ $errors->first('valid_id_number') }}</p>
+                                @endif
+                            </div>
+                        </div>
                         <div class="flex w-full p-5 justify-end">
                             <button class="btn btn-accent">Save</button>
                         </div>
