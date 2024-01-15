@@ -23,7 +23,12 @@
             <div class="panel overflow-y-auto">
                 <h1 class="page-title">Appointments</h1>
                 <div class="flex flex-col gap-2 py-5 w-full h-full">
-                    <x-admin.appointment.header-selection :total="$total" />
+                    <x-admin.appointment.header-selection
+                    :total="$total"
+                    :pending="$totalPending"
+                    :approved="$totalApproved"
+                    :done="$totalDone"
+                     />
 
                     <div
                         class="w-full h-96 panel p-0 border-accent border space-y-2">
@@ -55,7 +60,7 @@
                                             <td>{{ $appointment->status }}</td>
                                             <td>
                                                 <div class="flex gap-2 p-2 items-center">
-                                                    @if ($appointment->status === 'pending')
+                                                    {{-- @if ($appointment->status === 'pending')
                                                         <form
                                                             action="{{ route('admin.appointment.approved', ['id' => $appointment->id]) }}"
                                                             method="post">
@@ -75,7 +80,7 @@
                                                                 <i class="fi fi-rr-square-x hover:font-bold"></i>
                                                             </button>
                                                         </form>
-                                                    @endif
+                                                    @endif --}}
                                                     <a
                                                         href="{{ route('admin.appointment.show', ['appointment' => $appointment->id]) }}">
                                                         <button

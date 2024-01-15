@@ -1,10 +1,17 @@
 @props([
     'total' => $total,
+    'pending' => $pending,
+    'approved' => $approved,
+    'done' => $done
 ])
 
-<div class="grid grid-cols-4 grid-flow-row gap-4">
+@php
+    use App\Enums\AppointmentStatus;
+@endphp
+
+<div class="grid grid-cols-5 grid-flow-row gap-4">
     <a class="header-selection bg-accent max-w-full" href="{{ route('admin.appointment.index') }}">
-        <div class="w-full text-xl font-semibold capitalize text-white flex gap-2">
+        <div class="w-full text-lg font-semibold capitalize text-white flex gap-2">
             <i class="ri-book-mark-line"></i>
             <span>
                 total appointment
@@ -15,19 +22,33 @@
             {{ $total }}
         </span>
     </a>
-    <a class="header-selection" href="{{ route('admin.appointment.filter', ['filter' => 'today']) }}">
+    <a class="header-selection" href="{{ route('admin.appointment.index', ['filter' => 'today']) }}">
         <div class="header-title">
             today Schedule
         </div>
     </a>
-    <a class="header-selection" href="{{ route('admin.appointment.filter', ['filter' => 'pending']) }}">
+    <a class="header-selection" href="{{  route('admin.appointment.index', ['filter' => AppointmentStatus::PENDING->value]) }}">
         <div class="header-title">
             pending appointment
         </div>
+         <span class="text-6xl font-bold text-white truncate max-w-[250px]">
+            {{ $pending }}
+        </span>
     </a>
-    <a class="header-selection" href="{{ route('admin.appointment.filter', ['filter' => 'approved']) }}">
+    <a class="header-selection" href="{{ route('admin.appointment.index', ['filter' => AppointmentStatus::APPROVED->value]) }}">
         <div class="header-title">
             approved appointment
         </div>
+        <span class="text-6xl font-bold text-white truncate max-w-[250px]">
+            {{ $approved }}
+        </span>
+    </a>
+    <a class="header-selection" href="{{ route('admin.appointment.index', ['filter' => AppointmentStatus::DONE->value]) }}">
+        <div class="header-title">
+            Done appointment
+        </div>
+        <span class="text-6xl font-bold text-white truncate max-w-[250px]">
+            {{ $done }}
+        </span>
     </a>
 </div>

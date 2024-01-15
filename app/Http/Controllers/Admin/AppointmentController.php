@@ -25,9 +25,28 @@ class AppointmentController extends Controller
     {
         $query = $request->query('filter');
         $appointments = Appointment::get();
+
+        if($query !== null) {
+            if($query === 'today'){
+                $appointments = Appointment::where('date', now('GMT+8')->format('Y-m-d'))->get();
+            }else{
+                $appointments = Appointment::where('status', $query)->get();
+            }
+        }
+
         $total = $this->appointment->total();
+        $totalPending = $this->appointment->pending()->count();
+        $totalApproved = $this->appointment->where('status', AppointmentStatus::APPROVED->value)->get()->count();
+        $totalDone = $this->appointment->where('status', AppointmentStatus::DONE->value)->get()->count();
         $calendarAppointment  = json_encode($this->appointment->get());
-        return view('users.admin.Appointment.index-new', compact(['appointments', 'total', 'calendarAppointment']));
+        return view('users.admin.Appointment.index-new', compact([
+            'appointments',
+            'total',
+            'calendarAppointment',
+            'totalPending',
+            'totalApproved',
+            'totalDone'
+        ]));
     }
 
     /**
