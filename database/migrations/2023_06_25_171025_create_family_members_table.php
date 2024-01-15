@@ -24,6 +24,9 @@ return new class extends Migration
             $table->string('contact_no');
             $table->string('email');
             $table->string('relationship');
+            $table->string('valid_id_image');
+            $table->string('valid_id_type');
+            $table->string('valid_id_number');
             $table->foreignIdFor(Family::class);
             $table->timestamps();
         });

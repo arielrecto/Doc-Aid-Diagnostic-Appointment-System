@@ -146,6 +146,23 @@
                                         </div>
 
                                     </div>
+                                    <div class="flex flex-col gap-2">
+                                        <h1 class="text-sm font-bold">Valid ID Information</h1>
+                                        <a class="venobox" href="{{ $profile->valid_id_image }}">
+                                        <img src="{{ $profile->valid_id_image }}" alt="" srcset=""
+                                            class="object object-center h-auto w-32">
+                                        </a>
+                                        <div clas="flex gap-2">
+                                            <h1 class="text-sm capitalize font-bold">
+                                                <span>ID type: </span>
+                                                <span class="font-normal uppercase">{{ $profile->valid_id_type }}</span>
+                                            </h1>
+                                            <h1 class="text-sm capitalize font-bold">
+                                                <span>ID number: </span>
+                                                <span class="font-normal uppercase">{{ $profile->valid_id_number }}</span>
+                                            </h1>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -217,6 +234,23 @@
                                         </div> --}}
 
                                     </div>
+                                    <div class="flex flex-col gap-2">
+                                        <h1 class="text-sm font-bold">Valid ID Information</h1>
+                                        <a class="venobox" href="{{ $profile->valid_id_image }}">
+                                        <img src="{{ $profile->valid_id_image }}" alt="" srcset=""
+                                            class="object object-center h-auto w-32">
+                                        </a>
+                                        <div clas="flex gap-2">
+                                            <h1 class="text-sm capitalize font-bold">
+                                                <span>ID type: </span>
+                                                <span class="font-normal uppercase">{{ $profile->valid_id_type }}</span>
+                                            </h1>
+                                            <h1 class="text-sm capitalize font-bold">
+                                                <span>ID number: </span>
+                                                <span class="font-normal uppercase">{{ $profile->valid_id_number }}</span>
+                                            </h1>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -287,7 +321,7 @@
                                 <!-- head -->
                                 <thead class="capitalize">
                                     <tr>
-                                        <th></th>
+
                                         <th>Image</th>
                                         <th>Name</th>
                                         <th>description</th>
@@ -298,7 +332,7 @@
                                 <tbody>
                                     <!-- row 1 -->
                                     <tr class="">
-                                        <th{{ $s_service->service->id }}< /th>
+
                                             <th><img src="{{ $s_service->service->image }}" alt=""
                                                     srcset="" class="object object-center h-10 w-10"></th>
                                             <td class="text-xs md:text-sm">{{ $s_service->service->name }}</td>

@@ -21,6 +21,9 @@ class FamilyMember extends Model
         'contact_no',
         'email',
         'relationship',
+        'valid_id_image',
+        'valid_id_type',
+        'valid_id_number',
         'family_id'
     ];
 

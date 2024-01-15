@@ -78,7 +78,10 @@
                                      hover:border-gray-100 rounded-lg h-full">
                                     <div class="p-2 flex flex-col gap-2">
                                         <div class="flex justify-between">
-                                            <label for="" class="text-xs">Add Service</label>
+                                            <label for="" class="text-xs">Add Service
+                                                <span class="text-xs text-gray-400">(click the + button to select service)</span>
+                                            </label>
+
                                             <div>
                                                 <button @click="openToggle($event)"><i
                                                         class="fi fi-rr-add bg-accent rounded-full text-3xl flex items-center text-base-100"></i></button>
@@ -374,12 +377,15 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="w-full flex flex-row-reverse">
-                                        <button class="btn btn-accent">
-                                            <span x-text="isPayPal ? 'Set with Paypal' : 'Set'">
-                                            </span>
-                                        </button>
-                                    </div>
+                                    <template x-if="selectedService.length !== 0">
+                                        <div class="w-full flex flex-row-reverse">
+                                            <button class="btn btn-accent">
+                                                <span x-text="isPayPal ? 'Set with Paypal' : 'Set'">
+                                                </span>
+                                            </button>
+                                        </div>
+                                    </template>
+
                                 </div>
                             </template>
 

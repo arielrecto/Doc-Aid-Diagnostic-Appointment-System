@@ -56,6 +56,7 @@ class ProfileController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
+
         $request->validate([
             'avatar' => 'required',
             'last_name' => 'required',
@@ -68,11 +69,19 @@ class ProfileController extends Controller
             'municipality' => 'required',
             'region' => 'required',
             'contact_no' => 'required',
-            'zip_code' => 'required'
+            'zip_code' => 'required',
+            'valid_id_image' => 'required',
+            'valid_id_type' => 'required',
+            'valid_id_number' => 'required'
         ]);
+
+
 
         $imageName = 'avatar-' . uniqid() . '.' . $request->avatar->extension();
         $dir = $request->avatar->storeAs('/profile/avatar', $imageName, 'public');
+
+        $validID = 'vld-' . $request->last_name . '-' . uniqid() . '.' . $request->valid_id_image->extension();
+        $validID_dir = $request->valid_id_image->storeAs('/profile/ID', $validID, 'public');
 
 
         $profile = Profile::create([
@@ -90,6 +99,9 @@ class ProfileController extends Controller
             'region' => $request->region,
             'contact_no' => $request->contact_no,
             'zip_code' => $request->zip_code,
+            'valid_id_image' => asset('/storage/' . $validID_dir),
+            'valid_id_type' => $request->valid_id_type,
+            'valid_id_number' => $request->valid_id_number,
             'user_id' => Auth::user()->id
         ]);
 

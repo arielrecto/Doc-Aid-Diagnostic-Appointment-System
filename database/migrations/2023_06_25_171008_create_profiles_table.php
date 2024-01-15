@@ -29,6 +29,9 @@ return new class extends Migration
             $table->string('region');
             $table->string('zip_code');
             $table->foreignIdFor(User::class)->constrained()->onDelete('cascade');
+            $table->string('valid_id_image');
+            $table->string('valid_id_type');
+            $table->string('valid_id_number');
             $table->timestamps();
         });
     }

@@ -53,6 +53,22 @@
                             <label for="" class="text-xs text-gray-500">Contact No.</label>
                             <h1 class="font-bold">{{ $profile->contact_no }}</h1>
                         </div>
+                        <div class="flex flex-col gap-2">
+                            <h1 class="text-sm font-bold">Valid ID Information</h1>
+
+                            <img src="{{ $profile->valid_id_image }}" alt="" srcset=""
+                                class="object object-center h-auto w-32">
+                            <div clas="flex gap-2">
+                                <h1 class="text-sm capitalize font-bold">
+                                    <span>ID type: </span>
+                                    <span class="font-normal uppercase">{{ $profile->valid_id_type }}</span>
+                                </h1>
+                                <h1 class="text-sm capitalize font-bold">
+                                    <span>ID number: </span>
+                                    <span class="font-normal uppercase">{{ $profile->valid_id_number }}</span>
+                                </h1>
+                            </div>
+                        </div>
                         <h1 class="w-full text-center font-semibold p-5 border-t-2 boder-gray-100">Family - <span
                                 class="font-bold text-xl">{{ $profile->family->name }}</span></h1>
 

@@ -24,7 +24,10 @@ class Profile extends Model
         'municipality',
         'region',
         'zip_code',
-        'user_id'
+        'user_id',
+        'valid_id_image',
+        'valid_id_type',
+        'valid_id_number'
     ];
 
     public function user() {

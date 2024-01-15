@@ -45,6 +45,10 @@ class AppointmentController extends Controller
 
         // $services = Service::with('timeSlot')->get()->toJSON();
 
+        if(Auth::user()->profile === null){
+            return to_route('patient.profile.create')->with(['message' => 'Setup the Profile First']);
+        }
+
         $today = Carbon::now()->timezone('GMT+8')->format('l');
 
 

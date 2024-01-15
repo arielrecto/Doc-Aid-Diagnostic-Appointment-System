@@ -39,6 +39,9 @@ class FamilyMemberController extends Controller
     public function store(Request $request)
     {
 
+
+
+
        $request->validate([
             'last_name' => 'required',
             'first_name' => 'required',
@@ -46,11 +49,20 @@ class FamilyMemberController extends Controller
             'email' => 'required',
             'relationship' => 'required',
             'contact_no' => 'required',
-            'birthdate' => 'required'
+            'birthdate' => 'required',
+            'valid_id_image' => 'required',
+            'valid_id_type' => 'required',
+            'valid_id_number' => 'required'
        ]);
+
 
        $imageName = 'famIMG-' . uniqid() . '.' . $request->image->extension();
        $dir = $request->image->storeAs('/profile/Family', $imageName, 'public');
+
+
+
+       $validID = 'vld-' . $request->last_name . '-' . uniqid() . '.' . $request->valid_id_image->extension();
+       $validID_dir = $request->valid_id_image->storeAs('/profile/Family/ID', $validID, 'public');
 
 
        $user = Auth::user();
@@ -67,7 +79,10 @@ class FamilyMemberController extends Controller
         'contact_no' => $request->contact_no,
         'email' => $request->email,
         'family_id' => $user->family->id,
-        'birthdate' => $request->birthdate
+        'birthdate' => $request->birthdate,
+        'valid_id_image' => asset('/storage/' . $validID_dir),
+        'valid_id_type' => $request->valid_id_type,
+        'valid_id_number' => $request->valid_id_number
        ]);
 
 

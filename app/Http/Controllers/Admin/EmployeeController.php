@@ -48,7 +48,10 @@ class EmployeeController extends Controller
             'municipality' => 'required',
             'region' => 'required',
             'contact_no' => 'required',
-            'zip_code' => 'required'
+            'zip_code' => 'required',
+            'valid_id_image' => 'required',
+            'valid_id_type' => 'required',
+            'valid_id_number' => 'required'
         ]);
 
         $user = User::create([
@@ -56,6 +59,10 @@ class EmployeeController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password)
         ]);
+
+
+        $validID = 'vld-' . $request->last_name . '-' . uniqid() . '.' . $request->valid_id_image->extension();
+        $validID_dir = $request->valid_id_image->storeAs('/profile/Family/ID', $validID, 'public');
 
         Profile::create([
             'avatar' => asset('image/logo.jpg'),
@@ -71,6 +78,9 @@ class EmployeeController extends Controller
             'region' => $request->region,
             'contact_no' => $request->contact_no,
             'zip_code' => $request->zip_code,
+            'valid_id_image' => asset('/storage/' . $validID_dir),
+            'valid_id_type' => $request->valid_id_type,
+            'valid_id_number' => $request->valid_id_number,
             'user_id' => $user->id
         ]);
 

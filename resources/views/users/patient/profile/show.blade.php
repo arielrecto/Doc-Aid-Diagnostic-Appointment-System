@@ -24,7 +24,8 @@
                     <div class="flex-grow w-full h-full flex flex-col space-y-5 p-5">
                         <div class="flex items-center justify-between">
                             <h1 class="w-full  text-lg font-semibold">Personal Information</h1>
-                            <a href="{{route('patient.profile.edit', ['profile' => $profile->id])}}" class="btn btn-xs btn-accent">
+                            <a href="{{ route('patient.profile.edit', ['profile' => $profile->id]) }}"
+                                class="btn btn-xs btn-accent">
                                 <i class="fi fi-rr-edit"></i>
                             </a>
                         </div>
@@ -80,9 +81,26 @@
                                 <h1 class="font-bold">{{ $profile->zip_code }}</h1>
                             </div>
                         </div>
+
                         <div class="flex flex-col gap-2 capitalize">
                             <label for="" class="text-xs text-gray-500">Contact No.</label>
                             <h1 class="font-bold">{{ $profile->contact_no }}</h1>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <h1 class="text-sm font-bold">Valid ID Information</h1>
+
+                            <img src="{{ $profile->valid_id_image }}" alt="" srcset=""
+                                class="object object-center h-auto w-32">
+                            <div clas="flex gap-2">
+                                <h1 class="text-sm capitalize font-bold">
+                                    <span>ID type: </span>
+                                    <span class="font-normal uppercase">{{ $profile->valid_id_type }}</span>
+                                </h1>
+                                <h1 class="text-sm capitalize font-bold">
+                                    <span>ID number: </span>
+                                    <span class="font-normal uppercase">{{ $profile->valid_id_number }}</span>
+                                </h1>
+                            </div>
                         </div>
                         <h1 class="w-full text-center font-semibold p-5 border-t-2 boder-gray-100">Family</h1>
                         <div class="w-full flex flex-col gap-2">
