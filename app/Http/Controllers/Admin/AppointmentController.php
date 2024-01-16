@@ -91,11 +91,24 @@ class AppointmentController extends Controller
      */
     public function update(Request $request, string $id)
     {
+
+        if(!now()->lt($request->date)){
+            return back()->with(['rejected' => 'Date is in the past!']);
+        };
+
         $appointment = Appointment::find($id);
         $appointment->update([
             'patient' => $request->patient ?? $appointment->patient,
             'time' => $request->start_time . ' - ' . $request->end_time ?? $appointment->time,
             'date' => $request->date ?? $appointment->date
+        ]);
+
+        $subscribeService = $appointment->subscribeServices->first();
+
+
+        $subscribeService->update([
+            'start_time' => $request->start_time,
+            'end_time' => $request->end_time
         ]);
 
         return redirect(route('admin.appointment.show', ['appointment' => $appointment->id]))->with(['message', 'Appointment is Updated']);

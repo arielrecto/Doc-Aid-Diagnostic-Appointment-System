@@ -1,14 +1,14 @@
 <x-app-layout>
     <div class="main-screen">
-        <x-admin.sidebar-new />
+        <x-patient-siderbar />
 
-        <div class="main-content">
-            <x-admin.navbar-new />
+        <div class="main-content w-5/6 md:w-full">
+            <x-patient.navbar />
 
             @if (Session::has('rejected'))
                 <div class="panel-error">
                     <span>
-                        CODE ERROR - Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis, dolor?
+                        {{ Session::get('rejected') }}
                     </span>
                 </div>
             @endif
@@ -16,7 +16,7 @@
             @if (Session::has('approved'))
                 <div class="panel-success">
                     <span>
-                        CODE SUCCESS - Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate, voluptatum?
+                        {{ Session::get('approved') }}
                     </span>
                 </div>
             @endif
@@ -29,175 +29,321 @@
                 </div>
             @endif
 
-            <div class="panel">
-                <h1 class="page-title">Edit Appointment</h1>
+            <div class="panel bg-transparent p-0 shadow-none rounded-none overflow-auto">
+                <div class="flex flex-col gap-2 bg-white rounded-lg shadow-md p-4">
 
-                <div class="flex flex-col gap-2 py-5 w-full h-full">
-                    <div class="w-full h-full flex justify-center items-center">
-                        <form method="POST"
-                            action="{{ route('admin.appointment.update', ['appointment' => $appointment->id]) }}"
-                            class="w-full rounded-lg flex flex-col space-y-2 relative">
-                            @csrf @method('put')
-                            <div class="w-full flex flex-col gap-2 p-2">
-                                <h1 class="text-base text-gray-500">Patient</h1>
-                                <div>
-                                    <h1 class="text-lg font-bold">{{ $appointment->patient }}</h1>
-                                    <select class="c-input w-full" id="interval" name="patient"
-                                        @change="setTimeItervalForm">
-                                        <option disabled selected>Patient</option>
-                                        <option value="{{ $appointment->patient }}">{{ $appointment->patient }}</option>
-                                        <option disabled> - Family Members - </option>
-                                        @forelse ($appointment->user->family->members ?? [] as $member)
-                                            <option value="{{ $member->full_name }}" class="capitalize">
-                                                {{ $member->full_name }}</option>
-                                        @empty
-                                            <option disabled class="text-xs">No Family Members</option>
-                                        @endforelse
-                                    </select>
+                    <div class="flex flex-col gap-2 bg-white rounded-lg shadow-md p-4">
+                        <h1 class="page-title">Reschedule Request</h1>
+                        <form action="{{ route('admin.appointment.update', ['appointment' => $appointment->id]) }}" method="post">
+                            @method('put')
+                            @csrf
+                            <input type="hidden" name="appointment_id" value="{{ $appointment->id }}">
+                            <div class="flex flex-col gap-2">
+                                <label for="" class="c-input-label">Date:</label>
+                                <input type="date" name="date" class="c-input">
+                            </div>
+                            <label for="" class="c-input-label">Setup Time:</label>
+                            <div class="grid grid-cols-2 grid-flow-row gap-2">
+                                <div class="flex flex-col gap-2">
+                                    <label for="" class="c-input-label">Start </label>
+                                    <input type="time" name="start_time" class="c-input">
+                                </div>
+                                <div class="flex flex-col gap-2">
+                                    <label for="" class="c-input-label">End</label>
+                                    <input type="time" name="end_time" class="c-input">
                                 </div>
                             </div>
-                            <div class="w-full flex flex-col gap-2 p-2" x-data="appointmentShow">
-                                <h1 class="text-base text-gray-500">Service</h1>
-                                <div class="flex space-x-4 w-full">
-                                    {{-- <img src="{{ $appointment->service->image }}" alt="" srcset=""
-                                        class="h-64 w-96 object-cover">--}}
-                                    <div class="w-full h-full flex flex-col gap-2">
-                                        {{-- <div class="flex flex-col gap-2">
-                                            <label for="" class="text-gray-500 text-sm">Name</label>
-                                            <h1 class="font-semibold">{{ $appointment->service->name }}</h1>
-                                        </div> --}}
-                                        <div class="grid grid-cols-2 grid-flow-row gap-2">
-                                            <div class="flex flex-col gap-2 w-full">
-                                                <label for="" class="text-gray-500 text-sm">Time</label>
-                                                <h1 class="font-semibold">{{ $appointment->time }}</h1>
-                                                <div class="grid grid-cols-2 gap-2 grid-flow-row">
-                                                    <div class="flex flex-col gap-2">
-                                                        <label for="" class="text-xs text-gray-500">Start
-                                                            time</label>
-                                                        <input type="time" class="input input-accent"
-                                                            name="start_time" id="sTime">
-                                                    </div>
-                                                    <div class="flex flex-col gap-2">
-                                                        <label for="" class="text-xs text-gray-500">End
-                                                            time</label>
-                                                        <input type="time" class="input input-accent" name="end_time"
-                                                            id="eTime" @change="calculateDuration">
-                                                    </div>
-                                                    <input type="hidden" name="duration" x-model="duration">
-                                                </div>
-                                            </div>
-                                            <div class="flex flex-col gap-2 w-full">
-                                                <label for="" class="text-gray-500 text-sm">Date</label>
-                                                <h1 class="font-semibold flex gap-4">
-                                                    {{ date('M-d-Y', strtotime($appointment->date)) }}
-                                                </h1>
-                                                <input type="date" name="date" class="input input-accent">
-                                            </div>
-                                            <div class="flex flex-col gap-2 w-full">
-                                                <label for="" class="text-gray-500 text-sm">Session Time</label>
+                            <div class="flex flex-col gap-2">
+                                <h1 class="c-input-label">
+                                    Remark
+                                </h1>
+                                <textarea class="textarea-accent" name="remark" placeholder="remark">
 
-                                                {{-- <template x-if="duration !== null">
-                                                    <h1 class="font-semibold"> <span x-text="duration"></span>
-                                                        @if ($appointment->is_extended)
-                                                            <span class="font-semibold text-gray-500">Extend</span>
-                                                        @endif
-                                                    </h1>
-                                                </template>
-                                                <template x-if="duration === null">
-                                                    <h1 class="font-semibold">{{ $appointment->service->session_time }}
-                                                        -
-                                                        min
-                                                        @if ($appointment->is_extended)
-                                                            <span class="font-semibold text-gray-500">Extend</span>
-                                                        @endif
-                                                    </h1>
-                                                </template>
-                                            </div>
-                                            <div class="flex flex-col gap-2 w-full">
+                            </textarea>
+                            </div>
+                            <div class="w-full flex items-center p-2 justify-end">
+                                <button class="btn-generic">Submit</button>
+                            </div>
 
-                                                <label for="" class="text-gray-500 text-sm">Price</label>
-                                                <h1 class="font-semibold">{{ $appointment->service->price }}
-                                                </h1>
-                                                <label for="" class="text-gray-500 text-sm">Downpayment</label>
-                                                <h1 class="font-semibold">{{ $appointment->service->init_payment }}
-                                            </div> --}}
-                                        </div>
-                                        <div class="flex gap-2">
-                                            <div class="flex flex-col gap-2">
-                                                <label for="" class="text-gray-500 text-sm">Receipt
-                                                    Image</label>
-                                                <a href="{{ $appointment->receipt_image }}" target="_blank">
-                                                    <img src="{{ $appointment->receipt_image }}" alt=""
-                                                        class="h-24 w-24 object-cover">
-                                                </a>
-                                            </div>
-                                            <div class="flex-grow flex items-center space-x-5">
-                                                <div class="flex flex-col gap-2">
-                                                    <h1 class="text-sm text-gray-500">
-                                                        Balance
-                                                    </h1>
-                                                    <p class="font-semibold">
-                                                        {{ $appointment->balance }}
-                                                    </p>
-                                                </div>
-                                                <div class="flex flex-col gap-2">
-                                                    <h1 class="text-sm text-gray-500">
-                                                        Total
-                                                    </h1>
-                                                    <p class="font-semibold">
-                                                        {{ $appointment->total }}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
+                        </form>
+                    </div>
+                    <div class="flex w-full h-auto gap-5">
+                        <div class="text-sm w-1/3 h-auto">
+                            <div id="calendar">
+
+                            </div>
+                        </div>
+                        {{-- <div class="w-4/6 p-2 rounded-lg border-2 border-gray-200 flex flex-col gap-2">
+                            <div class="grid grid-cols-2 grid-flow-row gap-2">
+                                <div class="flex flex-col gap-2">
+                                    <label for="" class="c-input-label">Date:</label>
+                                    <p>{{date('F d, Y',  strtotime($reschedule->date))}}</p>
+                                </div>
+                                <div class="grid grid-cols-2 grid-flow-row gap-2">
+                                    <div class="flex flex-col gap-2">
+                                        <label for="" class="c-input-label">Start</label>
+                                        <p>{{date('g:i A',  strtotime($reschedule->start_time))}}</p>
+                                    </div>
+                                    <div class="flex flex-col gap-2">
+                                        <label for="" class="c-input-label">End</label>
+                                        <p>{{date('g:i A',  strtotime($reschedule->end_time))}}</p>
                                     </div>
                                 </div>
                             </div>
-                            <div class="w-full flex p-5 justify-end">
-                                <button class="btn btn-accent">Save</button>
+                            <div class="w-full bg-gray-100 rounded-lg h-full p-2">
+                                <p>{{$reschedule->remark}}</p>
                             </div>
-                        </form>
+                        </div> --}}
                     </div>
+
+
+
                 </div>
+                <div class="flex flex-col gap-2 bg-white rounded-lg shadow-md p-4">
+                    <div class="flex justify-between items-center">
+                        <h1 class="page-title">Appointment Details</h1>
+
+
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 grid-rows-2 gap-4 p-4 border shadow-sm rounded">
+                        <div class="flex flex-col gap-2 ">
+                            <label for="" class="text-gray-500 text-sm">Date</label>
+                            <h1 class="font-semibold flex gap-4 text-xs lg:text-base">
+                                {{ date('M-d-Y', strtotime($appointment->date)) }}
+
+                            </h1>
+                        </div>
+                        <div class="flex flex-col gap-2 ">
+                            <label for="" class="text-gray-500 text-sm">Time:</label>
+                            <h1 class="font-semibold flex gap-4 text-xs lg:text-base">
+                                @php
+                                    $service = $appointment->subscribeServices->first();
+                                @endphp
+                                {{ date('g:i A', strtotime($service->start_time)) }} -
+                                {{ date('g:i A', strtotime($service->end_time)) }}
+                            </h1>
+                        </div>
+                    </div>
+
+
+                    @if (!$appointment->is_family)
+                        <div class="w-full flex flex-col gap-2">
+                            <label for="" class="text-gray-500 text-sm">Patient</label>
+                            <div class="flex gap-5 w-full">
+                                <img src="{{ $appointment->user->profile->avatar }}" alt="" srcset=""
+                                    class="h-36 w-auto object object-center">
+                                <div class="w-full h-auto flex flex-col gap-2 bg-gray-100 rounded-lg p-2">
+
+                                    @php
+                                        $profile = $appointment->user->profile;
+                                    @endphp
+                                    <div class="grid grid-cols-3 grid-flow-row gap-2 w-full">
+                                        <div class="flex flex-col gap-2">
+                                            <label for="" class="text-sm font-bold">Last Name</label>
+                                            <h3 class="text-sm">{{ $profile->last_name }}</h3>
+                                        </div>
+                                        <div class="flex flex-col gap-2">
+                                            <label for="" class="text-sm font-bold">First Name</label>
+                                            <h3 class="text-sm">{{ $profile->first_name }}</h3>
+                                        </div>
+                                        <div class="flex flex-col gap-2">
+                                            <label for="" class="text-sm font-bold">Middle Name</label>
+                                            <h3 class="text-sm">{{ $profile->middle_name }}</h3>
+                                        </div>
+                                        <div class="flex flex-col gap-2">
+                                            <label for="" class="text-sm font-bold">Age : </label>
+                                            <h3 class="text-sm">{{ $profile->age }}</h3>
+                                        </div>
+                                        <div class="flex flex-col gap-2">
+                                            <label for="" class="text-sm font-bold">Sex : </label>
+                                            <h3 class="text-sm">{{ $profile->gender }}</h3>
+                                        </div>
+                                        <div class="flex flex-col gap-2">
+                                            <label for="" class="text-sm font-bold">Birthdate : </label>
+                                            <h3 class="text-sm">{{ date('F d, Y', strtotime($profile->birthdate)) }}
+                                            </h3>
+                                        </div>
+                                        <div class="flex flex-col gap-2">
+                                            <label for="" class="text-sm font-bold">Street : </label>
+                                            <h3 class="text-sm">{{ $profile->street }}</h3>
+                                        </div>
+                                        <div class="flex flex-col gap-2">
+                                            <label for="" class="text-sm font-bold">Barangay: </label>
+                                            <h3 class="text-sm">{{ $profile->barangay }}</h3>
+                                        </div>
+                                        <div class="flex flex-col gap-2">
+                                            <label for="" class="text-sm font-bold">Municipality : </label>
+                                            <h3 class="text-sm">{{ $profile->municipality }}</h3>
+                                        </div>
+                                        <div class="flex flex-col gap-2">
+                                            <label for="" class="text-sm font-bold">Region : </label>
+                                            <h3 class="text-sm">{{ $profile->region }}</h3>
+                                        </div>
+                                        <div class="flex flex-col gap-2">
+                                            <label for="" class="text-sm font-bold">Municipality : </label>
+                                            <h3 class="text-sm">{{ $profile->zip_code }}</h3>
+                                        </div>
+                                        <div class="flex flex-col gap-2">
+
+                                            <label for="" class="text-sm font-bold">Contact #: </label>
+                                            <h3 class="text-sm">{{ $profile->contact_no }}</h3>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    @else
+                        <div class="w-full flex flex-col gap-2">
+                            <label for="" class="text-gray-500 text-sm">Patient</label>
+                            <div class="flex gap-5 w-full">
+                                <img src="{{ $appointment->family_member->image }}" alt="" srcset=""
+                                    class="h-36 w-auto object object-center">
+                                <div class="w-full h-auto flex flex-col gap-2 bg-gray-100 rounded-lg p-2">
+
+                                    @php
+                                        $profile = $appointment->family_member;
+                                    @endphp
+
+                                    <div class="grid grid-cols-3 grid-flow-row gap-2 w-full">
+                                        <div class="flex flex-col gap-2">
+                                            <label for="" class="text-sm font-bold">Last Name</label>
+                                            <h3 class="text-sm">{{ $profile->last_name }}</h3>
+                                        </div>
+                                        <div class="flex flex-col gap-2">
+                                            <label for="" class="text-sm font-bold">First Name</label>
+                                            <h3 class="text-sm">{{ $profile->first_name }}</h3>
+                                        </div>
+                                        <div class="flex flex-col gap-2">
+                                            <label for="" class="text-sm font-bold">Middle Name</label>
+                                            <h3 class="text-sm">{{ $profile->middle_name }}</h3>
+                                        </div>
+
+
+                                        <div class="flex flex-col gap-2">
+                                            <label for="" class="text-sm font-bold">Sex : </label>
+                                            <h3 class="text-sm">{{ $profile->sex }}</h3>
+                                        </div>
+                                        <div class="flex flex-col gap-2">
+                                            <label for="" class="text-sm font-bold">Birthdate : </label>
+                                            <h3 class="text-sm">{{ date('F d, Y', strtotime($profile->birthdate)) }}
+                                            </h3>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    @endif
+                </div>
+
+                <div class="flex flex-col gap-2 bg-white rounded-lg shadow-md p-4" x-data="{ toggle: false }">
+                    <div class="w-full h-auto ">
+
+                    </div>
+                    <h1 class="page-title">Payment Status</h1>
+                    <div class="flex justify-between">
+                        <h1 class="text-lg font-bold"> <span class="text-sm md:text-base font-thin">Referrence Number
+                                :</span>{{ $appointment->receipt_number }}</h1>
+                        <button @click="toggle = !toggle" class="btn-generic">open</button>
+                    </div>
+
+
+                    <div class="w-full flex flex-col gap-2 p-2" x-show="toggle" x-cloak>
+                        <div class="w-full h-full flex flex-col gap-2">
+
+                            <div class="flex gap-2">
+                                <div class="flex flex-col gap-2">
+                                    <label for="" class="text-gray-500 text-sm">Receipt
+                                        Image</label>
+                                    <a href="{{ $appointment->receipt_image }}" target="_blank" class="w-1/2">
+                                        <img src="{{ $appointment->receipt_image }}" alt=""
+                                            class="object-center object-cover">
+                                    </a>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="flex flex-col gap-1">
+                            <h1 class="text-sm text-gray-500">Patient</h1>
+                            <h1 class="text-lg font-bold">{{ $appointment->patient }}</h1>
+                        </div>
+
+                        <div class="flex-grow flex items-center space-x-5">
+                            <div class="flex flex-col gap-2">
+                                <h1 class="text-sm text-gray-500">
+                                    Balance
+                                </h1>
+                                <p class="font-semibold">
+                                    PHP {{ $appointment->balance }}
+                                </p>
+                            </div>
+                            <div class="flex flex-col gap-2">
+                                <h1 class="text-sm text-gray-500">
+                                    Total
+                                </h1>
+                                <p class="font-semibold">
+                                    PHP {{ $appointment->total }}
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="flex flex-col gap-2 bg-white rounded-lg shadow-md p-4" x-data="{ toggle: false }">
+
+                    <div class="flex justify-between">
+                        <h1 class="page-title">Services Availed</h1>
+                        <button class="btn-generic" @click="toggle = !toggle">open</button>
+                    </div>
+
+                    <div class="overflow-x-auto h-96 w-full" x-show="toggle" x-cloak>
+
+
+
+
+                        @foreach ($appointment->subscribeServices as $s_service)
+                            <table class="table w-[64rem] lg:w-full">
+                                <!-- head -->
+                                <thead class="capitalize">
+                                    <tr>
+                                        <th></th>
+                                        <th>Image</th>
+                                        <th>Name</th>
+                                        <th>description</th>
+                                        <th>Dowmpayment</th>
+                                        <th>Price</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- row 1 -->
+                                    <tr class="">
+                                        <th{{ $s_service->service->id }}< /th>
+                                            <th><img src="{{ $s_service->service->image }}" alt=""
+                                                    srcset="" class="object object-center h-10 w-10"></th>
+                                            <td class="text-xs md:text-sm">{{ $s_service->service->name }}</td>
+                                            <td>{!! $s_service->service->description !!}</td>
+                                            <td>&#8369 {{ $s_service->service->init_payment }}</td>
+                                            <td>&#8369 {{ $s_service->service->price }}</td>
+
+                                    </tr>
+                                </tbody>
+                            </table>
+                        @endforeach
+                    </div>
+
+                </div>
+
+
             </div>
         </div>
     </div>
-    </div>
 
-
-    @push('js')
-        <script>
-            function appointmentShow() {
-                return {
-                    reschedModal: false,
-                    duration: null,
-                    openReschedModal() {
-                        this.reschedModal = !this.reschedModal
-                    },
-                    calculateDuration() {
-                        const sTime = document.getElementById('sTime').value;
-                        const eTime = document.getElementById('eTime').value;
-
-                        const start = new Date(`2000-01-01 ${sTime}`);
-                        const end = new Date(`2000-01-01 ${eTime}`);
-
-                        const diffInMinutes = Math.floor((end - start) / (1000 * 60));
-                        const hours = Math.floor(diffInMinutes / 60);
-                        const minutes = diffInMinutes % 60;
-
-
-
-                        console.log(diffInMinutes)
-                        if (diffInMinutes < 60) {
-                            this.duration = `${minutes} - min`
-                        } else {
-                            this.duration = `${hours}:${minutes < 10 ? '0' : ''}${minutes}`;
-                        }
-
-                    }
-                }
-            }
-        </script>
-    @endpush
 
 </x-app-layout>
