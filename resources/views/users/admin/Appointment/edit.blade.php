@@ -33,7 +33,7 @@
                 <div class="flex flex-col gap-2 bg-white rounded-lg shadow-md p-4">
 
                     <div class="flex flex-col gap-2 bg-white rounded-lg shadow-md p-4">
-                        <h1 class="page-title">Reschedule Request</h1>
+                        <h1 class="page-title">Reschedule</h1>
                         <form action="{{ route('admin.appointment.update', ['appointment' => $appointment->id]) }}" method="post">
                             @method('put')
                             @csrf
