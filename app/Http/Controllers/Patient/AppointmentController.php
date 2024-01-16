@@ -9,6 +9,7 @@ use App\Models\Day;
 use App\Models\Family;
 use App\Models\FamilyMember;
 use App\Models\Payment;
+use App\Models\PaymentAccount;
 use App\Models\Service;
 use App\Models\ServiceAssignment;
 use App\Models\SubscribeService;
@@ -51,6 +52,8 @@ class AppointmentController extends Controller
 
         $today = Carbon::now()->timezone('GMT+8')->format('l');
 
+        $accounts = PaymentAccount::get();
+
 
 
         $day = Day::where('name', $today)->first();
@@ -60,7 +63,7 @@ class AppointmentController extends Controller
         // $timeSlot = $this->timeIntervalByHour('8:00', '4:00');
         $familyMembers = Family::authUserFamilyMember();
 
-        return view('users.patient.appointment.create', compact(['services', 'familyMembers']));
+        return view('users.patient.appointment.create', compact(['services', 'familyMembers', 'accounts']));
     }
 
     /**

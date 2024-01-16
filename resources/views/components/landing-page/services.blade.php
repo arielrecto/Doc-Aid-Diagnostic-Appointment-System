@@ -63,9 +63,9 @@
                     </h1>
                     <p class="mb-8 leading-relaxed text-sm">{!!$services[0]->description ?? 'Ganda Mo tii'!!}</p>
                     <div class="flex justify-center">
-                        <button
+                        {{-- <button
                             class="inline-flex text-white bg-primary border-0 py-2 px-6 focus:outline-none
-                            ounded text-lg">View</button>
+                            ounded text-lg">View</button> --}}
                         {{-- <button
                             class="ml-4 inline-flex text-gray-700 bg-gray-100 border-0
                              py-2 px-6 focus:outline-none hover:bg-gray-200 rounded text-lg">Button</button> --}}
@@ -91,8 +91,8 @@
                     </h1>
                     <p class="mb-8 leading-relaxed">{!!$services[1]->description ?? 'Ganda Mo Tii'!!}</p>
                     <div class="flex justify-center">
-                        <button
-                            class="inline-flex text-white bg-primary border-0 py-2 px-6 focus:outline-none rounded text-lg">View</button>
+                        {{-- <button
+                            class="inline-flex text-white bg-primary border-0 py-2 px-6 focus:outline-none rounded text-lg">View</button> --}}
                         {{-- <button
                             class="ml-4 inline-flex text-gray-700 bg-gray-100 border-0 py-2 px-6 focus:outline-none hover:bg-gray-200 rounded text-lg">Button</button> --}}
                     </div>

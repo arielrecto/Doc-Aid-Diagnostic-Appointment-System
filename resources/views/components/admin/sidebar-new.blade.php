@@ -23,6 +23,10 @@
                 'route' => 'admin.imageCarousel.index',
                 'icon' => 'fi fi-rr-copy-image pt-1',
             ],
+            'Payment Accounts' => [
+                'route' => 'admin.paymentAccount.index',
+                'icon' => 'fi fi-rr-money-check pt-1',
+            ],
             'Sales Report' => [
                 'route' => 'admin.report.index',
                 'icon' => 'fi fi-rr-stats pt-1',

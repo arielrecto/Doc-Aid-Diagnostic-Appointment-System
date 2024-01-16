@@ -79,7 +79,8 @@
                                     <div class="p-2 flex flex-col gap-2">
                                         <div class="flex justify-between">
                                             <label for="" class="text-xs">Add Service
-                                                <span class="text-xs text-gray-400">(click the + button to select service)</span>
+                                                <span class="text-xs text-gray-400">(click the + button to select
+                                                    service)</span>
                                             </label>
 
                                             <div>
@@ -279,18 +280,24 @@
                                             <template x-if="!isPayPal">
                                                 <div>
                                                     <div class="w-full p-2 flex flex-col gap-2">
-                                                        <label for="" class="text-xs">Bank Account:</label>
-                                                        <div class="text-sm font-bold">
-                                                            <h1>Account Number: <span> 4025 3000 0199 4950</span></h1>
-                                                            <h1> Account Name: <span> Stephen Bacolor</span></h1>
-                                                        </div>
 
-                                                        <label for="" class="text-xs">For G-Cash
+                                                        @foreach ($accounts as $account)
+                                                            <label for="" class="text-xs">Bank
+                                                                name: {{$account->name}}</label>
+                                                            <div class="text-sm font-bold">
+                                                                <h1>Account Number: <span>{{$account->account_number}}</span>
+                                                                </h1>
+                                                                <h1> Account Name: <span> {{$account->account_name}}</span></h1>
+                                                            </div>
+                                                        @endforeach
+
+
+                                                        {{-- <label for="" class="text-xs">For G-Cash
                                                             Payment:</label>
                                                         <div class="text-sm font-bold">
                                                             <h1>Account Number: <span>0905-710-4039 </span></h1>
                                                             <h1> Account Name: <span> Stephen Bacolor</span></h1>
-                                                        </div>
+                                                        </div> --}}
 
 
                                                     </div>
@@ -458,7 +465,7 @@
                     dTotal: 0,
                     isPayPal: false,
                     showFields: false,
-                    error : {},
+                    error: {},
                     computation(e) {
                         const amount = e.target.value;
                         this.rAmount = amount;
@@ -686,16 +693,16 @@
                         const date2 = new Date(currentDate).getTime();
                         const date1 = new Date(this.sDate).getTime();
 
-                       if(date2 < date1){
-                        this.showFields = true;
-                        this.error = {}
-                        return
-                       }
-                       this.showFields = false
+                        if (date2 < date1) {
+                            this.showFields = true;
+                            this.error = {}
+                            return
+                        }
+                        this.showFields = false
 
-                       this.error = {
-                            'date' : 'The Fields Didn\'t show becuase the selected Date is past'
-                       }
+                        this.error = {
+                            'date': 'The Fields Didn\'t show becuase the selected Date is past'
+                        }
                     }
                 }
             }

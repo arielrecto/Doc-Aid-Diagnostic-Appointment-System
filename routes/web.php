@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Patient\AppointmentController;
 use App\Http\Controllers\Patient\FamilyMemberController;
 use App\Http\Controllers\Admin\AppointmentController as AdminAppointmentController;
+use App\Http\Controllers\Admin\PaymentAccountController;
 use App\Http\Controllers\Admin\PaymentController;
 use App\Http\Controllers\Admin\SalesReportController;
 use App\Http\Controllers\Patient\DashboardController as PatientDashboardController;
@@ -68,6 +69,7 @@ Route::middleware('auth')->group(function () {
             Route::resource('result', ResultController::class)->except('create');
             Route::resource('payment', PaymentController::class);
         });
+
         Route::prefix('/services')->as('service.')->group(function () {
             Route::patch('/availability/{Service}', [ServiceController::class, 'availability'])->name('availability');
         });
@@ -75,7 +77,7 @@ Route::middleware('auth')->group(function () {
         Route::prefix('/sales/report')->as('report.')->group(function (){
             Route::get('/', [SalesReportController::class,'index'])->name('index');
         });
-
+        Route::resource('paymentAccount', PaymentAccountController::class);
         Route::resource('services', ServiceController::class);
         Route::resource('appointment', AdminAppointmentController::class);
         Route::resource('employee', EmployeeController::class);
