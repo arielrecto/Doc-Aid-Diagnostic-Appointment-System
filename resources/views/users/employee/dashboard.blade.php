@@ -42,7 +42,7 @@
                     </div> --}}
                 </div>
                 <div
-                    class="panel">
+                    class="panel overflow-y-auto">
                     <div class="w-full flex justify-end">
                         <div class="flex items-center gap-2">
                             <a href="{{route('employee.dashboard')}}" class="btn btn-sm btn-primary">All</a>
@@ -95,7 +95,7 @@
                             </div>
                         </form> --}}
                     </div>
-                    <div class="overflow-auto h-4/6 relative">
+                    <div class="h-[64rem] w-full relative">
                         <div class="sticky">
                             {{ $appointments->links() }}
                         </div>
@@ -150,6 +150,63 @@
                                 </tr>
                             </tfoot>
                         </table>
+                    </div>
+                    <div class="panel relative" x-data="calendar(`{{ Auth::user()->roles()->first()->name }}`)" x-init="initializeCalendar({{ $calendarAppointment }})">
+                        <div id="calendar">
+
+                        </div>
+                        <div
+                            class="w-full h-full absolute z-20 top-0 backdrop-blur-sm flex justify-center items-center" x-show="toggle">
+                            <div class="w-4/6 h-1/2 bg-gray-50 shadow-lg rounded-lg p-2 flex flex-col gap-2">
+                                <div class="flex justify-between">
+                                    <h1 class="page-title">Appointments</h1>
+                                    <button class="text-error text-xs hover:scale-105 duration-700" @click="toggle = false">
+                                        <i class="fi fi-rr-square-x hover:font-bold"></i>
+                                    </button>
+                                </div>
+                                <div class="w-full h-full overflow-y-auto">
+                                    <template x-if="appointments.length !== 0">
+                                        <template x-for="appointment in appointments" :key="appointment.id">
+                                            <div
+                                                class="w-full p-2 rounded-lg border-2 border-gray-100 flex items-center justify-between">
+                                                <h1 class="text-sm font-bold flex items-center gap-2">
+                                                    <span>Patient:</span>
+                                                    <span class="font-normal" x-text="appointment.patient"></span>
+                                                </h1>
+                                                <div class="flex items-center gap-5">
+
+                                                    <h1 class="text-sm font-bold flex items-center gap-2">
+                                                        <span>Service:</span>
+                                                        <span class="font-normal" x-text="appointment.subscribe_services[0].service.name"></span>
+                                                    </h1>
+                                                    <h1 class="text-sm font-bold flex items-center gap-2">
+                                                        <span>Time:</span>
+                                                        <div class="flex items-center text-xs">
+                                                            <span class="font-normal" x-text="timeFormat(appointment.subscribe_services[0].start_time)"></span> -
+                                                            <span class="font-normal" x-text="timeFormat(appointment.subscribe_services[0].end_time)"></span>
+                                                        </div>
+                                                    </h1>
+
+                                                    <h1 class="text-sm font-bold flex items-center gap-2">
+                                                        <span>Status:</span>
+                                                        <span class="font-normal" x-text="appointment.status"></span>
+                                                    </h1>
+                                                    <a :href="`/admin/appointment/${appointment.id}`" class="btn-generic">
+                                                        view
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </template>
+                                    </template>
+                                    <template x-if="appointments.length === 0">
+                                        <div>
+                                            <h1 class="text-center">No Appointments </h1>
+                                        </div>
+                                    </template>
+
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -330,10 +330,18 @@ Alpine.data("calendar", (role) => ({
     },
     async getAppointmentByDate(date) {
         try {
+            console.log(this.authRole === 'employee');
             let response = '';
+
+            if(this.authRole == 'employee') {
+                response = await axios.get(`/employee/appointment/date=${date}`);
+                this.appointments = [...response.data.appointments];
+                return
+            }
             if (this.authRole !== "admin") {
               response = await axios.get(`/patient/appointment/date=${date}`);
-            } else{
+            }
+            else{
                response = await axios.get(`/admin/appointment/date=${date}`);
             }
 

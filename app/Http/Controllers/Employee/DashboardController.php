@@ -33,8 +33,10 @@ class DashboardController extends Controller
 
         $appointmentByMonthTotal = $this->appointment->currentMonth()->count();
 
+        $calendarAppointment  = json_encode($this->appointment->get());
 
-        return view('users.employee.dashboard', compact(['appointments', 'appointmentsTodayTotal', 'appointmentByMonthTotal']));
+
+        return view('users.employee.dashboard', compact(['appointments', 'appointmentsTodayTotal', 'appointmentByMonthTotal', 'calendarAppointment']));
     }
     public function filter(Request $request)
     {

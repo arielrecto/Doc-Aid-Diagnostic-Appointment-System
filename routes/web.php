@@ -121,6 +121,7 @@ Route::middleware('auth')->group(function () {
             Route::post('/approved/{appointment}', [EmployeeAppointmentController::class, 'approved'])->name('approved');
             Route::get('/show/{Appointment}', [EmployeeAppointmentController::class, 'show'])->name('show');
             Route::post('/reject/{appointment}', [EmployeeAppointmentController::class, 'reject'])->name('reject');
+            Route::get('/date={date}', [EmployeeAppointmentController::class, 'byDate'])->name('byDate');
 
         });
     });

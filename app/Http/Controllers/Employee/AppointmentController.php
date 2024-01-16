@@ -42,4 +42,13 @@ class AppointmentController extends Controller
 
         return back()->with(['message' => 'Appointment is approved']);
     }
+    public function byDate(string $date){
+
+
+        $appointments = Appointment::with('subscribeServices.service')->where('date' , $date)->get();
+
+        return response([
+            'appointments' => $appointments,
+        ], 200);
+    }
 }
