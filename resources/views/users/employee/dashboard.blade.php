@@ -191,7 +191,7 @@
                                                         <span>Status:</span>
                                                         <span class="font-normal" x-text="appointment.status"></span>
                                                     </h1>
-                                                    <a :href="`/admin/appointment/${appointment.id}`" class="btn-generic">
+                                                    <a :href="`/employee/appointment/show/${appointment.id}`" class="btn-generic">
                                                         view
                                                     </a>
                                                 </div>
