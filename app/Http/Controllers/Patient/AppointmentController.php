@@ -246,4 +246,14 @@ class AppointmentController extends Controller
             ]);
         }
     }
+    public function byDate(string $date){
+
+        $user = Auth::user();
+
+        $appointments = Appointment::with('subscribeServices.service')->where('date' , $date)->where('user_id', $user->id)->get();
+
+        return response([
+            'appointments' => $appointments,
+        ], 200);
+    }
 }

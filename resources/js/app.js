@@ -281,7 +281,7 @@ Alpine.data("calendar", (role) => ({
     showModal: false,
     clickedDate: null,
     authRole: role,
-    appointments : [],
+    appointments: [],
     toggle: false,
     initializeCalendar(data) {
         var calendarEl = document.getElementById("calendar");
@@ -297,10 +297,10 @@ Alpine.data("calendar", (role) => ({
             //     // this.showModal = true;
             //     // console.log(info);
             // },
-            dateClick: function(date) {
+            dateClick: function (date) {
                 console.log("hello world");
                 this.toggle = true;
-                this.getAppointmentByDate(date.dateStr)
+                this.getAppointmentByDate(date.dateStr);
             }.bind(this),
             // events: this.convertEvents(data),
         });
@@ -328,23 +328,29 @@ Alpine.data("calendar", (role) => ({
             };
         });
     },
-    async getAppointmentByDate(date){
+    async getAppointmentByDate(date) {
         try {
+            let response = '';
+            if (this.authRole !== "admin") {
+              response = await axios.get(`/patient/appointment/date=${date}`);
+            } else{
+               response = await axios.get(`/admin/appointment/date=${date}`);
+            }
 
-
-            const response = await axios.get(`/admin/appointment/date=${date}`)
-            this.appointments = [...response.data.appointments]
+            this.appointments = [...response.data.appointments];
         } catch (error) {
-
             console.log(error.response.data);
         }
     },
-    timeFormat(timeData){
-
+    timeFormat(timeData) {
         const time = new Date(timeData);
 
-       return time.toLocaleString('en-US',  { hour: 'numeric', minute: 'numeric', hour12: true })
-    }
+        return time.toLocaleString("en-US", {
+            hour: "numeric",
+            minute: "numeric",
+            hour12: true,
+        });
+    },
 }));
 
 Alpine.data("sidebarAction", () => ({

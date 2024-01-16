@@ -87,6 +87,10 @@ Route::middleware('auth')->group(function () {
             Route::get('{appointment}/create', [RescheduleController::class, 'create'])->name('create');
             Route::post('/', [RescheduleController::class, 'store'])->name('store');
         });
+        Route::prefix('appointment')->as('appointment.')->group(function() {
+            Route::get('/date={date}', [AppointmentController::class, 'byDate'])->name('byDate');
+        });
+
         Route::resource('appointment', AppointmentController::class);
         Route::prefix('family')->as('family.')->group(function () {
             Route::resource('members', FamilyMemberController::class);
@@ -115,6 +119,7 @@ Route::middleware('auth')->group(function () {
             Route::post('/approved/{appointment}', [EmployeeAppointmentController::class, 'approved'])->name('approved');
             Route::get('/show/{Appointment}', [EmployeeAppointmentController::class, 'show'])->name('show');
             Route::post('/reject/{appointment}', [EmployeeAppointmentController::class, 'reject'])->name('reject');
+
         });
     });
 });
