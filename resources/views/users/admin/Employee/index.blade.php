@@ -47,7 +47,7 @@
                                     @forelse ($employees as $employee)
                                         <tr>
                                             <th>{{ $employee->id }}</th>
-                                            <td>{{ $employee->name }}</td>
+                                            <td>{{ $employee->profile->full_name }}</td>
                                             <td>{{ $employee->email }}</td>
                                             <td>{{ $employee->created_at->format('M-d-Y') }}</td>
                                             <td>

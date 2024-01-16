@@ -69,7 +69,7 @@
                     @endif
                 </div>
             </div>
-            <div class="panel">
+            {{-- <div class="panel">
                 <h1>
 
                 </h1>
@@ -90,7 +90,7 @@
                         </h1>
                     </div>
                 </div>
-            </div>
+            </div> --}}
         </div>
     </div>
 </x-app-layout>

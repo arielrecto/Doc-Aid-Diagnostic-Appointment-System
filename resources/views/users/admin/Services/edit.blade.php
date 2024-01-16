@@ -20,7 +20,7 @@
                 </div>
             @endif
 
-            <div class="panel grow" x-data="servicesCreate">
+            <div class="panel grow overflow-y-auto" x-data="servicesCreate">
                 @if (Session::has('message'))
                     <div class="panel-success">
                         <span>
@@ -173,6 +173,7 @@
                                 <select class="c-input" id="interval" name="session_time"
                                     @change="setTimeItervalForm">
                                     <option disabled selected>Duration</option>
+                                    <option value="20">20 min</option>
                                     <option value="40">40 min</option>
                                     <option value="60">1 hr</option>
                                 </select>

@@ -132,12 +132,25 @@ class EmployeeController extends Controller
         ]);
 
 
+
         $profile = $user->profile;
 
+        $fullName = $request->last_name . ', ' . $request->first_name;
+
+        if ($request->last_name !== null) {
+            $fullName = $request->last_name . ', ' . $profile->first_name;
+        } else {
+            $fullName = $profile->last_name . ', ' . $request->first_name;
+
+        }
+
+        if ($request->last_name === null && $request->first_name === null) {
+            $fullName = $profile->full_name;
+        }
 
         $profile->update([
             'last_name' => $request->last_name ?? $profile->last_name,
-            'full_name' => $request->last_name . ' ,' . $request->first_name ?? $profile->full_name,
+            'full_name' =>  $fullName,
             'first_name' => $request->first_name ?? $profile->first_name,
             'middle_name' => $request->middle_name ?? $profile->middle_name,
             'birthdate' => $request->birthdate ?? $profile->birthdate,
