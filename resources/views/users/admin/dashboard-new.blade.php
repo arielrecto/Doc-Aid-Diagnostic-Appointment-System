@@ -80,6 +80,7 @@
                                     <th>Patient</th>
                                     <th>No. Service</th>
                                     <th>Date</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -90,6 +91,14 @@
                                         <th>{{ $appointment->patient }}</th>
                                         <td>{{ $appointment->subscribeServices()->count() }}</td>
                                         <td>{{ date('M-d-Y', strtotime($appointment->date)) }}</td>
+                                        <td>
+                                            <a
+                                                href="{{ route('admin.appointment.show', ['appointment' => $appointment->id]) }}">
+                                                <button class="text-blue-500 text-xs hover:scale-105 duration-700">
+                                                    <i class="fi fi-rr-eye hover:font-bold"></i>
+                                                </button>
+                                            </a>
+                                        </td>
                                     </tr>
                                 @empty
                                     <tr>

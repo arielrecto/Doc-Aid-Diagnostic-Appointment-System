@@ -4,6 +4,7 @@ import Alpine from "alpinejs";
 import * as FloatingUI from "@floating-ui/dom";
 import axios from "axios";
 import collapse from "@alpinejs/collapse";
+import { config } from "daisyui";
 
 window.Alpine = Alpine;
 window.FloatingUI = FloatingUI;
@@ -280,18 +281,28 @@ Alpine.data("calendar", (role) => ({
     showModal: false,
     clickedDate: null,
     authRole: role,
+    appointments : [],
+    toggle: false,
     initializeCalendar(data) {
         var calendarEl = document.getElementById("calendar");
 
         console.log(this.authRole);
         var calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: "dayGridMonth",
-            eventClick: (info) => {
-                this.clickedDate = info.date;
-                this.showModal = true;
-                console.log(info);
-            },
-            events: this.convertEvents(data),
+            // eventClick: (info) => {
+            //     this.toggle = !this.toggle
+            //     console.log("hello world");
+            //     this.getAppointmentByDate(this.clickedDate)
+            //     // this.clickedDate = info.date;
+            //     // this.showModal = true;
+            //     // console.log(info);
+            // },
+            dateClick: function(date) {
+                console.log("hello world");
+                this.toggle = true;
+                this.getAppointmentByDate(date.dateStr)
+            }.bind(this),
+            // events: this.convertEvents(data),
         });
         calendar.render();
     },
@@ -305,7 +316,7 @@ Alpine.data("calendar", (role) => ({
 
             return {
                 title: event.patient,
-                url: base_url,
+                // url: base_url,
                 start: new Date(event.date),
                 end: new Date(event.date),
                 backgroundColor:
@@ -317,6 +328,23 @@ Alpine.data("calendar", (role) => ({
             };
         });
     },
+    async getAppointmentByDate(date){
+        try {
+
+
+            const response = await axios.get(`/admin/appointment/date=${date}`)
+            this.appointments = [...response.data.appointments]
+        } catch (error) {
+
+            console.log(error.response.data);
+        }
+    },
+    timeFormat(timeData){
+
+        const time = new Date(timeData);
+
+       return time.toLocaleString('en-US',  { hour: 'numeric', minute: 'numeric', hour12: true })
+    }
 }));
 
 Alpine.data("sidebarAction", () => ({

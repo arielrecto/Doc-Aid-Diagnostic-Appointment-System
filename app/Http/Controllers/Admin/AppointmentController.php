@@ -194,4 +194,13 @@ class AppointmentController extends Controller
 
         return to_route('admin.appointment.show', ['appointment' => $appointment->id])->with(['rejected' => 'Appointment Reschedule reject']);
     }
+    public function byDate(string $date){
+
+
+        $appointments = Appointment::with('subscribeServices.service')->where('date' , $date)->get();
+
+        return response([
+            'appointments' => $appointments,
+        ], 200);
+    }
 }

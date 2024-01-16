@@ -61,7 +61,7 @@ Route::middleware('auth')->group(function () {
         Route::prefix('appointment')->as('appointment.')->group(function () {
             Route::post('/approved/{id}', [AdminAppointmentController::class, 'approved'])->name('approved');
             Route::post('/reject/{id}', [AdminAppointmentController::class, 'reject'])->name('reject');
-            Route::get('/filter={filter}', [AdminAppointmentController::class, 'filter'])->name('filter');
+            Route::get('/date={date}', [AdminAppointmentController::class, 'byDate'])->name('byDate');
             Route::put('/reschedule/approve', [AdminAppointmentController::class, 'approvedReschedule'])->name('reschedule.approve');
             Route::put('/reschedule/reject', [AdminAppointmentController::class, 'rejectReschedule'])->name('reschedule.reject');
             Route::get('/reschedule/id={appointment}', [AdminAppointmentController::class, 'reschedule'])->name('reschedule');
