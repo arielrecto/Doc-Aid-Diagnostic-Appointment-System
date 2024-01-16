@@ -12,9 +12,18 @@
             @endif
             <div class="panel min-h-screen overflow-y-auto" x-data="printReport">
                 <div class="flex items-center justify-between">
-                    <h1 class="page-title">
-                        Report
-                    </h1>
+                    <div class="w-1/5 flex justify-between items-center">
+                        <h1 class="page-title">
+                            Report
+                        </h1>
+                        <a href="{{route('admin.report.index', ['filter' => 'monthly'])}}" class="btn btn-xs btn-accent">
+                            Monthly
+                        </a>
+                        <a href="{{route('admin.report.index', ['filter' => 'year'])}}" class="btn btn-xs btn-primary">
+                            Yearly
+                        </a>
+                    </div>
+
                     <button class="btn-generic" @click="printElement"><i class="fi fi-rr-print"></i></button>
                 </div>
 
@@ -33,7 +42,7 @@
                             </div>
                         </div>
                         <div class="flex justify-between">
-                            <h1 class="font-bold">Weekly Reports</h1>
+                            <h1 class="font-bold">{{$tagline}} Reports</h1>
                             <h1>Date : {{ now()->format('F d, Y') }}</h1>
                         </div>
                         <div class="grid grid-cols-3 grid-flow-row bg-gray-50 p-2">
@@ -49,7 +58,7 @@
                         </div>
 
 
-                        @foreach ($weeklySales as $sale)
+                        @foreach ($sales as $sale)
                             <div class="grid grid-cols-3 grid-flow-row py-1 text-xs">
                                 <h1>
                                     {{ $sale['name'] }}
