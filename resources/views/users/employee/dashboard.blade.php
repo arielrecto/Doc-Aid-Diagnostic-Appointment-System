@@ -1,3 +1,7 @@
+@php
+    use App\Enums\AppointmentStatus;
+@endphp
+
 <x-app-layout>
     <div class="main-screen">
         <x-employee.sidebar />
@@ -40,17 +44,33 @@
                 <div
                     class="panel">
                     <div class="w-full flex justify-end">
-                        <form action="{{ route('employee.filter') }}" method="get">
-                            <div class="form-control">
-                                <label class="input-group">
-                                    <input type="text" placeholder="search" name="search"
-                                        class="input bg-white border focus:outline-none shadow" />
-                                    <span class="bg-accent">
-                                        <button><i class="fi fi-rr-search"></i></button>
-                                    </span>
-                                </label>
-                            </div>
-                        </form>
+                        <div class="flex items-center gap-2">
+                            <a href="{{route('employee.dashboard')}}" class="btn btn-sm btn-primary">All</a>
+                            <form action="{{ route('employee.dashboard') }}" method="get">
+                                <input type="hidden" name="filter" value="{{AppointmentStatus::PENDING->value}}">
+                                <button class="btn btn-accent btn-sm">Pending</button>
+                            </form>
+                            <form action="{{ route('employee.dashboard') }}" method="get">
+                                <input type="hidden" name="filter" value="{{AppointmentStatus::APPROVED->value}}">
+                                <button class="btn btn-secondary btn-sm">Approved</button>
+                            </form>
+                            <form action="{{ route('employee.dashboard') }}" method="get">
+                                <input type="hidden" name="filter" value="{{AppointmentStatus::DONE->value}}">
+                                <button class="btn btn-success btn-sm">Done</button>
+                            </form>
+                            <form action="{{ route('employee.filter') }}" method="get">
+                                <div class="form-control">
+                                    <label class="input-group">
+                                        <input type="text" placeholder="search" name="search"
+                                            class="input bg-white border focus:outline-none shadow" />
+                                        <span class="bg-accent">
+                                            <button><i class="fi fi-rr-search"></i></button>
+                                        </span>
+                                    </label>
+                                </div>
+                            </form>
+                        </div>
+
                         {{-- <form method="post" action="w-full flex gap-2">
                             <div class="w-full grid grid-cols-6 grid-flow-row gap-2">
                                 <select class="select select-accent w-full max-w-xs">

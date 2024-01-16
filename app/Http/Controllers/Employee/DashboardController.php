@@ -13,9 +13,22 @@ class DashboardController extends Controller
     public function __construct(public Appointment $appointment)
     {
     }
-    public function dashboard()
+    public function dashboard(Request $request)
     {
+
+        $filter = $request->filter;
+
+
+
+
+
         $appointments = Appointment::paginate(20);
+
+        if($filter !== null){
+
+            $appointments = Appointment::where('status', $filter)->paginate(20);
+        }
+
         $appointmentsTodayTotal = $this->appointment->today()->count();
 
         $appointmentByMonthTotal = $this->appointment->currentMonth()->count();
