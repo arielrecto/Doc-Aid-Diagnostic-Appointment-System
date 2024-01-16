@@ -34,6 +34,10 @@ class RescheduleController extends Controller
      */
     public function store(Request $request)
     {
+
+        if(!now()->lt($request->date)){
+            return back()->with(['rejected' => 'Date is in the past!']);
+        };
         $appointment = Appointment::find($request->appointment_id);
 
         $request->validate([
