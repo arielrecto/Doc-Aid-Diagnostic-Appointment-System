@@ -1,9 +1,9 @@
 <x-app-layout>
     <div class="main-screen">
-        <x-patient-siderbar />
+        <x-admin.sidebar-new />
 
         <div class="main-content w-5/6 md:w-full">
-            <x-patient.navbar />
+            <x-admin.navbar-new />
 
             @if (Session::has('rejected'))
                 <div class="panel-error">
