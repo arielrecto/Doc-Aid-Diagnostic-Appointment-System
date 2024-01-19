@@ -39,6 +39,7 @@
                                         <th></th>
                                         <th>Name</th>
                                         <th>Email</th>
+                                        <th>Role</th>
                                         <th>Created At</th>
                                         <th>Action</th>
                                     </tr>
@@ -49,6 +50,7 @@
                                             <th>{{ $employee->id }}</th>
                                             <td>{{ $employee->profile->full_name }}</td>
                                             <td>{{ $employee->email }}</td>
+                                            <td>{{ $employee->roles()->first()->name }}</td>
                                             <td>{{ $employee->created_at->format('M-d-Y') }}</td>
                                             <td>
                                                 <div class="flex items-center gap-5">
