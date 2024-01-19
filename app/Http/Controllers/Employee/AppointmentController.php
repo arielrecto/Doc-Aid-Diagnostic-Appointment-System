@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Employee;
 
-use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Models\Appointment;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Notifications\AppointmentStatusNotification;
 
 class AppointmentController extends Controller
 {
@@ -26,6 +28,16 @@ class AppointmentController extends Controller
     public function approved (Request $request, String $id){
         $appointment = appointment::find($id);
 
+        $user = User::find($appointment->user_id);
+
+        $message  = [
+            'content' => "Your Appointment is Approved",
+            'date' =>  'Date: ' . now()->format('F-d-Y')
+        ];
+
+        $user->notify(new AppointmentStatusNotification($message));
+
+
         $appointment->update([
             'status' => 'approved'
         ]);
@@ -36,11 +48,20 @@ class AppointmentController extends Controller
 
        $appointment = appointment::find($id);
 
+       $user = User::find($appointment->user_id);
+
+       $message  = [
+           'content' => "Your Appointment is rejected",
+           'date' =>  'Date: ' . now()->format('F-d-Y')
+       ];
+
+       $user->notify(new AppointmentStatusNotification($message));
+
         $appointment->update([
             'status' => 'reject'
         ]);
 
-        return back()->with(['message' => 'Appointment is approved']);
+        return back()->with(['reject' => 'Appointment is rejected']);
     }
     public function byDate(string $date){
 

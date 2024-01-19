@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Patient;
 
+use App\Models\User;
+use App\Models\Appointment;
+use Illuminate\Http\Request;
 use App\Enums\AppointmentStatus;
 use App\Http\Controllers\Controller;
-use App\Models\Appointment;
 use App\Models\AppointmentReschedule;
-use Illuminate\Http\Request;
+use App\Notifications\AppointmentStatusNotification;
 
 class RescheduleController extends Controller
 {
@@ -54,6 +56,17 @@ class RescheduleController extends Controller
             'date' => $request->date,
             'appointment_id' => $appointment->id
          ]);
+
+
+         $user = User::role('admin')->first();
+
+
+        $message  = [
+            'content' => "Patient: {$appointment->patient} is Request for Reschedule",
+            'date' =>  'Date: ' . now()->format('F-d-Y')
+        ];
+
+        $user->notify(new AppointmentStatusNotification($message));
 
 
          $appointment->update([

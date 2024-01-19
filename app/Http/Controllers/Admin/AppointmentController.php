@@ -7,6 +7,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Appointment;
 use App\Models\AppointmentReschedule;
 use App\Models\Service;
+use App\Models\User;
+use App\Notifications\AppointmentStatusNotification;
+use App\Notifications\AppoitmentStatusNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -129,12 +132,33 @@ class AppointmentController extends Controller
     public function approved($id){
         $appointment = Appointment::find($id);
 
+        $user = User::find($appointment->user_id);
+
+
+        $message  = [
+            'content' => "Your Appointment is Approved",
+            'date' =>  'Date: ' . now()->format('F-d-Y')
+        ];
+
+        $user->notify(new AppointmentStatusNotification($message));
+
         $appointment->update(['status' => 'approved']);
 
         return back()->with(['approved' => 'Appointment Approved']);
     }
     public function reject($id){
         $appointment = Appointment::find($id);
+
+
+        $user = User::find($appointment->user_id);
+
+
+        $message  = [
+            'content' => "Your Appointment is Rejected",
+            'date' =>  'Date: ' . now()->format('F-d-Y')
+        ];
+
+        $user->notify(new AppointmentStatusNotification($message));
 
         $appointment->update(['status' => 'reject']);
 
@@ -171,6 +195,15 @@ class AppointmentController extends Controller
 
         $appointment = $reschedule->appointment;
 
+        $user = User::find($appointment->id);
+
+        $message  = [
+            'content' => "Your Appointment Reschedule is Approved",
+            'date' =>  'Date: ' . now()->format('F-d-Y')
+        ];
+
+        $user->notify(new AppointmentStatusNotification($message));
+
 
         $appointment->update([
             'status' => AppointmentStatus::APPROVED->value,
@@ -196,6 +229,15 @@ class AppointmentController extends Controller
 
 
         $appointment = $reschedule->appointment;
+
+        $user = User::find($appointment->user_id);
+
+        $message  = [
+            'content' => "Your Appointment Reschedule is rejected",
+            'date' =>  'Date: ' . now()->format('F-d-Y')
+        ];
+
+        $user->notify(new AppointmentStatusNotification($message));
 
 
         $appointment->update([
