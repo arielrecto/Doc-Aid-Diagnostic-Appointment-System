@@ -31,6 +31,10 @@
                 'route' => 'admin.report.index',
                 'icon' => 'fi fi-rr-stats pt-1',
             ],
+            'Patients' => [
+                'route' => 'admin.patient.index',
+                'icon' => 'fi fi-rr-procedures pt-1',
+            ],
         ];
     @endphp
 

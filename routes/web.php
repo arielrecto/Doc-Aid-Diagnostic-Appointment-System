@@ -13,6 +13,8 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Patient\AppointmentController;
 use App\Http\Controllers\Patient\FamilyMemberController;
 use App\Http\Controllers\Admin\AppointmentController as AdminAppointmentController;
+use App\Http\Controllers\Admin\FamilyMemberController as AdminFamilyMemberController;
+use App\Http\Controllers\Admin\PatientController;
 use App\Http\Controllers\Admin\PaymentAccountController;
 use App\Http\Controllers\Admin\PaymentController;
 use App\Http\Controllers\Admin\SalesReportController;
@@ -68,7 +70,13 @@ Route::middleware('auth')->group(function () {
             Route::get('/reschedule/id={appointment}', [AdminAppointmentController::class, 'reschedule'])->name('reschedule');
             Route::resource('result', ResultController::class)->except('create');
             Route::resource('payment', PaymentController::class);
+
         });
+
+        Route::prefix('patient')->as('patient.')->group(function(){
+            Route::resource('family', AdminFamilyMemberController::class);
+        });
+
 
         Route::prefix('/services')->as('service.')->group(function () {
             Route::patch('/availability/{Service}', [ServiceController::class, 'availability'])->name('availability');
@@ -82,6 +90,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('appointment', AdminAppointmentController::class);
         Route::resource('employee', EmployeeController::class);
         Route::resource('imageCarousel', ImageCarouselController::class);
+        Route::resource('patient', PatientController::class);
     });
     Route::middleware(['role:patient', 'verified'])->prefix('patient')->as('patient.')->group(function () {
         Route::get('/dashboard', [PatientDashboardController::class, 'dashboard'])->name('dashboard');
