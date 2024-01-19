@@ -19,38 +19,42 @@ class PaypalController extends Controller
     public function paypal(Request $request)
     {
 
-        $services = json_decode($request->services);
-
-
         $user = Auth::user();
 
+
+
+        $service = json_decode($request->service);
+
+
         $request->validate([
+            'patient' => 'required',
             'date' => 'required',
-            'total' => 'required'
+            'patient' => 'required'
         ]);
+
 
         $otherDate = Carbon::createFromFormat('Y-m-d', $request->date);
 
-        if($otherDate->lt(now())){
+
+        if ($otherDate->lt(now())) {
             return back()->with(['reject' => 'Appointment cannot be made since the selected date has passed.']);
         }
 
-
         $hasAppointment = Appointment::where('date', $request->date)
-        ->where('user_id', $user->id)
-        ->where('status', '!=',  AppointmentStatus::DONE->value)->first();
+            ->where('user_id', $user->id)
+            ->where('status', '!=',  AppointmentStatus::DONE->value)->first();
 
 
-    if ($hasAppointment !== null &&  $hasAppointment->subscribeServices !== null) {
+        if ($hasAppointment !== null &&  $hasAppointment->subscribeServices->first() !== null) {
 
-        $subscribeService = $hasAppointment->subscribeServices->first();
-
-        foreach ($services as $service) {
+            $subscribeService = $hasAppointment->subscribeServices->first();
             if ($service->id === $subscribeService->service_id) {
+                dd($service->id);
                 return back()->with(['reject' => 'You have Already Appointment with service and date']);
             }
         }
-    }
+
+
 
 
 
@@ -91,7 +95,7 @@ class PaypalController extends Controller
                     return redirect()->away($link['href'])->with([
                         'patient' => $request->patient,
                         'date' => $request->date,
-                        'services' => $request->services,
+                        'service' => $request->service,
                         'payment_type' => $request->payment_type,
                         'balance' => $request->balance,
                         'downpayment_total' => $request->downpayment_total,
@@ -142,24 +146,24 @@ class PaypalController extends Controller
                 'appointment_id' => $appointment->id
             ]);
 
-            $services = json_decode($session->get('services'));
+            $service = json_decode($session->get('service'));
 
 
-            collect($services)->map(function ($item) {
-                $slot = $item->time_slot;
-                $t_slot = TimeSlot::where('date', $slot->date)->first();
-                if ($t_slot) {
-                    $t_slot->update([
-                        'slots' => json_encode($slot->slots),
-                    ]);
-                }
-                TimeSlot::create([
-                    'service_id' => $item->id,
+            $slot = $service->time_slot;
+            $t_slot = TimeSlot::where('date', $slot->date)->first();
+            if ($t_slot) {
+                $t_slot->update([
                     'slots' => json_encode($slot->slots),
-                    'date' => $slot->date
                 ]);
-            });
-            $this->processServices($services, $appointment);
+            }
+            TimeSlot::create([
+                'service_id' => $service->id,
+                'slots' => json_encode($slot->slots),
+                'date' => $slot->date
+            ]);
+
+
+            $this->processServices($service, $appointment);
             return to_route('patient.appointment.create')->with([
                 'message' => 'Appointment Set !'
             ]);
@@ -175,22 +179,21 @@ class PaypalController extends Controller
        return view('components.paypal.cancel');
 
     }
-    private function processServices($services, $appointment)
+    private function processServices($service, $appointment)
     {
-        foreach ($services as $_service) {
-            list($startTime, $endTime) = explode(" - ", $_service->selectedSlot->duration);
-            $startTime = Carbon::parse($startTime);
-            $endTime = Carbon::parse($endTime);
 
-            Service::find($_service->id)->update(['time_slot' => json_encode($_service->time_slot)]);
+        list($startTime, $endTime) = explode(" - ", $service->selectedSlot->duration);
+        $startTime = Carbon::parse($startTime);
+        $endTime = Carbon::parse($endTime);
+
+        Service::find($service->id)->update(['time_slot' => json_encode($service->time_slot)]);
 
 
-            SubscribeService::create([
-                'start_time' => $startTime,
-                'end_time' => $endTime,
-                'service_id' => $_service->id,
-                'appointment_id' => $appointment->id
-            ]);
-        }
+        SubscribeService::create([
+            'start_time' => $startTime,
+            'end_time' => $endTime,
+            'service_id' => $service->id,
+            'appointment_id' => $appointment->id
+        ]);
     }
 }
