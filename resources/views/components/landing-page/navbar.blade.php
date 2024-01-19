@@ -10,13 +10,13 @@
         </p>
     </div>
     <div class="flex gap-2 items-center">
-        <a href="#services">
+        <a href="/#services">
             <h1
                 class="text-base-100 font-thin capitalize text-xs text-center md:text-sm hover:font-bold duration-700 px-2 border-base-100">
                 Services
             </h1>
         </a>
-        <a href="#aboutus">
+        <a href="/#aboutus">
             <h1
                 class="text-base-100 font-thin capitalize text-xs text-center md:text-sm hover:font-bold duration-700 px-2 border-base-100">
                 About

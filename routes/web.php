@@ -54,6 +54,12 @@ Route::get('/', function () {
 
 Route::get('/home', [HomeController::class, 'home'])->name('home');
 
+Route::get('/service/{service}', function(string $id){
+
+    $service = Service::with(['days'])->whereId($id)->first();
+    return view('services.show', compact(['service']));
+})->name('service.show');
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
