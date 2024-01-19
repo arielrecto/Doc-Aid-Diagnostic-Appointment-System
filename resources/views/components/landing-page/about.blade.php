@@ -91,6 +91,7 @@
             <section class="text-gray-600 body-font">
                 <div class="container px-5 py-24 mx-auto">
                     <h1 class="text-lg lg:text-3xl font-medium title-font text-gray-900 mb-12 text-center">Feedbacks
+
                     </h1>
                     <div class="flex flex-wrap -m-4 overflow-y-auto">
 
@@ -198,6 +199,9 @@
 
 
                     </div>
+                    <a href="{{route('feedbacks.index')}}" class="w-full flex justify-center">
+                        <button class="btn-generic">view more</button>
+                    </a>
                 </div>
             </section>
         </div>

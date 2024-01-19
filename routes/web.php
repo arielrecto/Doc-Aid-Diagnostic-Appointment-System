@@ -60,6 +60,13 @@ Route::get('/service/{service}', function(string $id){
     return view('services.show', compact(['service']));
 })->name('service.show');
 
+Route::get('/feedbacks', function(){
+
+    $feedbacks = FeedBack::latest()->get();
+
+    return view('feedback.index', compact(['feedbacks']));
+})->name('feedbacks.index');
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
