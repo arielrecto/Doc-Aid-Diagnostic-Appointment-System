@@ -172,8 +172,12 @@
                                 <select class="c-input" id="interval" name="session_time"
                                     @change="setTimeItervalForm">
                                     <option disabled selected>Duration</option>
+                                    <option value="5">5 min</option>
+                                    <option value="10">10 min</option>
                                     <option value="20">20 min</option>
+                                    <option value="30">30 min</option>
                                     <option value="40">40 min</option>
+                                    <option value="50">50 min</option>
                                     <option value="60">1 hr</option>
                                 </select>
                                 @if ($errors->has('session_time'))
