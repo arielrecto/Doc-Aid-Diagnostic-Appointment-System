@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Enums\AppointmentStatus;
 use App\Models\Appointment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use App\Enums\AppointmentStatus;
 use App\Http\Controllers\Controller;
 
 class SalesReportController extends Controller
 {
     public function index(Request $request)
     {
+
 
         $filter = $request->filter;
 
@@ -30,6 +32,12 @@ class SalesReportController extends Controller
                 $sales = collect($this->annualSales());
 
                 $tagline = "year" . ' - ' . now()->format('Y');
+            }
+            if($filter === 'custom'){
+
+                $tagline = "{$request->start_date} - {$request->end_date}";
+
+                $sales = collect($this->dateRangeSales($request->start_date, $request->end_date));
             }
         }
 
@@ -119,5 +127,31 @@ class SalesReportController extends Controller
         }
 
         return $annualSalesData;
+    }
+    private function dateRangeSales($startDate, $endDate){
+        $startDate = Carbon::parse($startDate)->startOfDay();
+        $endDate = Carbon::parse($endDate)->endOfDay();
+
+        $salesData = [];
+
+        for ($date = $startDate; $date->lte($endDate); $date->addDay()) {
+            $formattedDate = $date->format('F d, Y');
+
+            $dailyAppointments = Appointment::whereStatus(AppointmentStatus::DONE->value)
+                ->whereDate('date', $formattedDate)
+                ->count();
+
+            $dailySales = Appointment::whereStatus(AppointmentStatus::DONE->value)
+                ->whereDate('date', $formattedDate)
+                ->sum('total');
+
+            $salesData[] = [
+                'name' => $formattedDate,
+                'total_appointments' => $dailyAppointments,
+                'total_sales' => $dailySales,
+            ];
+        }
+
+        return $salesData;
     }
 }

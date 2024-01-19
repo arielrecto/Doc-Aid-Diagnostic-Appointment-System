@@ -12,16 +12,31 @@
             @endif
             <div class="panel min-h-screen overflow-y-auto" x-data="printReport">
                 <div class="flex items-center justify-between">
-                    <div class="w-1/5 flex justify-between items-center">
+                    <div class="w-1/5 flex justify-between items-center gap-2">
                         <h1 class="page-title">
                             Report
                         </h1>
+                        <a href="{{route('admin.report.index')}}" class="btn btn-xs btn-accent">
+                           Weekly
+                        </a>
                         <a href="{{route('admin.report.index', ['filter' => 'monthly'])}}" class="btn btn-xs btn-accent">
                             Monthly
                         </a>
                         <a href="{{route('admin.report.index', ['filter' => 'year'])}}" class="btn btn-xs btn-primary">
                             Yearly
                         </a>
+                        <form action="{{route('admin.report.index')}}" method="get" class="flex items-center  gap-2">
+                            <input type="hidden" name="filter" value="custom">
+                            <div class="flex flex-col">
+                                <label for="" class="text-xs text-gray-600 flex gap-2">Start Date:</label>
+                                <input type="date" name="start_date" class="input input-accent input-sm">
+                            </div>
+                            <div class="flex flex-col">
+                                <label for="" class="text-xs text-gray-600 flex gap-2">End Date:</label>
+                                <input type="date" name="end_date" class="input input-accent input-sm">
+                            </div>
+                            <button class="btn-generic">Filter</button>
+                        </form>
                     </div>
 
                     <button class="btn-generic" @click="printElement"><i class="fi fi-rr-print"></i></button>
