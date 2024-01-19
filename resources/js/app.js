@@ -302,9 +302,38 @@ Alpine.data("calendar", (role) => ({
                 this.toggle = true;
                 this.getAppointmentByDate(date.dateStr);
             }.bind(this),
-            // events: this.convertEvents(data),
+            events: this.calendarEventsMapping(data)
         });
         calendar.render();
+    },
+    calendarEventsMapping(eventData) {
+        const appointmentsPerDay = this.countEventPerDay(eventData)
+
+
+        const dataEvents = Object.keys(appointmentsPerDay).map(event => ({
+            title: `${appointmentsPerDay[event]} Appointment`,
+            start: new Date(event),
+            end: new Date(event),
+            allDay: true
+        }));
+
+        console.log(dataEvents)
+        return dataEvents
+    },
+    countEventPerDay(eventData) {
+        const appointmentsPerDay = {};
+
+        eventData.forEach(event => {
+            const dateKey = new Date(event.date).toISOString().split('T')[0];
+
+            if (appointmentsPerDay[dateKey]) {
+                appointmentsPerDay[dateKey]++;
+            } else {
+                appointmentsPerDay[dateKey] = 1;
+            }
+        });
+
+        return appointmentsPerDay;
     },
     convertEvents(eventsData) {
         return eventsData.map((event) => {
