@@ -48,6 +48,11 @@ class PatientController extends Controller
         $profile = $patient->profile;
 
 
+        if($profile === null){
+            return back()->with(['message' => 'patient doesn\'t fillup the profile information']);
+        }
+
+
 
         $medicalHistory = $patient->appointments()
                         ->whereIsFamily(false)

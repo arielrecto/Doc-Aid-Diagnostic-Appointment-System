@@ -48,12 +48,12 @@
                                     @forelse ($patients as $patient)
                                         <tr>
                                             <th>{{ $patient->id }}</th>
-                                            <td>{{ $patient->profile->full_name }}</td>
+                                            <td>{{ $patient->name }}</td>
                                             <td>{{ $patient->email }}</td>
                                             @if ($patient->family !== null)
                                                 <td>{{ count($patient->family->members) }}</td>
                                             @else
-                                                0
+                                                <td>0</td>
                                             @endif
 
                                             <td>{{ $patient->created_at->format('M-d-Y') }}</td>
@@ -63,7 +63,9 @@
                                                         class="btn btn-accent btn-xs">
                                                         <i class="fi fi-rr-eye"></i>
                                                     </a>
-                                                    <form action="{{route('admin.patient.destroy', ['patient' => $patient->id])}}" method="post">
+                                                    <form
+                                                        action="{{ route('admin.patient.destroy', ['patient' => $patient->id]) }}"
+                                                        method="post">
                                                         @csrf
                                                         @method('delete')
                                                         <button class="btn btn-xs btn-error">
