@@ -59,10 +59,12 @@
                                             <td>{{ $patient->created_at->format('M-d-Y') }}</td>
                                             <td>
                                                 <div class="flex items-center gap-5">
-                                                    <a href="{{ route('admin.patient.show', ['patient' => $patient->id]) }}"
-                                                        class="btn btn-accent btn-xs">
-                                                        <i class="fi fi-rr-eye"></i>
-                                                    </a>
+                                                    @if ($patient->profile !== null)
+                                                        <a href="{{ route('admin.patient.show', ['patient' => $patient->id]) }}"
+                                                            class="btn btn-accent btn-xs">
+                                                            <i class="fi fi-rr-eye"></i>
+                                                        </a>
+                                                    @endif
                                                     <form
                                                         action="{{ route('admin.patient.destroy', ['patient' => $patient->id]) }}"
                                                         method="post">
