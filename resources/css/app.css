@@ -80,7 +80,7 @@
         @apply panel bg-secondary h-auto lg:h-32;
 
         .header-title {
-            @apply w-full text-lg font-semibold text-white capitalize;
+            @apply w-full text-sm 2xl:text-lg font-semibold text-white capitalize;
         }
     }
 

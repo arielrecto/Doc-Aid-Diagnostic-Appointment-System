@@ -34,7 +34,7 @@
                             <table class="table table-xs">
                                 <thead>
                                     <tr>
-                                        <th></th>
+                                        {{-- <th></th> --}}
                                         <th>Patient</th>
                                         <th>No. Service</th>
                                         <th>Schedule</th>
@@ -46,7 +46,7 @@
 
                                     @forelse ($appointments as $appointment)
                                         <tr>
-                                            <th>1</th>
+                                            {{-- <th>1</th> --}}
                                             <td>{{ $appointment->patient }}</td>
                                             <td>{{ $appointment->subscribeServices()->count() }}</td>
                                             <td>{{ date('M-d-Y', strtotime($appointment->date)) }}</td>

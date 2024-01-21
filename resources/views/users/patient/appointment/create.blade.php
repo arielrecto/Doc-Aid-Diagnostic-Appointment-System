@@ -101,7 +101,8 @@
                                                         <h1 class="font-bold text-lg capitalize">
                                                             <span x-text="selectedService.name"></span>
                                                         </h1>
-                                                        <button class="btn btn-xs btn-error" @click="selectedService = null">x</button>
+                                                        <button class="btn btn-xs btn-error"
+                                                            @click="selectedService = null">x</button>
                                                     </div>
 
                                                     <div class="flex gap-2 items-center text-sm">
@@ -145,7 +146,7 @@
                                                                         <template
                                                                             x-if="timeSlot.slot !== 'break' && timeSlot.slot !== 0">
                                                                             <option :value="timeSlot.duration">
-                                                                                <div class="flex gap "> Time :
+                                                                                <div class="flex gap ">
                                                                                     <span x-text="timeSlot.duration"
                                                                                         class="flex-grow"></span> /
                                                                                     Slot : <span
@@ -161,106 +162,12 @@
                                                     </div>
                                                 </div>
                                                 <input type="hidden" name="service"
-                                                            :value="JSON.stringify(selectedService)">
+                                                    :value="JSON.stringify(selectedService)">
 
                                             </div>
 
-                                            {{-- <div class="flex gap-2 h-auto max-h-sx w-full p-2 overflow-scroll">
-                                                <table class="table table-xs">
-                                                    <thead>
-                                                        <tr>
-                                                            <th></th>
-                                                            <th>Service</th>
-                                                            <th>Time</th>
-                                                            <th>price</th>
-                                                            <th>Downpayment</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <template x-for="service in selectedService"
-                                                            :key="service.id">
-                                                            <tr>
-                                                                <th>1</th>
-                                                                <td><span x-text="service.name"></span></td>
-                                                                <td><span
-                                                                        x-text="service?.selectedSlot?.duration"></span>
-                                                                </td>
-                                                                <td>&#8369 <span x-text="service.price"></span></td>
-                                                                <td>&#8369 <span x-text="service.init_payment"></span>
-                                                                </td>
-                                                                <td>
-                                                                    <button
-                                                                        @click="openDetail($event, service.id)">open</button>
-                                                                </td>
-                                                            </tr>
-                                                        </template>
-                                                        <input type="hidden" name="services"
-                                                            :value="JSON.stringify(selectedService)">
-                                                    </tbody>
-                                                    <tfoot>
-                                                        <tr>
-                                                            <th></th>
-                                                            <th>Service</th>
-                                                        </tr>
-                                                    </tfoot>
-                                                </table>
-                                            </div> --}}
                                         </template>
-                                        {{-- <template x-if="sDetailID !== null  ">
-                                            <div class="w-full flex flex-col gap-2">
-                                                <div class="flex flex-col gap-2">
-                                                    <h1 class="text-xs">Service</h1>
-                                                    <p x-html="sPreview.name" class="text-gray-400"></p>
-                                                    <h1 class="text-xs">Description</h1>
-                                                    <p x-html="sPreview.description" class="text-gray-400"></p>
-                                                    <div class="flex gap-2">
-                                                        <div class="flex flex-col gap-2">
-                                                            <h1 class="text-xs">Downpayment</h1>
-                                                            <p x-text="sPreview.init_payment"
-                                                                class="text-gray-400 w-full text-center"></p>
-                                                        </div>
-                                                        <div class="flex flex-col gap-2">
-                                                            <h1 class="text-xs">Price</h1>
-                                                            <p x-text="selectedService.price"
-                                                                class="text-gray-400 w-full text-center"></p>
-                                                        </div>
-                                                        <div class="flex flex-col gap-2">
-                                                            <h1 class="text-xs">Session Time : </h1>
-                                                            <p x-text="sPreview.session_time + ' min'"
-                                                                class="text-gray-400 w-full text-center"></p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="flex flex-col gap-2">
-                                                    <h1 class="w-full text-center text-sm text-gray-500 font-semibold">
-                                                        Service Time Slot</h1>
-                                                    <div class="w-full">
-                                                        <template x-if="toggleTimeSlot">
 
-                                                            <select class="select select-accent w-full"
-                                                                @change="selectSlot($event, sPreview)">
-                                                                <option disabled selected>Select Time </option>
-                                                                <template
-                                                                    x-for="(timeSlot, index) in sPreview.time_slot.slots"
-                                                                    :key="index">
-                                                                    <template
-                                                                        x-if="timeSlot.slot !== 'break' && timeSlot.slot !== 0">
-                                                                        <option :value="timeSlot.duration">
-                                                                            <div class="flex gap "> Time :
-                                                                                <span x-text="timeSlot.duration"
-                                                                                    class="flex-grow"></span> /
-                                                                                Slot : <span
-                                                                                    x-text="timeSlot.slot"></span>
-                                                                            </div>
-                                                                        </option>
-                                                                    </template>
-                                                                </template>
-                                                            </select>
-
-                                                        </template>
-                                                    </div>
-                                                </div>
-                                        </template> --}}
 
 
                                         <template x-if="selectedTimeSlot !== null">
@@ -287,31 +194,26 @@
                                                         </div>
                                                     </div>
 
-                                                    {{-- <template x-if="extend">
-                                                        <div>
-                                                            <select class="select select-accent w-full max-w-xs"
-                                                                @change="selectedExtension($event)">
-                                                                <option disabled selected>Select Time</option>
 
-                                                                <template x-for="(extension, index) in timeExtentions"
-                                                                    :key="index">
-                                                                    <option :value="extension"
-                                                                        x-text="extension + ' - min'"> </option>
-                                                                </template>
-
-                                                            </select>
-                                                        </div>
-                                                    </template> --}}
                                                 </div>
                                             </div>
 
                                         </template>
                                         <div class="w-full h-auto flex flex-col gap-2">
-                                            <div class="flex items-center gap-2">
-                                                <input type="checkbox" class="checkbox"
-                                                    @change="checkIsPayPal($event)" class=""> <img
-                                                    src="{{ asset('image/paypal.png') }}" alt=""
-                                                    srcset="" class="object object-center h-12 w-12">
+                                            <div class="flex items-center gap-5">
+                                                {{-- <input type="checkbox" class="checkbox"
+                                                    @change=" class=""> --}}
+                                                <button @click.prevent="checkIsPayPal">
+                                                    <img src="{{ asset('image/paypal.png') }}" alt=""
+                                                        srcset="" class="object object-center h-12 w-12">
+                                                </button>
+
+                                                <button @click.prevent="isPayPal = false" class="btn btn-ghost relative">
+                                                    <img src="{{ asset('image/more.png') }}" alt=""
+                                                        srcset="" class="object object-center h-12 w-12">
+                                                        <p class="absolute z-10 top-0">Other</p>
+                                                </button>
+
                                             </div>
                                             <template x-if="!isPayPal">
                                                 <div>
@@ -328,16 +230,6 @@
                                                                         {{ $account->account_name }}</span></h1>
                                                             </div>
                                                         @endforeach
-
-
-                                                        {{-- <label for="" class="text-xs">For G-Cash
-                                                            Payment:</label>
-                                                        <div class="text-sm font-bold">
-                                                            <h1>Account Number: <span>0905-710-4039 </span></h1>
-                                                            <h1> Account Name: <span> Stephen Bacolor</span></h1>
-                                                        </div> --}}
-
-
                                                     </div>
 
                                                     <div class="w-full p-2 flex flex-col">
@@ -389,6 +281,10 @@
                                                                         placeholder="Amount"
                                                                         @change="computation($event)"
                                                                         x-model="rAmount">
+                                                                    <template x-if="'insuffiecient' in error">
+                                                                        <p class="text-xs text-error"
+                                                                            x-text="error.insuffiecient"></p>
+                                                                    </template>
                                                                 </div>
                                                             </div>
 
@@ -401,7 +297,6 @@
                                                 :value="isPayPal ? 'paypal' : 'other'">
 
                                         </div>
-
                                         <div class="flex justify-end p-5 gap-2">
                                             <div class="flex flex-col gap-2">
                                                 <label for="" class="text-sm text-gray-500">balance</label>
@@ -422,7 +317,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <template x-if="selectedService !== null">
+                                    <template
+                                        x-if="selectedService !== null && selectedService.init_payment <= rAmount || selectedService !== null && isPayPal">
                                         <div class="w-full flex flex-row-reverse">
                                             <button class="btn btn-accent">
                                                 <span x-text="isPayPal ? 'Set with Paypal' : 'Set'">
@@ -430,13 +326,9 @@
                                             </button>
                                         </div>
                                     </template>
-
                                 </div>
                             </template>
-
-
                         </form>
-
                     </div>
                     <div class="hidden md:block w-full md:w-1/2   h-full rounded-lg shadow-sm hover:shadow-lg duration-700 p-2"
                         x-init="fullCalendar">
@@ -503,6 +395,8 @@
                         const amount = e.target.value;
                         this.rAmount = amount;
                         this.balance = this.total - amount;
+
+                        this.dTotalCompareToInitPayment()
                     },
                     checkedExtend() {
                         // this.extend = !this.extend
@@ -552,8 +446,6 @@
                     },
                     selectService(data, e) {
                         e.preventDefault()
-
-
                         console.log(data);
 
                         this.selectedService = {
@@ -563,56 +455,10 @@
                                 slots: JSON.parse(data.time_slot[0].slots)
                             }
                         };
-                        // const service = this.services.find((item) => {
-                        //     return item.id == id
-                        // });
 
-                        // console.log(service)
-
-                        // let time_slot = service.time_slot.find((item) => {
-                        //     if (item.date === this.sDate && item.date !== null) {
-                        //         return item
-                        //     }
-                        // })
-
-
-                        // if (time_slot === undefined) {
-                        //     time_slot = service.time_slot.find((item) => {
-                        //         if (item.date == null) {
-                        //             console.log({
-                        //                 date: item,
-                        //                 sDate: this.sDate
-                        //             })
-                        //             return item
-                        //         }
-                        //     })
-                        // }
-
-
-
-                        // if (this.selectedService.find(item => item.id === service.id)) {
-                        //     return
-                        // }
-
-
-
-                        // this.selectedService = [...this.selectedService, {
-                        //     ...service,
-                        //     time_slot: {
-                        //         ...time_slot,
-                        //         slots: JSON.parse(time_slot.slots)
-                        //     }
-                        // }]
-
-                        // console.log(this.selectedService)
                         this.total = parseInt(this.selectedService.price)
 
                         this.dTotal = parseInt(this.selectedService.init_payment)
-
-                        // console.log(this.dTotal)
-
-
-                        // console.log(this.selectedService.length)
                     },
                     selectSlot(e, service) {
                         e.preventDefault()
@@ -623,21 +469,6 @@
                             }
                         })
                         console.log(slot);
-
-                        // if ('selectedSlot' in service) {
-                        //     service = {
-                        //         ...service,
-                        //         time_slot: service.time_slot.map((item) =>
-                        //             item = item.duration === service.selectedSlot.duration ?
-                        //             item = {
-                        //                 ...item,
-                        //                 slot: item.slot + 1
-                        //             } : item
-                        //         )
-                        //     }
-                        // }
-
-
                         console.log(this.sDate)
 
                         if ('selectedSlot' in service) {
@@ -691,20 +522,6 @@
                     },
                     selectedExtension(e) {
 
-                        // const min = parseInt(e.target.value);
-                        // const slot = this.selectedTimeSlot
-                        // const endTime = slot.duration.slice(-8);
-                        // const startTime = new Date(`01/01/2000 ${endTime}`)
-                        // startTime.setMinutes(startTime.getMinutes() + min)
-                        // const formatEndTime = startTime.toLocaleTimeString([], {
-                        //     hour: '2-digit',
-                        //     minute: '2-digit'
-                        // });
-
-                        // this.selectedTimeSlot = {
-                        //     ...this.selectService,
-                        //     duration: slot.duration.slice(0, -8) + formatEndTime
-                        // }
                     },
                     openToggleTimeSlot(e) {
                         e.preventDefault()
@@ -723,8 +540,8 @@
 
                         reader.readAsDataURL(files[0]);
                     },
-                    checkIsPayPal(e) {
-                        this.isPayPal = e.target.checked
+                    checkIsPayPal() {
+                        this.isPayPal = !this.isPayPal
                     },
                     checkIsDateIsPast() {
                         const currentDate = new Date().toJSON().slice(0, 10);
@@ -741,6 +558,20 @@
                         this.error = {
                             'date': 'The Fields Didn\'t show becuase the selected Date is past'
                         }
+                    },
+                    dTotalCompareToInitPayment() {
+
+
+                        if (this.rAmount < this.selectedService.init_payment) {
+                            console.log('hell no')
+                            this.error = {
+                                insuffiecient: 'can\'t process your amount is less than to downpayment'
+                            }
+                            return
+                        }
+
+                        this.error = {}
+                        return
                     }
                 }
             }

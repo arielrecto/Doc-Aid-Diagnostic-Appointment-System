@@ -103,7 +103,6 @@ class AppointmentController extends Controller
 
             $subscribeService = $hasAppointment->subscribeServices->first();
             if ($service->id === $subscribeService->service_id) {
-                dd($service->id);
                 return back()->with(['reject' => 'You have Already Appointment with service and date']);
             }
         }
