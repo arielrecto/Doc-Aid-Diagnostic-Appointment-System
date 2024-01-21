@@ -208,10 +208,11 @@
                                                         srcset="" class="object object-center h-12 w-12">
                                                 </button>
 
-                                                <button @click.prevent="isPayPal = false" class="btn btn-ghost relative">
+                                                <button @click.prevent="isPayPal = false"
+                                                    class="btn btn-ghost relative">
                                                     <img src="{{ asset('image/more.png') }}" alt=""
                                                         srcset="" class="object object-center h-12 w-12">
-                                                        <p class="absolute z-10 top-0">Other</p>
+                                                    <p class="absolute z-10 top-0">Other</p>
                                                 </button>
 
                                             </div>
@@ -352,12 +353,23 @@
                                     <div class="flex flex-col gap-2 w-full h-16 p-2">
                                         <span x-text="service.name" class="text-xs font-bold"></span>
                                     </div>
-                                    <div class="flex p-2">
-                                        <button
-                                            class="px-1  rounded-lg bg-accent hover:scale-105 duration-700 text-xs mr-auto"
-                                            @click="selectService(service, $event)">Add</button>
-                                        <p x-text="service.price" class="text-sm font-semibold text-accent"></p>
+
+
+                                    <div class="flex 2 w-full p-2">
+                                        <template x-if="selectedService?.id !== service.id">
+                                            <button
+                                                class="btn btn-xs btn-accent"
+                                                @click="selectService(service, $event)">Add</button>
+                                            <p x-text="service.price" class="text-sm font-semibold text-accent"></p>
+                                        </template>
+                                        <template x-if="selectedService?.id === service.id">
+                                            <button
+                                                class="btn btn-xs btn-error"
+                                                @click="selectedService = null">remove</button>
+                                            <p x-text="service.price" class="text-sm font-semibold text-accent"></p>
+                                        </template>
                                     </div>
+
                                 </div>
                             </template>
                         </div>
