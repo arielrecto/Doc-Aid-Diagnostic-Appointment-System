@@ -230,6 +230,12 @@
                                                                 <h1> Account Name: <span>
                                                                         {{ $account->account_name }}</span></h1>
                                                             </div>
+
+                                                            @if ($account->image !== null)
+                                                                <img src="{{ $account->image }}" alt=""
+                                                                    srcset=""
+                                                                    class="object object-center h-32 w-32">
+                                                            @endif
                                                         @endforeach
                                                     </div>
 
@@ -357,14 +363,12 @@
 
                                     <div class="flex 2 w-full p-2">
                                         <template x-if="selectedService?.id !== service.id">
-                                            <button
-                                                class="btn btn-xs btn-accent"
+                                            <button class="btn btn-xs btn-accent"
                                                 @click="selectService(service, $event)">Add</button>
                                             <p x-text="service.price" class="text-sm font-semibold text-accent"></p>
                                         </template>
                                         <template x-if="selectedService?.id === service.id">
-                                            <button
-                                                class="btn btn-xs btn-error"
+                                            <button class="btn btn-xs btn-error"
                                                 @click="selectedService = null">remove</button>
                                             <p x-text="service.price" class="text-sm font-semibold text-accent"></p>
                                         </template>

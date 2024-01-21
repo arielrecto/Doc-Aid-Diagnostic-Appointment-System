@@ -57,8 +57,17 @@
                             @endif
                         </div>
 
+                        <div class="flex flex-col gap-2">
+                            <label for="" class="text-sm text-gray-500">Image</label>
+                            <input type="file" class="file-input file-input-accent w-full" placeholder="Account Number"
+                                name="image">
+                            {{-- @if ($errors->has('account_number'))
+                                <p class="text-xs text-error">{{ $errors->first('account_number') }}</p>
+                            @endif --}}
+                        </div>
+
                         <div class="flex justify-end p-2">
-                            <button class="btn-generic btn-sm uppercase">+ Create Employee</button>
+                            <button class="btn-generic btn-sm uppercase">Create</button>
                         </div>
                     </form>
                 </div>

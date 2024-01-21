@@ -39,11 +39,27 @@ class PaymentAccountController extends Controller
             'account_number' => 'required'
         ]);
 
-        PaymentAccount::create([
+
+        $paymentAccount = PaymentAccount::create([
             'name' => $request->name,
             'account_name' => $request->account_name,
             'account_number' => $request->account_number
         ]);
+
+
+        if($request->hasFile('image')){
+
+            $request->validate([
+                'image' => 'mimes:jpg,jpeg'
+            ]);
+
+            $imageName = 'pymntccnt-' . uniqid() . '.' . $request->image->extension();
+            $dir = $request->image->storeAs('/paymentAccount', $imageName, 'public');
+
+            $paymentAccount->update([
+                'image' => asset('/storage/' . $dir),
+            ]);
+        }
 
         return to_route('admin.paymentAccount.index')->with(['message' => 'Payment Account Added']);
     }
@@ -80,6 +96,22 @@ class PaymentAccountController extends Controller
             'account_name' => $request->account_name ?? $account->account_name,
             'account_number' => $request->account_number ?? $account->account_number
         ]);
+
+
+        if($request->hasFile('image')){
+
+            $request->validate([
+                'image' => 'mimes:jpg,jpeg'
+            ]);
+
+            $imageName = 'pymntccnt-' . uniqid() . '.' . $request->image->extension();
+            $dir = $request->image->storeAs('/paymentAccount', $imageName, 'public');
+
+            $account->update([
+                'image' => asset('/storage/' . $dir),
+            ]);
+        }
+
 
 
         return back()->with(['message' =>'Data Updated']);

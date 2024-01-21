@@ -13,6 +13,7 @@ class PaymentAccount extends Model
     protected $fillable = [
         'name',
         'account_number',
-        'account_name'
+        'account_name',
+        'image'
     ];
 }
