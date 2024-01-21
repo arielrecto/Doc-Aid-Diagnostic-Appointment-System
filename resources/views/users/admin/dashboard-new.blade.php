@@ -12,9 +12,9 @@
                         <h1 class="page-title">
                             Welcome back, admin
                         </h1>
-                        <p class="text-gray-500">
+                        {{-- <p class="text-gray-500">
                             DATA PLACEHOLDER
-                        </p>
+                        </p> --}}
                     </div>
                 </div>
             @endif

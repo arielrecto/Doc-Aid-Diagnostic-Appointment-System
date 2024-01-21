@@ -35,7 +35,9 @@ class SalesReportController extends Controller
             }
             if($filter === 'custom'){
 
-                $tagline = "{$request->start_date} - {$request->end_date}";
+                $start_date = Carbon::parse($request->start_date)->format('F d, Y');
+                $end_date = Carbon::parse($request->end_date)->format('F d, Y');
+                $tagline = "{$start_date} - {$end_date}";
 
                 $sales = collect($this->dateRangeSales($request->start_date, $request->end_date));
             }
