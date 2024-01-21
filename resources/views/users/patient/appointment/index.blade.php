@@ -79,7 +79,7 @@
                                                 <td>
                                                     <div class="flex justify-center w-full">
                                                         <p
-                                                            class="{{ $appointment->status === 'pending' ? 'bg-orange-300' : ($appointment->status === 'approved' ? 'bg-accent' : 'bg-red-400') }}
+                                                            class="{{ $appointment->status === 'pending' ? 'text-black' : ($appointment->status === 'approved' ? 'text-accent' : 'text-error') }}
                                                             p md:p-2 rounded-lg text-sm md:text-base text-center capitalize">
                                                             {{ $appointment->status }}
                                                         </p>

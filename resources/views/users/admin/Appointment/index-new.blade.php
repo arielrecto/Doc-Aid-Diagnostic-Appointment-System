@@ -55,27 +55,7 @@
                                             <td>{{ $appointment->status }}</td>
                                             <td>
                                                 <div class="flex gap-2 p-2 items-center">
-                                                    {{-- @if ($appointment->status === 'pending')
-                                                        <form
-                                                            action="{{ route('admin.appointment.approved', ['id' => $appointment->id]) }}"
-                                                            method="post">
-                                                            @csrf
-                                                            <button
-                                                                class="text-accent text-xs hover:scale-105 duration-700">
-                                                                <i class="fi fi-rr-checkbox  hover:font-bold"></i>
-                                                            </button>
-                                                        </form>
-                                                        <form
-                                                            action="{{ route('admin.appointment.reject', ['id' => $appointment->id]) }}"
-                                                            method="post">
 
-                                                            @csrf
-                                                            <button
-                                                                class="text-error text-xs hover:scale-105 duration-700">
-                                                                <i class="fi fi-rr-square-x hover:font-bold"></i>
-                                                            </button>
-                                                        </form>
-                                                    @endif --}}
                                                     <a
                                                         href="{{ route('admin.appointment.show', ['appointment' => $appointment->id]) }}">
                                                         <button
