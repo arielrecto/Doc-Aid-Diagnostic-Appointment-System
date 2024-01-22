@@ -109,14 +109,27 @@
                                         <i class="fi fi-rr-checkbox  hover:font-bold"></i> approved
                                     </button>
                                 </form>
-                                <form action="{{ route('admin.appointment.reject', ['id' => $appointment->id]) }}"
-                                    method="post" class="flex p-2 justify-end gap-2 items-center">
-
-                                    @csrf
-                                    <button class="btn btn-error btn-sm uppercase shadow border">
+                                <div class="w-full" x-data="reject">
+                                    <button id="reject-modal-trigger" class="btn btn-error btn-sm uppercase shadow border" @click="toggle = true">
                                         <i class="fi fi-rr-square-x hover:font-bold"></i> reject
                                     </button>
-                                </form>
+                                    <div class="absolute w-1/2 h-auto
+                                    top-0 left-0 z-10" id="reject-modal">
+                                        <form class="w-full flex flex-col gap-4 p-5 bg-white
+                                        shadow-sm border h-full rounded-lg" action="{{ route('admin.appointment.reject', ['id' => $appointment->id]) }}"
+                                            method="post" x-show="toggle">
+                                            <h1 class="text-lg font-bold text-primary">
+                                                Remark
+                                            </h1>
+                                            <textarea class="textarea textarea-accent w-full" name="remark" placeholder="Remark"></textarea>
+                                            @csrf
+                                            <button class="btn btn-error btn-sm uppercase shadow border">
+                                                <i class="fi fi-rr-square-x hover:font-bold"></i> reject
+                                            </button>
+                                        </form>
+                                    </div>
+
+                                </div>
                             @endif
 
                             <div class="w-full p-2 flex flex-col gap-2" x-data="result">
@@ -547,6 +560,66 @@
 
     @push('js')
         <script>
+            const reject = () => ({
+                toggle: false,
+                description: null,
+                cleanupUI: null,
+
+                init() {
+                    const button = document.getElementById("reject-modal-trigger");
+                    const tooltip = document.getElementById("reject-modal");
+
+                    this.cleanupUI = window.FloatingUI.autoUpdate(button, tooltip, () =>
+                        this.spawnModal(button, tooltip)
+                    );
+
+                    this.$watch("toggle", () => {
+                        this.spawnModal(button, tooltip);
+                    });
+                },
+
+                spawnModal(button, tooltip) {
+                    const {
+                        computePosition,
+                        autoPlacement
+                    } = window.FloatingUI;
+
+                    computePosition(button, tooltip, {
+                        placement: "bottom-end",
+                        // middleware: [
+                        //     autoPlacement()
+                        // ],
+                    }).then(({
+                        x,
+                        y
+                    }) => {
+                        Object.assign(tooltip.style, {
+                            left: `${x}px`,
+                            top: `${y}px`,
+                        });
+                    });
+                },
+
+                openToggle() {
+                    this.toggle = !this.toggle;
+                },
+
+                // quillEditor() {
+                //     const editor = document.getElementById("editor");
+                //     const quill = new Quill(editor, {
+                //         theme: "snow",
+                //     });
+                // },
+
+                // content() {
+                //     const desription = document
+                //         .getElementById("editor")
+                //         .querySelector(".ql-editor").innerHTML;
+                //     this.description = desription;
+                // },
+            })
+        </script>
+        {{-- <script>
             function result() {
                 return {
                     toggle: false,
@@ -569,7 +642,7 @@
                     },
                 }
             }
-        </script>
+        </script> --}}
     @endpush
 
 </x-app-layout>

@@ -146,21 +146,25 @@ class AppointmentController extends Controller
 
         return back()->with(['approved' => 'Appointment Approved']);
     }
-    public function reject($id){
+    public function reject(Request $request, $id){
         $appointment = Appointment::find($id);
+
 
 
         $user = User::find($appointment->user_id);
 
 
         $message  = [
-            'content' => "Your Appointment is Rejected",
+            'content' => "Your Appointment is Rejected, Remark: {$request->remark}",
             'date' =>  'Date: ' . now()->format('F-d-Y')
         ];
 
         $user->notify(new AppointmentStatusNotification($message));
 
-        $appointment->update(['status' => 'reject']);
+        $appointment->update([
+            'status' => AppointmentStatus::REJECT->value,
+            'remark' => $request->remark
+        ]);
 
         return back()->with(['rejected' => 'Appointment reject']);
     }

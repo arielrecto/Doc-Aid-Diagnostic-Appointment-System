@@ -24,7 +24,8 @@ class Appointment extends Model
         'total',
         'status',
         'is_family',
-        'family_member_id'
+        'family_member_id',
+        'remark'
     ];
 
     public function user(){

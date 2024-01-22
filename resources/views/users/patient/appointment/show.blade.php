@@ -1,4 +1,8 @@
+@php
+    use App\Enums\AppointmentStatus;
+@endphp
 <x-app-layout>
+
     <div class="main-screen">
         <x-patient-siderbar />
 
@@ -76,7 +80,7 @@
                             @foreach ($appointment->subscribeServices as $service)
                                 <h1 class="font-semibold flex gap-4 text-xs lg:text-base">
                                     <span>
-                                        Service : {{$service->service->name}}|
+                                        Service : {{ $service->service->name }}|
                                     </span>
                                     <span class="flex items-center">
                                         {{ date('g:i A', strtotime($service->start_time)) }} -
@@ -358,38 +362,15 @@
 
                 </div>
 
+                @if ($appointment->status === AppointmentStatus::REJECT->value)
+                    <div class="flex flex-col gap-2 bg-white rounded-lg shadow-md p-4">
+                        <h1 class="page-title">Remark</h1>
+                        <div class="h-auto w-full bg-gray-200 rounded-lg p-2">
+                            {{ $appointment->remark }}
+                        </div>
 
-                <div class="flex flex-col gap-2 bg-white rounded-lg shadow-md p-4">
-                    <h1 class="page-title">Result</h1>
-                    <div class="overflow-x-auto h-96">
-
-
-
-
-                        @foreach ($appointment->results as $result)
-                            <table class="table">
-                                <!-- head -->
-                                <thead class="capitalize">
-                                    <tr>
-                                        <th>Subject</th>
-                                        <th>description</th>
-                                        <th>File</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <!-- row 1 -->
-                                    <tr class="">
-                                        <th>{{ $result->name }}</th>
-                                        <td>{!! $result->description !!}</td>
-                                        <td><a href="{{ $result->path }}" target="_blank"><i
-                                                    class="fi fi-rr-document"></i></a></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        @endforeach
                     </div>
-
-                </div>
+                @endif
 
             </div>
             {{-- <div class="w-full flex flex-col gap-2">
