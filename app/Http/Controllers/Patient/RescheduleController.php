@@ -9,6 +9,7 @@ use App\Enums\AppointmentStatus;
 use App\Http\Controllers\Controller;
 use App\Models\AppointmentReschedule;
 use App\Notifications\AppointmentStatusNotification;
+use Illuminate\Support\Facades\Auth;
 
 class RescheduleController extends Controller
 {
@@ -37,6 +38,9 @@ class RescheduleController extends Controller
     public function store(Request $request)
     {
 
+
+        $user = Auth::user();
+
         if(!now()->lt($request->date)){
             return back()->with(['rejected' => 'Date is in the past!']);
         };
@@ -54,7 +58,8 @@ class RescheduleController extends Controller
             'start_time' => $request->start_time,
             'end_time' => $request->end_time,
             'date' => $request->date,
-            'appointment_id' => $appointment->id
+            'appointment_id' => $appointment->id,
+            'user_id' => $user->id
          ]);
 
 
@@ -84,7 +89,17 @@ class RescheduleController extends Controller
      */
     public function show(string $id)
     {
-        //
+
+        $user = Auth::user();
+        $reschedule = AppointmentReschedule::find($id);
+
+        $appointment = $reschedule->appointment;
+
+
+        $appointments  = Appointment::where('user_id', $user->id)->get()->toJson();
+
+
+        return view('users.patient.appointment.reschedule.show', compact(['reschedule', 'appointment', 'appointments']));
     }
 
     /**
@@ -110,4 +125,73 @@ class RescheduleController extends Controller
     {
         //
     }
+
+    public function approved(Request $request){
+
+        $reschedule = AppointmentReschedule::find($request->reschedule_id);
+
+        $user = User::role('admin')->first();
+
+
+        $reschedule->update([
+            'status' => AppointmentStatus::APPROVED->value
+        ]);
+
+
+        $appointment = $reschedule->appointment;
+
+
+
+        $message  = [
+            'content' => "Patient Approved in Appointment Reschedule",
+            'date' =>  'Date: ' . now()->format('F-d-Y')
+        ];
+
+        $user->notify(new AppointmentStatusNotification($message));
+
+
+        $appointment->update([
+            'status' => AppointmentStatus::APPROVED->value,
+            'date' => $reschedule->date
+        ]);
+
+        $subscribeService = $appointment->subscribeServices->first();
+
+
+        $subscribeService->update([
+            'start_time' => $reschedule->start_time,
+            'end_time' => $reschedule->end_time
+        ]);
+
+        $reschedule->delete();
+
+        return to_route('patient.appointment.show', ['appointment' => $appointment->id])->with(['message' => 'Appointment Reschedule Approved']);
+
+    }
+    public function reject(Request $request){
+        $reschedule = AppointmentReschedule::find($request->reschedule_id);
+
+
+        $appointment = $reschedule->appointment;
+
+        $user = User::find($appointment->user_id);
+
+        $message  = [
+            'content' => "Patient Rejected the Appointment Reschedule Remark: {$request->remark}",
+            'date' =>  'Date: ' . now()->format('F-d-Y')
+        ];
+
+        $user->notify(new AppointmentStatusNotification($message));
+
+
+        $appointment->update([
+            'status' => AppointmentStatus::APPROVED->value,
+        ]);
+
+
+        $reschedule->delete();
+
+        return to_route('patient.appointment.show', ['appointment' => $appointment->id])->with(['rejected' => 'Appointment Reschedule reject']);
+    }
+
 }

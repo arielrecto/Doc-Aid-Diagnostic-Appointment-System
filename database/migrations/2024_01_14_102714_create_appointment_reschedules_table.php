@@ -1,10 +1,11 @@
 <?php
 
-use App\Enums\AppointmentStatus;
+use App\Models\User;
 use App\Models\Appointment;
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use App\Enums\AppointmentStatus;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
@@ -21,6 +22,7 @@ return new class extends Migration
             $table->string('date');
             $table->string('start_time');
             $table->string('end_time');
+            $table->foreignIdFor(User::class);
             $table->timestamps();
         });
     }

@@ -38,7 +38,15 @@
                     <div class="flex justify-between items-center">
                         <h1 class="page-title">Appointment Details</h1>
 
+                        @if ($appointment->status === AppointmentStatus::RESCHEDULE->value && $reschedule !== null)
+                                <a class="btn btn-warning btn-sm uppercase shadow border"
+                                    href="{{route('patient.appointment.reschedule.show', ['appointment' => $reschedule->id])}}">
 
+                                    <i class="fi fi-rr-edit hover:bold"></i> Reschedule Request
+                                    ({{ $appointment->rescheduleRequest->where('status', AppointmentStatus::PENDING->value)->where('user_id', '!=', Auth::user()->id)->count() }})
+
+                                </a>
+                            @endif
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-3 grid-rows-2 gap-4 p-4 border shadow-sm rounded">

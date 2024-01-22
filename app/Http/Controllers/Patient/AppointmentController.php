@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Patient;
 use App\Enums\AppointmentStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Appointment;
+use App\Models\AppointmentReschedule;
 use App\Models\Day;
 use App\Models\Family;
 use App\Models\FamilyMember;
@@ -195,9 +196,15 @@ class AppointmentController extends Controller
      */
     public function show(string $id)
     {
+
+        $user = Auth::user();
+
         $appointment = Appointment::find($id);
 
-        return view('users.patient.appointment.show', compact(['appointment']));
+        $reschedule = AppointmentReschedule::where('appointment_id', $id)->where('user_id', '!=', $user->id)->first();
+
+
+        return view('users.patient.appointment.show', compact(['appointment', 'reschedule']));
     }
 
     /**

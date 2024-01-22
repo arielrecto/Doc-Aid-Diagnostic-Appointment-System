@@ -16,7 +16,8 @@ class AppointmentReschedule extends Model
         'status',
         'date',
         'start_time',
-        'end_time'
+        'end_time',
+        'user_id'
     ];
 
 

@@ -108,8 +108,11 @@ Route::middleware('auth')->group(function () {
     Route::middleware(['role:patient', 'verified'])->prefix('patient')->as('patient.')->group(function () {
         Route::get('/dashboard', [PatientDashboardController::class, 'dashboard'])->name('dashboard');
         Route::prefix('appointment/reschedule')->as('appointment.reschedule.')->group(function(){
-            Route::get('{appointment}/create', [RescheduleController::class, 'create'])->name('create');
+            Route::get('/create/{appointment}/', [RescheduleController::class, 'create'])->name('create');
             Route::post('/', [RescheduleController::class, 'store'])->name('store');
+            Route::get('/show/{appointment}/', [RescheduleController::class, 'show'])->name('show');
+            Route::put('/approved', [RescheduleController::class, 'approved'])->name('approved');
+            Route::put('/reject', [RescheduleController::class, 'reject'])->name('reject');
         });
         Route::prefix('appointment')->as('appointment.')->group(function() {
             Route::get('/date={date}', [AppointmentController::class, 'byDate'])->name('byDate');

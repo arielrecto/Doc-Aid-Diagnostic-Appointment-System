@@ -40,7 +40,7 @@
                         <h1 class="page-title">Appointment Details</h1>
 
                         <div class="flex p-2 justify-end gap-2 items-center">
-                            @if ($appointment->status === AppointmentStatus::RESCHEDULE->value)
+                            @if ($appointment->status === AppointmentStatus::RESCHEDULE->value && $reschedule !== null)
                                 <a class="btn btn-warning btn-sm uppercase shadow border"
                                     href="{{ route('admin.appointment.reschedule', ['appointment' => $appointment->rescheduleRequest->id]) }}">
 

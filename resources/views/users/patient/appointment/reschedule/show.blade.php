@@ -34,7 +34,7 @@
                     <div class="flex items-center justify-between">
                         <h1 class="page-title">Reschedule Request</h1>
                         <div class="flex items-center gap-2">
-                            <form action="{{route('admin.appointment.reschedule.approve')}}" method="post">
+                            <form action="{{route('patient.appointment.reschedule.approved')}}" method="post">
 
                                 @csrf
                                 @method('put')
@@ -51,7 +51,7 @@
                                 <div class="absolute w-1/2 h-auto
                                 top-0 left-0 z-10" id="reject-modal">
                                     <form class="w-full flex flex-col gap-4 p-5 bg-white
-                                    shadow-sm border h-full rounded-lg" action="{{route('admin.appointment.reschedule.reject')}}"
+                                    shadow-sm border h-full rounded-lg" action="{{route('patient.appointment.reschedule.reject')}}"
                                         method="post" x-show="toggle">
                                         @method('put')
                                         <h1 class="text-lg font-bold text-primary">

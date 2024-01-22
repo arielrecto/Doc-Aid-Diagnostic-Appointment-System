@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Notifications\AppointmentStatusNotification;
 use App\Notifications\AppoitmentStatusNotification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class AppointmentController extends Controller
@@ -74,10 +75,17 @@ class AppointmentController extends Controller
     public function show(string $id)
     {
 
+
+
+        $user = Auth::user();
+
         $appointment = Appointment::with(['subscribeServices.service', 'results'])->where('id', $id)->first();
 
 
-        return view('users.admin.Appointment.show', compact(['appointment']));
+        $reschedule = AppointmentReschedule::where('appointment_id', $id)->where('user_id', '!=', $user->id)->first();
+
+
+        return view('users.admin.Appointment.show', compact(['appointment', 'reschedule']));
     }
 
     /**
@@ -100,13 +108,39 @@ class AppointmentController extends Controller
         };
 
         $appointment = Appointment::find($id);
+        $user = Auth::user();
+
+        $patient = User::find($appointment->user->id);
+
         $appointment->update([
             'patient' => $request->patient ?? $appointment->patient,
             'time' => $request->start_time . ' - ' . $request->end_time ?? $appointment->time,
-            'date' => $request->date ?? $appointment->date
+            'date' => $request->date ?? $appointment->date,
+            'status' => AppointmentStatus::RESCHEDULE->value,
         ]);
 
         $subscribeService = $appointment->subscribeServices->first();
+
+
+
+
+        AppointmentReschedule::create([
+            'remark' => $request->remark,
+            'start_time' => $request->start_time,
+            'end_time' => $request->end_time,
+            'date' => $request->date,
+            'appointment_id' => $appointment->id,
+            'user_id' => $user->id
+         ]);
+
+         $message  = [
+            'content' => "Your Appointment is Reschedule by {$user->name}, Date: {$request->date}, Time : {$request->start_time} - {$request->end_time}",
+            'date' =>  'Date: ' . now()->format('F-d-Y')
+        ];
+
+
+         $patient->notify(new AppointmentStatusNotification($message));
+
 
 
         $subscribeService->update([
@@ -176,7 +210,8 @@ class AppointmentController extends Controller
     }
     public function reschedule(Request $request, String $id) {
 
-        $reschedule = AppointmentReschedule::find($id);
+        $user = Auth::user();
+        $reschedule = AppointmentReschedule::where('id', $id)->where('user_id', '!=', $user->id)->first();
 
 
         $appointment = $reschedule->appointment;
@@ -227,8 +262,6 @@ class AppointmentController extends Controller
         return to_route('admin.appointment.show', ['appointment' => $appointment->id])->with(['message' => 'Appointment Reschedule Approved']);
     }
     public function rejectReschedule(Request $request){
-
-
         $reschedule = AppointmentReschedule::find($request->reschedule_id);
 
 
@@ -237,7 +270,7 @@ class AppointmentController extends Controller
         $user = User::find($appointment->user_id);
 
         $message  = [
-            'content' => "Your Appointment Reschedule is rejected",
+            'content' => "Your Appointment Reschedule is rejected Remark: {$request->remark}",
             'date' =>  'Date: ' . now()->format('F-d-Y')
         ];
 
