@@ -297,7 +297,7 @@
                                         <th>Image</th>
                                         <th>Name</th>
                                         <th>description</th>
-                                        <th>Dowmpayment</th>
+                                        <th>Minimum Downpayment</th>
                                         <th>Price</th>
                                     </tr>
                                 </thead>

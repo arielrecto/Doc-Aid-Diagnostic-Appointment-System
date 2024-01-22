@@ -36,7 +36,7 @@
 
                 <h1 class="page-title">Edit A Service</h1>
                 <form action="{{route('admin.services.update', ['service' => $service->id])}}" method="POST"
-                    class="m-0 p-2 flex gap-4 grow overflow-hidden">
+                    class="m-0 p-2 flex gap-4 grow overflow-auto">
 
                     @method('patch')
                     @csrf

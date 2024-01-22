@@ -88,85 +88,94 @@
                                                         class="fi fi-rr-add bg-accent rounded-full text-3xl flex items-center text-base-100"></i></button>
                                             </div>
                                         </div>
-                                        <template x-if="selectedService !== null">
 
-
-                                            <div class="flex gap-2 w-full h-full">
-                                                <div class="w-1/3 h-auto">
-                                                    <img :src="selectedService.image" alt="" srcset=""
-                                                        class="object object-center w-full h-auto">
-                                                </div>
-                                                <div class="flex flex-col gap-2 w-auto">
-                                                    <div class="flex justify-between items-center">
-                                                        <h1 class="font-bold text-lg capitalize">
-                                                            <span x-text="selectedService.name"></span>
-                                                        </h1>
-                                                        <button class="btn btn-xs btn-error"
-                                                            @click="selectedService = null">x</button>
-                                                    </div>
-
-                                                    <div class="flex gap-2 items-center text-sm">
-                                                        <div class="flex flex-col gap-2">
-                                                            <h1 class="text-xs">Downpayment</h1>
-                                                            <p x-text="selectedService.init_payment"
-                                                                class="text-gray-400 w-full text-center"></p>
+                                        <template x-if="selectedServices.length !== 0">
+                                            <div class="w-full overflow-y-auto h-96">
+                                                <template x-for="serviceData in selectedServices"
+                                                    :key="serviceData.id">
+                                                    <div class="flex gap-2 w-full h-full">
+                                                        <div class="w-1/3 h-auto">
+                                                            <img :src="serviceData.image" alt="" srcset=""
+                                                                class="object object-center w-full h-auto">
                                                         </div>
-                                                        <div class="flex flex-col gap-2">
-                                                            <h1 class="text-xs">Price</h1>
-                                                            <p x-text="selectedService.price"
-                                                                class="text-gray-400 w-full text-center"></p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="flex flex-col gap-2 text-sm">
-                                                        <h1 class="text-xs">Session Time : </h1>
-                                                        <p x-text="selectedService.session_time + ' min'"
-                                                            class="text-gray-400 w-full text-center"></p>
-                                                    </div>
-                                                    <template x-if="'selectedSlot' in selectedService">
-                                                        <div class="flex flex-col gap-2 text-sm">
-                                                            <h1 class="text-xs">Selected Time & Slot</h1>
-                                                            <p x-text="selectedService.selectedSlot.duration"
-                                                                class="text-gray-400 w-full text-center"></p>
-                                                        </div>
-                                                    </template>
+                                                        <div class="flex flex-col gap-2 w-auto">
+                                                            <div class="flex justify-between items-center">
+                                                                <h1 class="font-bold text-lg capitalize">
+                                                                    <span x-text="serviceData.name"></span>
+                                                                </h1>
+                                                                <button class="btn btn-xs btn-error"
+                                                                    @click.prevent="removeService(serviceData.id)">x</button>
+                                                            </div>
 
-                                                    <div class="flex flex-col gap-2">
-                                                        <h1
-                                                            class="w-full text-center text-sm text-gray-500 font-semibold">
-                                                            Service Time Slot</h1>
-                                                        <div class="w-full">
-                                                            <template x-if="toggleTimeSlot">
-
-                                                                <select class="select select-accent w-full"
-                                                                    @change="selectSlot($event, selectedService)">
-                                                                    <option disabled selected>Select Time </option>
-                                                                    <template
-                                                                        x-for="(timeSlot, index) in selectedService.time_slot.slots"
-                                                                        :key="index">
-                                                                        <template
-                                                                            x-if="timeSlot.slot !== 'break' && timeSlot.slot !== 0">
-                                                                            <option :value="timeSlot.duration">
-                                                                                <div class="flex gap ">
-                                                                                    <span x-text="timeSlot.duration"
-                                                                                        class="flex-grow"></span> /
-                                                                                    Slot : <span
-                                                                                        x-text="timeSlot.slot"></span>
-                                                                                </div>
-                                                                            </option>
-                                                                        </template>
-                                                                    </template>
-                                                                </select>
-
+                                                            <div class="flex gap-2 items-center text-sm">
+                                                                <div class="flex flex-col gap-2">
+                                                                    <h1 class="text-xs">Downpayment</h1>
+                                                                    <p x-text="serviceData.init_payment"
+                                                                        class="text-gray-400 w-full text-center"></p>
+                                                                </div>
+                                                                <div class="flex flex-col gap-2">
+                                                                    <h1 class="text-xs">Price</h1>
+                                                                    <p x-text="serviceData.price"
+                                                                        class="text-gray-400 w-full text-center"></p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="flex flex-col gap-2 text-sm">
+                                                                <h1 class="text-xs">Session Time : </h1>
+                                                                <p x-text="serviceData.session_time + ' min'"
+                                                                    class="text-gray-400 w-full text-center"></p>
+                                                            </div>
+                                                            <template x-if="'selectedSlot' in serviceData">
+                                                                <div class="flex flex-col gap-2 text-sm">
+                                                                    <h1 class="text-xs">Selected Time & Slot</h1>
+                                                                    <p x-text="serviceData.selectedSlot.duration"
+                                                                        class="text-gray-400 w-full text-center"></p>
+                                                                </div>
                                                             </template>
+
+                                                            <div class="flex flex-col gap-2">
+                                                                <h1
+                                                                    class="w-full text-center text-sm text-gray-500 font-semibold">
+                                                                    Service Time Slot</h1>
+                                                                <div class="w-full">
+                                                                    <template x-if="toggleTimeSlot">
+
+                                                                        <select class="select select-accent w-full"
+                                                                            @change="selectSlot($event, serviceData)">
+                                                                            <option disabled selected>Select Time
+                                                                            </option>
+                                                                            <template
+                                                                                x-for="(timeSlot, index) in serviceData.time_slot.slots"
+                                                                                :key="index">
+                                                                                <template
+                                                                                    x-if="timeSlot.slot !== 'break' && timeSlot.slot !== 0">
+                                                                                    <option :value="timeSlot.duration">
+                                                                                        <div class="flex gap ">
+                                                                                            <span
+                                                                                                x-text="timeSlot.duration"
+                                                                                                class="flex-grow"></span>
+                                                                                            /
+                                                                                            Slot : <span
+                                                                                                x-text="timeSlot.slot"></span>
+                                                                                        </div>
+                                                                                    </option>
+                                                                                </template>
+                                                                            </template>
+                                                                        </select>
+
+                                                                    </template>
+                                                                </div>
+                                                            </div>
                                                         </div>
+                                                        <input type="hidden" name="services"
+                                                            :value="JSON.stringify(selectedServices)">
+
                                                     </div>
-                                                </div>
-                                                <input type="hidden" name="service"
-                                                    :value="JSON.stringify(selectedService)">
+                                                </template>
 
                                             </div>
-
                                         </template>
+
+
 
 
 
@@ -193,8 +202,6 @@
                                                             </label>
                                                         </div>
                                                     </div>
-
-
                                                 </div>
                                             </div>
 
@@ -232,9 +239,22 @@
                                                             </div>
 
                                                             @if ($account->image !== null)
-                                                                <img src="{{ $account->image }}" alt=""
-                                                                    srcset=""
-                                                                    class="object object-center h-32 w-32">
+                                                                <button @click.prevent="paymentToggle = true">
+                                                                    <img src="{{ $account->image }}" alt=""
+                                                                        srcset=""
+                                                                        class="object object-center h-32 w-32">
+                                                                </button>
+                                                                <div x-show="paymentToggle"
+                                                                    class="absolute z-10 w-full h-full backdrop-blur-sm flex items-center justify-center top-0"
+                                                                    x-transition.duration.700ms>
+                                                                    <div class="h-96 w-auto"
+                                                                        @click.outside="paymentToggle = false">
+                                                                        <img src="{{ $account->image }}"
+                                                                            alt="" srcset=""
+                                                                            class="object object-center h-full w-full">
+
+                                                                    </div>
+                                                                </div>
                                                             @endif
                                                         @endforeach
                                                     </div>
@@ -325,7 +345,7 @@
                                         </div>
                                     </div>
                                     <template
-                                        x-if="selectedService !== null && selectedService.init_payment <= rAmount || selectedService !== null && isPayPal">
+                                        x-if="selectedServices.length !== 0 && dTotal <= rAmount || selectedServices.length !== 0 && isPayPal">
                                         <div class="w-full flex flex-row-reverse">
                                             <button class="btn btn-accent">
                                                 <span x-text="isPayPal ? 'Set with Paypal' : 'Set'">
@@ -347,33 +367,36 @@
                 <div class="w-full flex justify-center z-10 absolute" x-show="toggle" x-transition.duration.700ms
                     x-cloak @click.outside="openToggle">
                     <div class="w-5/6 lg:w-1/2 flex flex-col gap-2 bg-base-100 rounded-lg shadow-lg p-2">
-                        <div class="flex w-full flex-row-reverse">
+                        <div class="flex w-full items-center justify-between">
+                            <h1 class="text-primary text-lg font-bold capitalize">
+                                Select Services
+                            </h1>
                             <button @click="openToggle" class="text-accent text-lg">
                                 <i class="fi fi-rr-circle-xmark"></i>
                             </button>
                         </div>
-                        <div class="flex flex-wrap gap-2 justify-center p-2 w-full overflow-y-auto h-96">
+                        <div class="flex flex-col gap-2 w-full">
                             <template x-for="service in services">
-                                <div class="h-44 w-44 bg-base-100 rounded-lg shadow-xl">
-                                    <img :src="service.image" alt="" class="w-full h-20 object-cover">
-                                    <div class="flex flex-col gap-2 w-full h-16 p-2">
-                                        <span x-text="service.name" class="text-xs font-bold"></span>
-                                    </div>
 
-
-                                    <div class="flex 2 w-full p-2">
-                                        <template x-if="selectedService?.id !== service.id">
+                                <div
+                                    class="p-4 w-full border-2 border-gray-200 rounded-lg flex items-center justify-between">
+                                    <h1 class="text-bold gap-2">
+                                        <span x-text="service.name"></span>
+                                    </h1>
+                                    <div class="flex 2 items-center">
+                                        <template x-if="!selectedServices.some(obj => obj.id === service.id)">
                                             <button class="btn btn-xs btn-accent"
                                                 @click="selectService(service, $event)">Add</button>
                                             <p x-text="service.price" class="text-sm font-semibold text-accent"></p>
                                         </template>
-                                        <template x-if="selectedService?.id === service.id">
+
+                                        <template x-if="selectedServices.some(obj => obj.id === service.id)">
                                             <button class="btn btn-xs btn-error"
-                                                @click="selectedService = null">remove</button>
+                                                @click="removeService(service.id)">remove</button>
                                             <p x-text="service.price" class="text-sm font-semibold text-accent"></p>
                                         </template>
-                                    </div>
 
+                                    </div>
                                 </div>
                             </template>
                         </div>
@@ -397,7 +420,7 @@
                     sDate: null,
                     sPreview: null,
                     selectedTimeSlot: null,
-                    selectedService: null,
+                    selectedServices: [],
                     services: data,
                     timeExtentions: [],
                     toggle: false,
@@ -407,6 +430,7 @@
                     isPayPal: false,
                     showFields: false,
                     error: {},
+                    paymentToggle: false,
                     computation(e) {
                         const amount = e.target.value;
                         this.rAmount = amount;
@@ -464,7 +488,8 @@
                         e.preventDefault()
                         console.log(data);
 
-                        this.selectedService = {
+
+                        const service = {
                             ...data,
                             time_slot: {
                                 ...data.time_slot[0],
@@ -472,9 +497,25 @@
                             }
                         };
 
-                        this.total = parseInt(this.selectedService.price)
+                        this.selectedServices = [
+                            ...this.selectedServices,
+                            service
+                        ]
 
-                        this.dTotal = parseInt(this.selectedService.init_payment)
+
+
+
+                        this.total = this.selectedServices.reduce((accumulator, currentValue) => {
+                            return accumulator + parseInt(currentValue.price);
+                        }, 0);
+
+
+                        this.dTotal = this.selectedServices.reduce((accumulator, currentValue) => {
+                            return accumulator + parseInt(currentValue.init_payment);
+                        }, 0);
+                    },
+                    removeService(id) {
+                        this.selectedServices = this.selectedServices.filter(item => item.id !== id);
                     },
                     selectSlot(e, service) {
                         e.preventDefault()
@@ -528,13 +569,21 @@
                         this.sDetailID = null
                         this.sPreview = null
 
+                        let serviceData = this.selectedServices.find(item => item.id === service.id);
 
-
-                        this.selectedService = {
+                        serviceData = {
                             ...service,
                             selectedSlot: slot
                         }
-                        console.log(this.selectedService)
+
+                        const serviceList = this.selectedServices.filter(item => item.id !== service.id)
+
+                        this.selectedServices = [
+                            ...serviceList,
+                            serviceData
+                        ]
+
+                        // this.selectedServices =
                     },
                     selectedExtension(e) {
 
@@ -578,7 +627,7 @@
                     dTotalCompareToInitPayment() {
 
 
-                        if (this.rAmount < this.selectedService.init_payment) {
+                        if (this.rAmount < this.dTotal) {
                             console.log('hell no')
                             this.error = {
                                 insuffiecient: 'can\'t process your amount is less than to downpayment'

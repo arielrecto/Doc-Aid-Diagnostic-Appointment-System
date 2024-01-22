@@ -58,9 +58,11 @@ class AppointmentController extends Controller
 
         $day = Day::where('name', $today)->first();
 
-        $services = $day->services()->with(['timeSlot' => function ($q) {
-            $q->latest()->first();
-        }])->get();
+
+        $services = Service::whereHas('days', function ($q) use ($day) {
+            $q->where('name', $day->name);
+        })->with(['timeSlot'])->get();
+
 
         // $timeSlot = $this->timeIntervalByHour('8:00', '4:00');
         $familyMembers = Family::authUserFamilyMember();
@@ -77,7 +79,9 @@ class AppointmentController extends Controller
 
 
 
-        $service = json_decode($request->service);
+        $services = json_decode($request->services);
+
+
 
 
         $request->validate([
@@ -99,12 +103,22 @@ class AppointmentController extends Controller
             ->where('status', '!=',  AppointmentStatus::DONE->value)->first();
 
 
-        if ($hasAppointment !== null &&  $hasAppointment->subscribeServices->first() !== null) {
+        if ($hasAppointment !== null) {
 
-            $subscribeService = $hasAppointment->subscribeServices->first();
-            if ($service->id === $subscribeService->service_id) {
-                return back()->with(['reject' => 'You have Already Appointment with service and date']);
+
+
+            $subscribeServices = $hasAppointment->subscribeServices;
+            foreach ($subscribeServices as $s_service) {
+                foreach ($services as $a_service) {
+                    if ($s_service->id === $a_service->id) {
+                        return back()->with(['reject' => 'You have Already Appointment with same service and date']);
+                    }
+                }
             }
+
+            // if ($service->id === $subscribeService->service_id) {
+            //     return back()->with(['reject' => 'You have Already Appointment with service and date']);
+            // }
         }
 
 
@@ -143,7 +157,7 @@ class AppointmentController extends Controller
             'appointment_id' => $appointment->id
         ]);
 
-
+        collect($services)->map(function ($service) {
             $slot = $service->time_slot;
             $t_slot = TimeSlot::where('date', $slot->date)->first();
             if ($t_slot) {
@@ -156,6 +170,8 @@ class AppointmentController extends Controller
                 'slots' => json_encode($slot->slots),
                 'date' => $slot->date
             ]);
+        });
+
 
 
 
@@ -170,7 +186,7 @@ class AppointmentController extends Controller
         }
 
 
-        $this->processServices($service, $appointment);
+        $this->processServices($services, $appointment);
         return back()->with(['message' => 'Appointment Request Sent!']);
     }
 
@@ -231,22 +247,23 @@ class AppointmentController extends Controller
         // Now $timeInterval contains an array of time intervals in the desired format
         return $timeInterval;
     }
-    private function processServices($service, $appointment)
+    private function processServices($services, $appointment)
     {
+        collect($services)->map(function ($service) use ($appointment) {
+            list($startTime, $endTime) = explode(" - ", $service->selectedSlot->duration);
+            $startTime = Carbon::parse($startTime);
+            $endTime = Carbon::parse($endTime);
 
-        list($startTime, $endTime) = explode(" - ", $service->selectedSlot->duration);
-        $startTime = Carbon::parse($startTime);
-        $endTime = Carbon::parse($endTime);
-
-        Service::find($service->id)->update(['time_slot' => json_encode($service->time_slot)]);
+            Service::find($service->id)->update(['time_slot' => json_encode($service->time_slot)]);
 
 
-        SubscribeService::create([
-            'start_time' => $startTime,
-            'end_time' => $endTime,
-            'service_id' => $service->id,
-            'appointment_id' => $appointment->id
-        ]);
+            SubscribeService::create([
+                'start_time' => $startTime,
+                'end_time' => $endTime,
+                'service_id' => $service->id,
+                'appointment_id' => $appointment->id
+            ]);
+        });
     }
     public function byDate(string $date)
     {

@@ -59,6 +59,7 @@ class ProfileController extends Controller
 
         $profile = Profile::find($id);
 
+
         if($request->hasFile('avatar')){
             $imageName = 'avatar-' . uniqid() . '.' . $request->avatar->extension();
             $dir = $request->avatar->storeAs('/profile/avatar', $imageName, 'public');

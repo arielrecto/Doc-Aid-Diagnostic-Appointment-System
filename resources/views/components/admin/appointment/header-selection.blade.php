@@ -11,7 +11,7 @@
 
 <div class="grid grid-cols-5 grid-flow-row gap-4">
     <a class="header-selection bg-accent max-w-full" href="{{ route('admin.appointment.index') }}">
-        <div class="w-full text-lg font-semibold capitalize text-white flex gap-2">
+        <div class="w-full text-sm 2xl:text-lg font-semibold text-white capitalize">
             <i class="ri-book-mark-line"></i>
             <span>
                 total appointment

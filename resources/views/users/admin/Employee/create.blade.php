@@ -204,10 +204,12 @@
                                     id="region-dropdown">
                                     <option selected value="{{null}}">Select Type</option>
                                     <option value="sss">SSS</option>
-                                    <option value="sss">Phil Health</option>
-                                    <option value="sss">Voters</option>
-                                    <option value="sss">Barangay</option>
-                                    <option value="sss">School Id</option>
+                                    <option value="Phil Health">Phil Health</option>
+                                    <option value="Voters">Voters</option>
+                                    <option value="Barangay">Barangay</option>
+                                    <option value="School Id">School Id</option>
+                                    <option value="Philippine ID">Philippine ID</option>
+                                    <option value="Drivers License">Drivers License</option>
 
                                 </select>
                                 @if ($errors->has('valid_id_type'))

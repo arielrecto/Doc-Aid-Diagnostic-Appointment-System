@@ -1,18 +1,21 @@
 <x-app-layout>
     <div class="main-screen">
-        <x-patient-siderbar/>
+        <x-patient-siderbar />
         <div class="main-content">
             <x-patient.navbar />
             <div class="w-full flex-grow flex flex-col gap-2 h-full panel overflow-y-auto">
                 <div class="flex flex-col gap-2 p-5 w-full h-full relative">
-                   @if (Session::has('message'))
-                   <div class="alert alert-success">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                    <span>{{Session::get('message')}} !</span>
-                  </div>
-                   @endif
-                    <div
-                        class="w-full h-full flex flex-col gap-2 rounded-lg shadow-sm hover:shadow-lg duration-700">
+                    @if (Session::has('message'))
+                        <div class="alert alert-success">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <span>{{ Session::get('message') }} !</span>
+                        </div>
+                    @endif
+                    <div class="w-full h-full flex flex-col gap-2 rounded-lg shadow-sm hover:shadow-lg duration-700">
                         <form action="{{ route('patient.family.members.store') }}" method="post"
                             class="flex flex-col gap-2" enctype="multipart/form-data">
                             @csrf
@@ -21,12 +24,15 @@
                             </div>
                             <div class="w-full h-full flex flex-col space-y-2 md:space-y-5 lg:space-y-10 lg:p-5">
                                 <div class="w-full flex flex-col gap-2">
-                                    <label for="" class="capitalize text-xs lg:text-sm text-gray-500">profile</label>
-                                    <input type="file" name="image" placeholder="image" class="file-input file-input-bordered file-input-accent w-full" />
+                                    <label for=""
+                                        class="capitalize text-xs lg:text-sm text-gray-500">profile</label>
+                                    <input type="file" name="image" placeholder="image"
+                                        class="file-input file-input-bordered file-input-accent w-full" />
                                 </div>
                                 <div class="grid grid-cols-1 md:grid-cols-3 grid-flow-row gap-2">
                                     <div class="flex flex-col gap-2 w-full">
-                                        <label for="" class="capitalize text-xs lg:text-sm text-gray-500">last name</label>
+                                        <label for="" class="capitalize text-xs lg:text-sm text-gray-500">last
+                                            name</label>
                                         <input type="text" name="last_name" id=""
                                             class="input input-accent w-full" placeholder="Last Name">
                                         @if ($errors->has('last_name'))
@@ -43,7 +49,8 @@
                                         @endif
                                     </div>
                                     <div class="flex flex-col gap-2 w-full">
-                                        <label for="" class="capitalize text-xs md:text-sm text-gray-500">middle name -
+                                        <label for="" class="capitalize text-xs md:text-sm text-gray-500">middle
+                                            name -
                                             <span class="text-xs text-gray-400">optional</span></label>
                                         <input type="text" name="middle_name" id=""
                                             class="input input-accent w-full" placeholder="Middle">
@@ -59,7 +66,8 @@
                                 </div>
                                 <div class="grid grid-cols-1 md:grid-cols-3 grid-flow-row gap-2">
                                     <div class="flex flex-col gap-2 w-full">
-                                        <label for="" class="capitalize text-xs md:text-sm text-gray-500">birthdate</label>
+                                        <label for=""
+                                            class="capitalize text-xs md:text-sm text-gray-500">birthdate</label>
                                         <input type="date" name="birthdate" id=""
                                             class="input input-accent w-full" placeholder="Contact #">
                                         @if ($errors->has('birthdate'))
@@ -67,7 +75,8 @@
                                         @endif
                                     </div>
                                     <div class="flex flex-col gap-2 w-full">
-                                        <label for="" class="capitalize text-xs md:text-sm text-gray-500">Contact #</label>
+                                        <label for=""
+                                            class="capitalize text-xs md:text-sm text-gray-500">Contact #</label>
                                         <input type="text" name="contact_no" id=""
                                             class="input input-accent w-full" placeholder="Contact #">
                                         @if ($errors->has('contact_no'))
@@ -75,7 +84,8 @@
                                         @endif
                                     </div>
                                     <div class="flex flex-col gap-2 w-full">
-                                        <label for="" class="capitalize text-xs md:text-sm text-gray-500">Sex</label>
+                                        <label for=""
+                                            class="capitalize text-xs md:text-sm text-gray-500">Sex</label>
                                         <select class="select select-accent w-full" name="sex">
                                             <option disabled selected>Select Sex</option>
                                             <option value="male">Male</option>
@@ -87,8 +97,8 @@
                                     </div>
                                     <div class="flex flex-col gap-2 w-full">
                                         <label for=""
-                                        class="capitalize text-xs md:text-sm text-gray-500">Relationship</label>
-                                        <select class="select select-accent w-full max-w-xs"  name="relationship">
+                                            class="capitalize text-xs md:text-sm text-gray-500">Relationship</label>
+                                        <select class="select select-accent w-full max-w-xs" name="relationship">
                                             <option disabled selected>Relationship ? </option>
                                             <option value="Grandmother">Grandmother</option>
                                             <option value="Husband">Husband</option>
@@ -100,9 +110,10 @@
                                             <option value="Brother">Brother</option>
                                             <option value="Father">Father</option>
 
-                                          </select>
-                                          @if ($errors->has('relationship'))
-                                            <p class="w-full text-xs text-error">{{ $errors->first('relationship') }}</p>
+                                        </select>
+                                        @if ($errors->has('relationship'))
+                                            <p class="w-full text-xs text-error">{{ $errors->first('relationship') }}
+                                            </p>
                                         @endif
 
                                         {{-- <label for=""
@@ -121,7 +132,8 @@
                                                 class="text-xs text-gray-400">
                                                 (School ID, Philhead, SSS, etc.)
                                             </span></label>
-                                        <input type="file" name="valid_id_image" class="file-input file-input-accent">
+                                        <input type="file" name="valid_id_image"
+                                            class="file-input file-input-accent">
                                         @if ($errors->has('valid_id_image'))
                                             <p class="text-xs text-error">{{ $errors->first('valid_id_image') }}</p>
                                         @endif
@@ -130,22 +142,24 @@
                                         <label for="" class="capitalize text-sm text-gray-500">ID Type</label>
                                         <select class="select select-accent w-full" name="valid_id_type"
                                             id="region-dropdown">
-                                            <option selected value="{{null}}">Select Type</option>
+                                            <option selected value="{{ null }}">Select Type</option>
                                             <option value="sss">SSS</option>
-                                            <option value="sss">Phil Health</option>
-                                            <option value="sss">Voters</option>
-                                            <option value="sss">Barangay</option>
-                                            <option value="sss">School Id</option>
-
+                                            <option value="Phil Health">Phil Health</option>
+                                            <option value="Voters">Voters</option>
+                                            <option value="Barangay">Barangay</option>
+                                            <option value="School Id">School Id</option>
+                                            <option value="Philippine ID">Philippine ID</option>
+                                            <option value="Drivers License">Drivers License</option>
                                         </select>
                                         @if ($errors->has('valid_id_type'))
                                             <p class="text-xs text-error">{{ $errors->first('valid_id_type') }}</p>
                                         @endif
                                     </div>
                                     <div class="flex flex-col gap-2">
-                                        <label for="" class="capitalize text-sm text-gray-500">ID Number</label>
-                                        <input type="text" name="valid_id_number" class="input input-accent w-full"
-                                            placeholder="ID Number">
+                                        <label for="" class="capitalize text-sm text-gray-500">ID
+                                            Number</label>
+                                        <input type="text" name="valid_id_number"
+                                            class="input input-accent w-full" placeholder="ID Number">
                                         @if ($errors->has('valid_id_number'))
                                             <p class="text-xs text-error">{{ $errors->first('valid_id_number') }}</p>
                                         @endif

@@ -27,7 +27,7 @@ class AppointmentController extends Controller
     public function index(Request $request)
     {
         $query = $request->query('filter');
-        $appointments = Appointment::get();
+        $appointments = Appointment::latest()->get();
 
         if($query !== null) {
             if($query === 'today'){

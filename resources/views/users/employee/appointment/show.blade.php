@@ -161,13 +161,18 @@
                         </div>
                         <div class="flex flex-col gap-2 ">
                             <label for="" class="text-gray-500 text-sm">Time:</label>
-                            <h1 class="font-semibold flex gap-4 text-xs lg:text-base">
-                                @php
-                                    $service = $appointment->subscribeServices->first();
-                                @endphp
-                                {{ date('g:i A', strtotime($service->start_time)) }} -
-                                {{ date('g:i A', strtotime($service->end_time)) }}
-                            </h1>
+                            @foreach ($appointment->subscribeServices as $service)
+                                <h1 class="font-semibold flex gap-4 text-xs lg:text-base">
+                                    <span>
+                                        Service : {{ $service->service->name }}|
+                                    </span>
+                                    <span class="flex items-center">
+                                        {{ date('g:i A', strtotime($service->start_time)) }} -
+                                        {{ date('g:i A', strtotime($service->end_time)) }}
+                                    </span>
+
+                                </h1>
+                            @endforeach
                         </div>
 
                         {{-- <div class="flex flex-col gap-2 ">
@@ -252,17 +257,19 @@
                                     <div class="flex flex-col gap-2">
                                         <h1 class="text-sm font-bold">Valid ID Information</h1>
                                         <a class="venobox" href="{{ $profile->valid_id_image }}">
-                                        <img src="{{ $profile->valid_id_image }}" alt="" srcset=""
-                                            class="object object-center h-auto w-32">
+                                            <img src="{{ $profile->valid_id_image }}" alt="" srcset=""
+                                                class="object object-center h-auto w-32">
                                         </a>
                                         <div clas="flex gap-2">
                                             <h1 class="text-sm capitalize font-bold">
                                                 <span>ID type: </span>
-                                                <span class="font-normal uppercase">{{ $profile->valid_id_type }}</span>
+                                                <span
+                                                    class="font-normal uppercase">{{ $profile->valid_id_type }}</span>
                                             </h1>
                                             <h1 class="text-sm capitalize font-bold">
                                                 <span>ID number: </span>
-                                                <span class="font-normal uppercase">{{ $profile->valid_id_number }}</span>
+                                                <span
+                                                    class="font-normal uppercase">{{ $profile->valid_id_number }}</span>
                                             </h1>
                                         </div>
                                     </div>
@@ -339,17 +346,19 @@
                                     <div class="flex flex-col gap-2">
                                         <h1 class="text-sm font-bold">Valid ID Information</h1>
                                         <a class="venobox" href="{{ $profile->valid_id_image }}">
-                                        <img src="{{ $profile->valid_id_image }}" alt="" srcset=""
-                                            class="object object-center h-auto w-32">
+                                            <img src="{{ $profile->valid_id_image }}" alt="" srcset=""
+                                                class="object object-center h-auto w-32">
                                         </a>
                                         <div clas="flex gap-2">
                                             <h1 class="text-sm capitalize font-bold">
                                                 <span>ID type: </span>
-                                                <span class="font-normal uppercase">{{ $profile->valid_id_type }}</span>
+                                                <span
+                                                    class="font-normal uppercase">{{ $profile->valid_id_type }}</span>
                                             </h1>
                                             <h1 class="text-sm capitalize font-bold">
                                                 <span>ID number: </span>
-                                                <span class="font-normal uppercase">{{ $profile->valid_id_number }}</span>
+                                                <span
+                                                    class="font-normal uppercase">{{ $profile->valid_id_number }}</span>
                                             </h1>
                                         </div>
                                     </div>
@@ -427,7 +436,7 @@
                                     <th>Image</th>
                                     <th>Name</th>
                                     <th>description</th>
-                                    <th>Dowmpayment</th>
+                                    <th>Minimum Downpayment</th>
                                     <th>Price</th>
                                 </tr>
                             </thead>

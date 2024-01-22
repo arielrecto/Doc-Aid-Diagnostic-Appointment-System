@@ -202,7 +202,8 @@
                                     <option value="sss">Voters</option>
                                     <option value="sss">Barangay</option>
                                     <option value="sss">School Id</option>
-
+                                    <option value="sss">Philippine ID</option>
+                                    <option value="sss">Drivers License</option>
                                 </select>
                                 @if ($errors->has('valid_id_type'))
                                     <p class="text-xs text-error">{{ $errors->first('valid_id_type') }}</p>

@@ -8,7 +8,7 @@
             @if (Session::has('rejected'))
                 <div class="panel-error">
                     <span>
-                        CODE ERROR - Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis, dolor?
+                        {{ Session::message('rejected') }}
                     </span>
                 </div>
             @endif
@@ -43,7 +43,8 @@
                             <h1 class="font-semibold flex gap-4 text-xs lg:text-base">
                                 {{ date('M-d-Y', strtotime($appointment->date)) }}
                                 <span>
-                                    <a href="{{route('patient.appointment.reschedule.create', ['appointment' => $appointment->id])}}">
+                                    <a
+                                        href="{{ route('patient.appointment.reschedule.create', ['appointment' => $appointment->id]) }}">
                                         <button id="resched-modal-trigger" @click="openReschedModal">
                                             <i class="fi fi-rr-edit text-accent"></i>
                                         </button>
@@ -71,13 +72,19 @@
                         </div>
                         <div class="flex flex-col gap-2 ">
                             <label for="" class="text-gray-500 text-sm">Time:</label>
-                            <h1 class="font-semibold flex gap-4 text-xs lg:text-base">
-                                @php
-                                    $service = $appointment->subscribeServices->first();
-                                @endphp
-                                {{ date('g:i A', strtotime($service->start_time)) }} -
-                                {{ date('g:i A', strtotime($service->end_time)) }}
-                            </h1>
+
+                            @foreach ($appointment->subscribeServices as $service)
+                                <h1 class="font-semibold flex gap-4 text-xs lg:text-base">
+                                    <span>
+                                        Service : {{$service->service->name}}|
+                                    </span>
+                                    <span class="flex items-center">
+                                        {{ date('g:i A', strtotime($service->start_time)) }} -
+                                        {{ date('g:i A', strtotime($service->end_time)) }}
+                                    </span>
+
+                                </h1>
+                            @endforeach
                         </div>
                     </div>
 
@@ -149,17 +156,19 @@
                                     <div class="flex flex-col gap-2">
                                         <h1 class="text-sm font-bold">Valid ID Information</h1>
                                         <a class="venobox" href="{{ $profile->valid_id_image }}">
-                                        <img src="{{ $profile->valid_id_image }}" alt="" srcset=""
-                                            class="object object-center h-auto w-32">
+                                            <img src="{{ $profile->valid_id_image }}" alt="" srcset=""
+                                                class="object object-center h-auto w-32">
                                         </a>
                                         <div clas="flex gap-2">
                                             <h1 class="text-sm capitalize font-bold">
                                                 <span>ID type: </span>
-                                                <span class="font-normal uppercase">{{ $profile->valid_id_type }}</span>
+                                                <span
+                                                    class="font-normal uppercase">{{ $profile->valid_id_type }}</span>
                                             </h1>
                                             <h1 class="text-sm capitalize font-bold">
                                                 <span>ID number: </span>
-                                                <span class="font-normal uppercase">{{ $profile->valid_id_number }}</span>
+                                                <span
+                                                    class="font-normal uppercase">{{ $profile->valid_id_number }}</span>
                                             </h1>
                                         </div>
                                     </div>
@@ -167,8 +176,7 @@
                             </div>
 
                         </div>
-
-                        @else
+                    @else
                         <div class="w-full flex flex-col gap-2">
                             <label for="" class="text-gray-500 text-sm">Patient</label>
                             <div class="flex gap-5 w-full">
@@ -237,17 +245,19 @@
                                     <div class="flex flex-col gap-2">
                                         <h1 class="text-sm font-bold">Valid ID Information</h1>
                                         <a class="venobox" href="{{ $profile->valid_id_image }}">
-                                        <img src="{{ $profile->valid_id_image }}" alt="" srcset=""
-                                            class="object object-center h-auto w-32">
+                                            <img src="{{ $profile->valid_id_image }}" alt="" srcset=""
+                                                class="object object-center h-auto w-32">
                                         </a>
                                         <div clas="flex gap-2">
                                             <h1 class="text-sm capitalize font-bold">
                                                 <span>ID type: </span>
-                                                <span class="font-normal uppercase">{{ $profile->valid_id_type }}</span>
+                                                <span
+                                                    class="font-normal uppercase">{{ $profile->valid_id_type }}</span>
                                             </h1>
                                             <h1 class="text-sm capitalize font-bold">
                                                 <span>ID number: </span>
-                                                <span class="font-normal uppercase">{{ $profile->valid_id_number }}</span>
+                                                <span
+                                                    class="font-normal uppercase">{{ $profile->valid_id_number }}</span>
                                             </h1>
                                         </div>
                                     </div>
@@ -325,7 +335,7 @@
                                         <th>Image</th>
                                         <th>Name</th>
                                         <th>description</th>
-                                        <th>Dowmpayment</th>
+                                        <th>Minimum Downpayment</th>
                                         <th>Price</th>
                                     </tr>
                                 </thead>
@@ -333,12 +343,12 @@
                                     <!-- row 1 -->
                                     <tr class="">
 
-                                            <th><img src="{{ $s_service->service->image }}" alt=""
-                                                    srcset="" class="object object-center h-10 w-10"></th>
-                                            <td class="text-xs md:text-sm">{{ $s_service->service->name }}</td>
-                                            <td>{!! $s_service->service->description !!}</td>
-                                            <td>&#8369 {{ $s_service->service->init_payment }}</td>
-                                            <td>&#8369 {{ $s_service->service->price }}</td>
+                                        <th><img src="{{ $s_service->service->image }}" alt=""
+                                                srcset="" class="object object-center h-10 w-10"></th>
+                                        <td class="text-xs md:text-sm">{{ $s_service->service->name }}</td>
+                                        <td>{!! $s_service->service->description !!}</td>
+                                        <td>&#8369 {{ $s_service->service->init_payment }}</td>
+                                        <td>&#8369 {{ $s_service->service->price }}</td>
 
                                     </tr>
                                 </tbody>
