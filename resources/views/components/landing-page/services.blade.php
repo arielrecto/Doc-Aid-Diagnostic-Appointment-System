@@ -35,6 +35,9 @@
                 </div>
             </div>
         </section>
+        <div class="w-full flex justify-center p-2">
+            <a href="{{route('service.index')}}" class="btn btn-generic">View More</a>
+        </div>
     </div>
 
 </div>

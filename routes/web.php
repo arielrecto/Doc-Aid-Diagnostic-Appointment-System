@@ -54,13 +54,24 @@ Route::get('/', function () {
 
 Route::get('/home', [HomeController::class, 'home'])->name('home');
 
-Route::get('/service/{service}', function(string $id){
 
-    $service = Service::with(['days'])->whereId($id)->first();
-    return view('services.show', compact(['service']));
-})->name('service.show');
+Route::prefix('service')->as('service.')->group(function () {
 
-Route::get('/feedbacks', function(){
+    Route::get('/', function(){
+        $services = Service::latest()->get();
+        return view('services.index', compact(['services']));
+    })->name('index');
+
+    Route::get('/service/{service}', function (string $id) {
+        $service = Service::with(['days'])->whereId($id)->first();
+        return view('services.show', compact(['service']));
+    })->name('show');
+});
+
+
+
+
+Route::get('/feedbacks', function () {
 
     $feedbacks = FeedBack::latest()->get();
 
@@ -83,10 +94,9 @@ Route::middleware('auth')->group(function () {
             Route::get('/reschedule/id={appointment}', [AdminAppointmentController::class, 'reschedule'])->name('reschedule');
             Route::resource('result', ResultController::class)->except('create');
             Route::resource('payment', PaymentController::class);
-
         });
 
-        Route::prefix('patient')->as('patient.')->group(function(){
+        Route::prefix('patient')->as('patient.')->group(function () {
             Route::resource('family', AdminFamilyMemberController::class);
         });
 
@@ -95,8 +105,8 @@ Route::middleware('auth')->group(function () {
             Route::patch('/availability/{Service}', [ServiceController::class, 'availability'])->name('availability');
         });
 
-        Route::prefix('/sales/report')->as('report.')->group(function (){
-            Route::get('/', [SalesReportController::class,'index'])->name('index');
+        Route::prefix('/sales/report')->as('report.')->group(function () {
+            Route::get('/', [SalesReportController::class, 'index'])->name('index');
         });
         Route::resource('paymentAccount', PaymentAccountController::class);
         Route::resource('services', ServiceController::class);
@@ -107,14 +117,14 @@ Route::middleware('auth')->group(function () {
     });
     Route::middleware(['role:patient', 'verified'])->prefix('patient')->as('patient.')->group(function () {
         Route::get('/dashboard', [PatientDashboardController::class, 'dashboard'])->name('dashboard');
-        Route::prefix('appointment/reschedule')->as('appointment.reschedule.')->group(function(){
+        Route::prefix('appointment/reschedule')->as('appointment.reschedule.')->group(function () {
             Route::get('/create/{appointment}/', [RescheduleController::class, 'create'])->name('create');
             Route::post('/', [RescheduleController::class, 'store'])->name('store');
             Route::get('/show/{appointment}/', [RescheduleController::class, 'show'])->name('show');
             Route::put('/approved', [RescheduleController::class, 'approved'])->name('approved');
             Route::put('/reject', [RescheduleController::class, 'reject'])->name('reject');
         });
-        Route::prefix('appointment')->as('appointment.')->group(function() {
+        Route::prefix('appointment')->as('appointment.')->group(function () {
             Route::get('/date={date}', [AppointmentController::class, 'byDate'])->name('byDate');
         });
 
@@ -147,7 +157,6 @@ Route::middleware('auth')->group(function () {
             Route::get('/show/{Appointment}', [EmployeeAppointmentController::class, 'show'])->name('show');
             Route::post('/reject/{appointment}', [EmployeeAppointmentController::class, 'reject'])->name('reject');
             Route::get('/date={date}', [EmployeeAppointmentController::class, 'byDate'])->name('byDate');
-
         });
     });
 });
