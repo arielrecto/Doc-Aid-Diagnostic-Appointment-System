@@ -12,7 +12,7 @@
             @if (Session::has('rejected'))
                 <div class="panel-error">
                     <span>
-                        {{ Session::message('rejected') }}
+                        {{ Session::get('rejected') }}
                     </span>
                 </div>
             @endif
@@ -39,31 +39,35 @@
                         <h1 class="page-title">Appointment Details</h1>
 
                         @if ($appointment->status === AppointmentStatus::RESCHEDULE->value && $reschedule !== null)
-                                <a class="btn btn-warning btn-sm uppercase shadow border"
-                                    href="{{route('patient.appointment.reschedule.show', ['appointment' => $reschedule->id])}}">
+                            <a class="btn btn-warning btn-sm uppercase shadow border"
+                                href="{{ route('patient.appointment.reschedule.show', ['appointment' => $reschedule->id]) }}">
 
-                                    <i class="fi fi-rr-edit hover:bold"></i> Reschedule Request
-                                    ({{ $appointment->rescheduleRequest->where('status', AppointmentStatus::PENDING->value)->where('user_id', '!=', Auth::user()->id)->count() }})
+                                <i class="fi fi-rr-edit hover:bold"></i> Reschedule Request
+                                ({{ $appointment->rescheduleRequest->where('status', AppointmentStatus::PENDING->value)->where('user_id', '!=', Auth::user()->id)->count() }})
 
-                                </a>
-                            @endif
+                            </a>
+                        @endif
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-3 grid-rows-2 gap-4 p-4 border shadow-sm rounded">
                         <div class="flex flex-col gap-2 ">
                             <label for="" class="text-gray-500 text-sm">Date</label>
+
+
+
                             <h1 class="font-semibold flex gap-4 text-xs lg:text-base">
                                 {{ date('M-d-Y', strtotime($appointment->date)) }}
-                                <span>
-                                    <a
-                                        href="{{ route('patient.appointment.reschedule.create', ['appointment' => $appointment->id]) }}">
-                                        <button id="resched-modal-trigger" @click="openReschedModal">
-                                            <i class="fi fi-rr-edit text-accent"></i>
-                                        </button>
-                                    </a>
+                                @if ($appointment->status !== AppointmentStatus::REJECT->value)
+                                    <span>
+                                        <a
+                                            href="{{ route('patient.appointment.reschedule.create', ['appointment' => $appointment->id]) }}">
+                                            <button id="resched-modal-trigger" @click="openReschedModal">
+                                                <i class="fi fi-rr-edit text-accent"></i>
+                                            </button>
+                                        </a>
 
 
-                                    {{-- <div id="resched-modal" class="absolute top-0 left-0 lg:w-96 w-64"
+                                        {{-- <div id="resched-modal" class="absolute top-0 left-0 lg:w-96 w-64"
                                         @click.outside="openReschedModal" x-cloak x-show="reschedModal">
                                         <div class="rounded-lg bg-white border shadow-md p-5">
                                             <form
@@ -79,7 +83,8 @@
                                         </div>
                                     </div> --}}
 
-                                </span>
+                                    </span>
+                                @endif
                             </h1>
                         </div>
                         <div class="flex flex-col gap-2 ">

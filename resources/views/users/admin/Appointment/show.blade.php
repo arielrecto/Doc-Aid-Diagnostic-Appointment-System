@@ -93,13 +93,18 @@
 
                                 </div>
                             @endif
-                            <div class="w-full flex justify-center">
-                                <a href="{{ route('admin.appointment.edit', ['appointment' => $appointment->id]) }}">
-                                    <button class="btn btn-accent btn-sm uppercase shadow border">
-                                        <i class="fi fi-rr-edit hover:bold"></i> edit
-                                    </button>
-                                </a>
-                            </div>
+
+                            @if ($appointment->status !== AppointmentStatus::REJECT->value)
+                                <div class="w-full flex justify-center">
+                                    <a
+                                        href="{{ route('admin.appointment.edit', ['appointment' => $appointment->id]) }}">
+                                        <button class="btn btn-accent btn-sm uppercase shadow border">
+                                            <i class="fi fi-rr-edit hover:bold"></i> edit
+                                        </button>
+                                    </a>
+                                </div>
+                            @endif
+
 
                             @if ($appointment->status === 'pending')
                                 <form action="{{ route('admin.appointment.approved', ['id' => $appointment->id]) }}"
@@ -110,13 +115,17 @@
                                     </button>
                                 </form>
                                 <div class="w-full" x-data="reject">
-                                    <button id="reject-modal-trigger" class="btn btn-error btn-sm uppercase shadow border" @click="toggle = true">
+                                    <button id="reject-modal-trigger"
+                                        class="btn btn-error btn-sm uppercase shadow border" @click="toggle = true">
                                         <i class="fi fi-rr-square-x hover:font-bold"></i> reject
                                     </button>
                                     <div class="absolute w-1/2 h-auto
-                                    top-0 left-0 z-10" id="reject-modal">
-                                        <form class="w-full flex flex-col gap-4 p-5 bg-white
-                                        shadow-sm border h-full rounded-lg" action="{{ route('admin.appointment.reject', ['id' => $appointment->id]) }}"
+                                    top-0 left-0 z-10"
+                                        id="reject-modal">
+                                        <form
+                                            class="w-full flex flex-col gap-4 p-5 bg-white
+                                        shadow-sm border h-full rounded-lg"
+                                            action="{{ route('admin.appointment.reject', ['id' => $appointment->id]) }}"
                                             method="post" x-show="toggle">
                                             <h1 class="text-lg font-bold text-primary">
                                                 Remark
@@ -161,8 +170,10 @@
                                             x-init="quillEditor">
                                             <label for="name" class="c-input-label">Description</label>
 
-                                            <div class="flex flex-col rounded-lg border overflow-hidden [&>*]:border-0">
-                                                <div id="editor" class="w-full max-w-full overflow-hidden border-2">
+                                            <div
+                                                class="flex flex-col rounded-lg border overflow-hidden [&>*]:border-0">
+                                                <div id="editor"
+                                                    class="w-full max-w-full overflow-hidden border-2">
 
                                                 </div>
                                                 <input type="hidden" name="description" x-model="description">

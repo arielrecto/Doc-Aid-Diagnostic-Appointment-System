@@ -54,14 +54,29 @@
                                     shadow-sm border h-full rounded-lg" action="{{route('patient.appointment.reschedule.reject')}}"
                                         method="post" x-show="toggle">
                                         @method('put')
+                                        <div class="flex flex-col gap-2">
+                                            <label for="" class="c-input-label">Date:</label>
+                                            <input type="date" name="date" class="c-input">
+                                        </div>
+                                        <label for="" class="c-input-label">Setup Time:</label>
+                                        <div class="grid grid-cols-2 grid-flow-row gap-2">
+                                            <div class="flex flex-col gap-2">
+                                                <label for="" class="c-input-label">Start </label>
+                                                <input type="time" name="start_time" class="c-input">
+                                            </div>
+                                            <div class="flex flex-col gap-2">
+                                                <label for="" class="c-input-label">End</label>
+                                                <input type="time" name="end_time" class="c-input">
+                                            </div>
+                                        </div>
                                         <h1 class="text-lg font-bold text-primary">
                                             Remark
                                         </h1>
                                         <input type="hidden" name="reschedule_id" value="{{$reschedule->id}}">
                                         <textarea class="textarea textarea-accent w-full" name="remark" placeholder="Remark"></textarea>
                                         @csrf
-                                        <button class="btn btn-error btn-sm uppercase shadow border">
-                                            <i class="fi fi-rr-square-x hover:font-bold"></i> reject
+                                        <button class="btn-generic">
+                                            <i class="fi fi-rr-square-x hover:font-bold"></i> submit
                                         </button>
                                     </form>
                                 </div>

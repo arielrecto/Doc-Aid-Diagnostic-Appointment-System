@@ -171,13 +171,23 @@ class RescheduleController extends Controller
     public function reject(Request $request){
         $reschedule = AppointmentReschedule::find($request->reschedule_id);
 
-
         $appointment = $reschedule->appointment;
 
-        $user = User::find($appointment->user_id);
+        $patient = Auth::user();
+
+        AppointmentReschedule::create([
+            'remark' => $request->remark,
+            'start_time' => $request->start_time,
+            'end_time' => $request->end_time,
+            'date' => $request->date,
+            'appointment_id' => $appointment->id,
+            'user_id' => $patient->id
+         ]);
+
+        $user = User::find($reschedule->user_id);
 
         $message  = [
-            'content' => "Patient Rejected the Appointment Reschedule Remark: {$request->remark}",
+            'content' => "Patient Rejected the Appointment Reschedule, but Admin{$patient->name} is set new reschedule Date: {$request->date}  Remark: {$request->remark}",
             'date' =>  'Date: ' . now()->format('F-d-Y')
         ];
 
@@ -185,13 +195,13 @@ class RescheduleController extends Controller
 
 
         $appointment->update([
-            'status' => AppointmentStatus::APPROVED->value,
+            'status' => AppointmentStatus::RESCHEDULE->value
         ]);
 
 
         $reschedule->delete();
 
-        return to_route('patient.appointment.show', ['appointment' => $appointment->id])->with(['rejected' => 'Appointment Reschedule reject']);
+        return to_route('patient.appointment.show', ['appointment' => $appointment->id])->with(['message' => 'Appointment Reschedule']);
     }
 
 }
