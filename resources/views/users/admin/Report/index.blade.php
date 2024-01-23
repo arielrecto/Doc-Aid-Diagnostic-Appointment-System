@@ -16,16 +16,19 @@
                         <h1 class="page-title">
                             Report
                         </h1>
-                        <a href="{{route('admin.report.index')}}" class="btn btn-xs btn-accent">
-                           Weekly
+                        <a href="{{ route('admin.report.index') }}" class="btn btn-xs btn-accent">
+                            Weekly
                         </a>
-                        <a href="{{route('admin.report.index', ['filter' => 'monthly'])}}" class="btn btn-xs btn-accent">
+                        <a href="{{ route('admin.report.index', ['filter' => 'monthly']) }}"
+                            class="btn btn-xs btn-accent">
                             Monthly
                         </a>
-                        <a href="{{route('admin.report.index', ['filter' => 'year'])}}" class="btn btn-xs btn-primary">
+                        <a href="{{ route('admin.report.index', ['filter' => 'year']) }}"
+                            class="btn btn-xs btn-primary">
                             Yearly
                         </a>
-                        <form action="{{route('admin.report.index')}}" method="get" class="flex items-center  gap-2">
+                        <form action="{{ route('admin.report.index') }}" method="get"
+                            class="flex items-center  gap-2">
                             <input type="hidden" name="filter" value="custom">
                             <div class="flex flex-col">
                                 <label for="" class="text-xs text-gray-600 flex gap-2">Start Date:</label>
@@ -39,7 +42,7 @@
                         </form>
                     </div>
 
-                    <button class="btn-generic" @click="printElement"><i class="fi fi-rr-print"></i></button>
+                    <button class="btn-generic" @click="printElement"><i class="fi fi-rr-download"></i></button>
                 </div>
 
                 <div x-ref="printElem">
@@ -56,9 +59,13 @@
                                 <p class="text-center text-xs text-gray-500">GF, Lagman-Garcia Bldg., Bacoor</p>
                             </div>
                         </div>
-                        <div class="flex justify-between">
-                            <h1 class="font-bold">{{$tagline}} Reports</h1>
-                            <h1>Date : {{ now()->format('F d, Y') }}</h1>
+                        <div class="flex justify-center">
+                            <div class="w-auto flex flex-col gap-2 items-center">
+                                <h1 class="text-lg font-bold ">Sales Report</h1>
+                                <h1 class="font-bold text-2xl capitalize">{{ $tagline }}</h1>
+                                <h1 class="text-sm">Date Issued: {{ now()->format('F d, Y') }}</h1>
+                            </div>
+
                         </div>
                         <div class="grid grid-cols-3 grid-flow-row bg-gray-50 p-2">
                             <h1>
@@ -79,10 +86,10 @@
                                     {{ $sale['name'] }}
                                 </h1>
                                 <h1>
-                                    {{$sale['total_appointments']}}
+                                    {{ $sale['total_appointments'] }}
                                 </h1>
                                 <h1>
-                                    ₱ {{$sale['total_sales']}}
+                                    ₱ {{ $sale['total_sales'] }}
                                 </h1>
                             </div>
                         @endforeach
