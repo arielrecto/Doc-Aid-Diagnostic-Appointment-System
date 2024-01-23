@@ -46,20 +46,22 @@ class PaypalController extends Controller
 
 
 
-            if ($hasAppointment !== null) {
-                $subscribeServices = $hasAppointment->subscribeServices;
-                foreach ($subscribeServices as $s_service) {
-                    foreach ($services as $a_service) {
-                        if ($s_service->id === $a_service->id) {
-                            return back()->with(['reject' => 'You have Already Appointment with same service and date']);
-                        }
+
+        if ($hasAppointment !== null && $hasAppointment->patient === $request->patient) {
+
+            $subscribeServices = $hasAppointment->subscribeServices;
+            foreach ($subscribeServices as $s_service) {
+                foreach ($services as $a_service) {
+                    if ($s_service->id === $a_service->id) {
+                        return back()->with(['reject' => 'You have Already Appointment with same service and date']);
                     }
                 }
-
-                // if ($service->id === $subscribeService->service_id) {
-                //     return back()->with(['reject' => 'You have Already Appointment with service and date']);
-                // }
             }
+
+            // if ($service->id === $subscribeService->service_id) {
+            //     return back()->with(['reject' => 'You have Already Appointment with service and date']);
+            // }
+        }
 
 
 
@@ -125,7 +127,7 @@ class PaypalController extends Controller
         $user = Auth::user();
 
 
-        if(isset($response['id']) && $response['status'] === 'COMPLETED'){
+        if (isset($response['id']) && $response['status'] === 'COMPLETED') {
 
 
             $appointment = Appointment::create([
@@ -154,7 +156,7 @@ class PaypalController extends Controller
             $services = json_decode($session->get('services'));
 
 
-            collect($services)->map(function($service){
+            collect($services)->map(function ($service) {
                 $slot = $service->time_slot;
                 $t_slot = TimeSlot::where('date', $slot->date)->first();
                 if ($t_slot) {
@@ -173,8 +175,7 @@ class PaypalController extends Controller
             return to_route('patient.appointment.create')->with([
                 'message' => 'Appointment Set !'
             ]);
-
-        }else{
+        } else {
 
             return redirect()->route('patient.paypal.cancel');
         }
@@ -182,12 +183,11 @@ class PaypalController extends Controller
     public function cancel(Request $request)
     {
 
-       return view('components.paypal.cancel');
-
+        return view('components.paypal.cancel');
     }
     private function processServices($services, $appointment)
     {
-        collect($services)->map(function($service) use($appointment){
+        collect($services)->map(function ($service) use ($appointment) {
             list($startTime, $endTime) = explode(" - ", $service->selectedSlot->duration);
             $startTime = Carbon::parse($startTime);
             $endTime = Carbon::parse($endTime);
@@ -202,6 +202,5 @@ class PaypalController extends Controller
                 'appointment_id' => $appointment->id
             ]);
         });
-
     }
 }
