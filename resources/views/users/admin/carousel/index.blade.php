@@ -15,7 +15,7 @@
                 <div class="flex justify-end">
                     <a href="{{ route('admin.imageCarousel.create') }}" class="btn-generic">Add Image</a>
                 </div>
-                <div class="w-full flex flex-col gap-2 max-h-screen overflow-y-auto">
+                <div class="w-full flex flex-col gap-2 min-h-64 max-h-[26rem] overflow-y-auto">
                     @forelse ($images as $image)
                         <div class="border-y-2 border-gray-100 py-4 gap-2 h-32 grid grid-flow-col grid-cols-5">
                             <div class="w-full h-full flex items-center justify-center border-r-2 border-gray-100">
