@@ -104,9 +104,7 @@ class AppointmentController extends Controller
             ->where('status', '!=',  AppointmentStatus::DONE->value)->first();
 
 
-        if ($hasAppointment !== null) {
-
-
+        if ($hasAppointment !== null && $hasAppointment->patient === $request->patient) {
 
             $subscribeServices = $hasAppointment->subscribeServices;
             foreach ($subscribeServices as $s_service) {
