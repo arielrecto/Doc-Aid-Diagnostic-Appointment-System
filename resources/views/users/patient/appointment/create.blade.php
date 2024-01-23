@@ -90,15 +90,16 @@
                                         </div>
 
                                         <template x-if="selectedServices.length !== 0">
-                                            <div class="w-full overflow-y-auto h-96">
+                                            <div class="w-full overflow-y-auto h-96 fkex flex-col gap-2">
                                                 <template x-for="serviceData in selectedServices"
                                                     :key="serviceData.id">
-                                                    <div class="flex gap-2 w-full h-full">
-                                                        <div class="w-1/3 h-auto">
+                                                    <div class="flex gap-2 w-full h-auto">
+                                                        {{-- <div class="w-1/3 h-auto">
                                                             <img :src="serviceData.image" alt="" srcset=""
                                                                 class="object object-center w-full h-auto">
-                                                        </div>
-                                                        <div class="flex flex-col gap-2 w-auto">
+                                                        </div> --}}
+                                                        <div
+                                                            class="flex flex-col gap-2 w-full border-2 border-gray-300 rounded-lg p-2">
                                                             <div class="flex justify-between items-center">
                                                                 <h1 class="font-bold text-lg capitalize">
                                                                     <span x-text="serviceData.name"></span>
@@ -107,32 +108,41 @@
                                                                     @click.prevent="removeService(serviceData.id)">x</button>
                                                             </div>
 
-                                                            <div class="flex gap-2 items-center text-sm">
-                                                                <div class="flex flex-col gap-2">
-                                                                    <h1 class="text-xs">Downpayment</h1>
-                                                                    <p x-text="serviceData.init_payment"
-                                                                        class="text-gray-400 w-full text-center"></p>
-                                                                </div>
-                                                                <div class="flex flex-col gap-2">
-                                                                    <h1 class="text-xs">Price</h1>
-                                                                    <p x-text="serviceData.price"
-                                                                        class="text-gray-400 w-full text-center"></p>
-                                                                </div>
+                                                            <div class="flex items-center gap-2">
+                                                                <h1 class="text-xs w-1/2">Downpayment</h1>
+                                                                <p x-text="serviceData.init_payment"
+                                                                    class="text-accent w-full"></p>
                                                             </div>
-                                                            <div class="flex flex-col gap-2 text-sm">
-                                                                <h1 class="text-xs">Session Time : </h1>
+                                                            <div class="flex items-center gap-2">
+                                                                <h1 class="text-xs w-1/2">Price</h1>
+                                                                <p x-text="serviceData.price"
+                                                                    class="text-accent w-full"></p>
+                                                            </div>
+                                                            <div class="flex items-center gap-2 text-sm">
+                                                                <h1 class="text-xs w-1/2">Session Time : </h1>
                                                                 <p x-text="serviceData.session_time + ' min'"
-                                                                    class="text-gray-400 w-full text-center"></p>
+                                                                    class="text-gray-400 w-full"></p>
                                                             </div>
                                                             <template x-if="'selectedSlot' in serviceData">
-                                                                <div class="flex flex-col gap-2 text-sm">
-                                                                    <h1 class="text-xs">Selected Time & Slot</h1>
-                                                                    <p x-text="serviceData.selectedSlot.duration"
-                                                                        class="text-gray-400 w-full text-center"></p>
+                                                                <div class="flex items-center gap-2 text-sm">
+                                                                    <h1 class="text-xs w-1/2">Selected Time & Slot</h1>
+                                                                    <p
+                                                                        class="text-gray-400 w-full flex items-center gap-2">
+                                                                    <span x-text="serviceData.selectedSlot.duration">
+
+                                                                    </span>
+                                                                    <template x-if="!dropDownToggle">
+                                                                        <button class="btn btn-xs btn-accent" @click.prevent="dropDownToggle = true">
+                                                                            change
+                                                                        </button>
+                                                                    </template>
+                                                                    </p>
+
+
                                                                 </div>
                                                             </template>
 
-                                                            <div class="flex flex-col gap-2">
+                                                            <div class="flex flex-col gap-2" x-show="dropDownToggle" x-transition.duration.700ms>
                                                                 <h1
                                                                     class="w-full text-center text-sm text-gray-500 font-semibold">
                                                                     Service Time Slot</h1>
@@ -165,6 +175,8 @@
                                                                     </template>
                                                                 </div>
                                                             </div>
+
+
                                                         </div>
                                                         <input type="hidden" name="services"
                                                             :value="JSON.stringify(selectedServices)">
@@ -431,6 +443,7 @@
                     showFields: false,
                     error: {},
                     paymentToggle: false,
+                    dropDownToggle: true,
                     computation(e) {
                         const amount = e.target.value;
                         this.rAmount = amount;
@@ -582,6 +595,8 @@
                             ...serviceList,
                             serviceData
                         ]
+
+                        this.dropDownToggle = false;
 
                         // this.selectedServices =
                     },
