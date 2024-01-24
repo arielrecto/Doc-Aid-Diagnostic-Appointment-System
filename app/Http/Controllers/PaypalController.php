@@ -41,28 +41,26 @@ class PaypalController extends Controller
         }
 
         $hasAppointment = Appointment::where('date', $request->date)
-            ->where('user_id', $user->id)
-            ->where('status', '!=',  AppointmentStatus::DONE->value)->first();
+        ->where('user_id', $user->id)
+        ->where('status', '!=',  AppointmentStatus::DONE->value)
+        ->where('patient', $request->patient)
+        ->latest()->first();
 
+    if ($hasAppointment !== null) {
 
-
-
-        if ($hasAppointment !== null && $hasAppointment->patient === $request->patient) {
-
-            $subscribeServices = $hasAppointment->subscribeServices;
-            foreach ($subscribeServices as $s_service) {
-                foreach ($services as $a_service) {
-                    if ($s_service->id === $a_service->id) {
-                        return back()->with(['reject' => 'You have Already Appointment with same service and date']);
-                    }
+        $subscribeServices = $hasAppointment->subscribeServices;
+        foreach ($subscribeServices as $s_service) {
+            foreach ($services as $a_service) {
+                if ($s_service->service_id === $a_service->id) {
+                    return back()->with(['reject' => 'You have Already Appointment with same service and date']);
                 }
             }
-
-            // if ($service->id === $subscribeService->service_id) {
-            //     return back()->with(['reject' => 'You have Already Appointment with service and date']);
-            // }
         }
 
+        // if ($service->id === $subscribeService->service_id) {
+        //     return back()->with(['reject' => 'You have Already Appointment with service and date']);
+        // }
+    }
 
 
 

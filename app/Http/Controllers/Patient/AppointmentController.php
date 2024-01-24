@@ -101,15 +101,16 @@ class AppointmentController extends Controller
 
         $hasAppointment = Appointment::where('date', $request->date)
             ->where('user_id', $user->id)
-            ->where('status', '!=',  AppointmentStatus::DONE->value)->first();
+            ->where('status', '!=',  AppointmentStatus::DONE->value)
+            ->where('patient', $request->patient)
+            ->latest()->first();
 
-
-        if ($hasAppointment !== null && $hasAppointment->patient === $request->patient) {
+        if ($hasAppointment !== null) {
 
             $subscribeServices = $hasAppointment->subscribeServices;
             foreach ($subscribeServices as $s_service) {
                 foreach ($services as $a_service) {
-                    if ($s_service->id === $a_service->id) {
+                    if ($s_service->service_id === $a_service->id) {
                         return back()->with(['reject' => 'You have Already Appointment with same service and date']);
                     }
                 }
@@ -119,7 +120,6 @@ class AppointmentController extends Controller
             //     return back()->with(['reject' => 'You have Already Appointment with service and date']);
             // }
         }
-
 
 
 
