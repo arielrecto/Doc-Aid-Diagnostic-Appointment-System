@@ -54,6 +54,7 @@
                                     shadow-sm border h-full rounded-lg" action="{{route('admin.appointment.reschedule.reject')}}"
                                         method="post" x-show="toggle">
                                         @method('put')
+                                        <h1 class="text-lg font-bold text-center">Please select your preferred date and time</h1>
                                         <div class="flex flex-col gap-2">
                                             <label for="" class="c-input-label">Date:</label>
                                             <input type="date" name="date" class="c-input">
