@@ -22,7 +22,7 @@ class DashboardController extends Controller
         // $services = Service::get();
         $appointments = Appointment::with('subscribeServices.service')->whereId($user->id)->get()->toJson();
         $timeInterval = $this->timeIntervalByHour('8:00', '4:00');
-        $totalAppointments = $this->appointment->whereId($user->id)->get();
+        $totalAppointments = $this->appointment->whereUserId($user->id)->latest()->get();
         $todayAppointments = $this->appointment->today()->count();
 
         return view('users.patient.dashboard', compact(['timeInterval', 'appointments', 'totalAppointments', 'todayAppointments']));
