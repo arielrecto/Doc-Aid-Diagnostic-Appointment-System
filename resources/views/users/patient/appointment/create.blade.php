@@ -388,6 +388,9 @@
                             </button>
                         </div>
                         <div class="flex flex-col gap-2 w-full">
+                            <template x-if="'service_error' in error">
+                                <p class="text-xs text-error" x-text="error.service_error"></p>
+                            </template>
                             <template x-for="service in services">
 
                                 <div
@@ -499,7 +502,28 @@
                     },
                     selectService(data, e) {
                         e.preventDefault()
-                        console.log(data);
+
+
+                        const date = new Date(this.sDate)
+                        console.log(date.getDay());
+                        let daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+                        const dayOfWeek = daysOfWeek[date.getDay()];
+
+                        console.log(dayOfWeek);
+                        const serviceIsAvailable = data.days.filter(item => item.name === dayOfWeek);
+
+                       if(serviceIsAvailable.length === 0){
+
+                            const serviceAvailableDay = data.days.map(day => day.name).join(', ');
+                            this.error = {
+                                'service_error' : `Service: ${data.name} is not available on the ${dayOfWeek} ${this.sDate}, Service available days is ${serviceAvailableDay}`
+                            }
+
+                            console.log(this.error);
+
+                            return
+                       }
+                       this.error = {}
 
 
                         const service = {
