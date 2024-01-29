@@ -135,6 +135,15 @@ class ServiceController extends Controller
             $imageUploader->handler($request->image, '/image/services/', 'SRVCS');
         }
 
+
+
+        $timeSLot = TimeSlot::where('service_id', $service->id)->latest()->first();
+
+        $timeSLot->update([
+            'slots' => $request->timeSlot
+        ]);
+
+
         $service->update([
             'name' => $request->name ?? $service->name,
             'description' => $request->description ?? $service->description,
