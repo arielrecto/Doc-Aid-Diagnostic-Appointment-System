@@ -60,9 +60,7 @@ class AppointmentController extends Controller
         $day = Day::where('name', $today)->first();
 
 
-        $services = Service::with('days')->whereHas('days', function ($q) use ($day) {
-            $q->where('name', $day->name);
-        })->with(['timeSlot'])->get();
+        $services = Service::with('days')->with(['timeSlot'])->get();
 
 
         // $timeSlot = $this->timeIntervalByHour('8:00', '4:00');
