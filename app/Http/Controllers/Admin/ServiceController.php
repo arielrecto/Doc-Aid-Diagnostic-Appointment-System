@@ -118,7 +118,10 @@ class ServiceController extends Controller
     public function edit(string $id)
     {
         $service = Service::find($id);
-        return view('users.admin.Services.edit', compact(['service']));
+
+        $days = Day::get()->toJson();
+
+        return view('users.admin.Services.edit', compact(['service', 'days']));
     }
 
     /**
@@ -129,6 +132,13 @@ class ServiceController extends Controller
 
 
         $service = Service::find($id);
+
+
+        $days = json_decode($request->service_days);
+
+
+
+
 
         if ($request->image !== null) {
             $imageUploader = new ImageUploader();
@@ -155,6 +165,33 @@ class ServiceController extends Controller
             'extension_time' => $request->extension_time ?? $service->extension_time,
             'extension_price' => $request->extension_price ?? $service->extension_price
         ]);
+
+
+
+
+
+
+        // $service_days = $service->days;
+
+
+        // collect($service_days)->map(function($service_day) use ($days ){
+
+        // });
+
+
+
+        $service_days = $service->days;
+
+
+        collect($days)->map(function($day) use($service, $service_days) {
+            collect($service_days)->map(function($service_day) use ($day, $service){
+                if($service_day !== $day->name){
+                    $service->days()->detach($service_day->id);
+                    return;
+                }
+            });
+            $service->days()->attach($day->id);
+        });
 
         return redirect(route('admin.services.show', ['service' => $service->id]))->with(['message' => 'Service is Updated !']);
     }

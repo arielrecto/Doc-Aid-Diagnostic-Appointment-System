@@ -229,6 +229,46 @@
                             </template>
                         </div>
 
+
+                        <div class="flex flex-col gap-2" x-init="initDays({{ $days }})">
+                            <h1 class="w-full text-center text-base capitalized text-primary-focus pb-4">
+                                Days Availability
+                            </h1>
+                            <div
+                                class="flex flex-col gap-2 grow overflow-y-auto border-4 border-base-300 rounded-lg p-2">
+
+                                <template x-if="selectedDays.length === 0">
+                                    <h1 class="text-primary-focus font-semibold uppercase text-sm text-opacity-50">
+                                        Select Days below
+                                    </h1>
+                                </template>
+
+                                <template x-if="selectedDays.length !== 0">
+                                    <div class="w-full grid grid-cols-7 grid-flow-col">
+                                        <template x-for="day in selectedDays" :key="day.id">
+                                            <button class="flex btn btn-ghost btn-xs"
+                                                @click="removeDayAction(day, $event)">
+                                                <span x-text="day.name"></span>
+                                            </button>
+                                        </template>
+                                    </div>
+
+                                </template>
+                            </div>
+                            <div class="w-full grid grid-cols-7 grid-flow-col">
+                                <template x-for="day in days" :key="day.id">
+                                    <button class="flex btn btn-ghost btn-xs" @click="addDayAction(day, $event)">
+                                        <span x-text="day.name"></span>
+                                    </button>
+                                </template>
+                            </div>
+                            @if ($errors->has('service_days'))
+                                <div class="text-error text-sm">
+                                    <p>{{ $errors->first('service_days') }}</p>
+                                </div>
+                            @endif
+                        </div>
+
                         <div class="flex flex-row-reverse">
                             <button class="btn-generic uppercase" @click="content">
                                 <i class="ri-save-line"></i>
@@ -236,6 +276,7 @@
                             </button>
                         </div>
                         <input type="hidden" :value="JSON.stringify(timeIntervals)" name="timeSlot">
+                        <input type="hidden" :value="JSON.stringify(selectedDays)" name="service_days">
                     </div>
                 </form>
             </div>
@@ -249,6 +290,8 @@
                     image: null,
                     description: null,
                     timeIntervals: [],
+                    days: [],
+                    selectedDays: [],
                     uploadImageHandler(e) {
                         const {
                             files
@@ -266,6 +309,11 @@
                         const quill = new Quill(editor, {
                             theme: 'snow'
                         })
+                    },
+                    initDays(days) {
+                        this.days = days;
+
+                        console.log(this.days)
                     },
                     content() {
 
@@ -330,6 +378,28 @@
                             minute: '2-digit'
                         })
                         return _time;
+                    },
+                    addDayAction(data, e) {
+                        e.preventDefault();
+
+
+                        this.selectedDays = [
+                            ...this.selectedDays,
+                            data
+                        ]
+
+                        this.days = this.days.filter((day) => day.id !== data.id)
+                    },
+                    removeDayAction(data, e) {
+                        e.preventDefault();
+
+
+                        this.days = [
+                            ...this.days,
+                            data
+                        ]
+
+                        this.selectedDays = this.selectedDays.filter((day) => day.id !== data.id)
                     }
                 }
             }
