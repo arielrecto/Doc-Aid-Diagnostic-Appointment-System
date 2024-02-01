@@ -21,7 +21,7 @@
                                     <h1 class="text-2xl tracking-widest truncate font-bold gap-2 capitalize">
                                         {{ $service->name }}
                                     </h1>
-                                    <div class="max-h-full truncate text-xs">
+                                    <div class="max-h-20 h-auto overflow-y-hidden text-xs">
                                         {!! $service->description !!}
                                     </div>
                                 </div>
