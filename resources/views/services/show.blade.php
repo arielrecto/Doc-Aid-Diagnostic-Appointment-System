@@ -11,7 +11,7 @@
                 <img src="{{$service->image}}" alt="" srcset="" class="object objec-center h-96 w-auto">
             </div>
             <div class="flex flex-col gap-2 ml-5 w-full">
-                <div class="h-[20rem] border-b-2 border-gray-300">
+                <div class="min-h-[20rem] max-h-auto border-b-2 border-gray-300">
                     <h1 class="text-5xl font-bold capitalize tracking-widest">
                         {{$service->name}}
                     </h1>
