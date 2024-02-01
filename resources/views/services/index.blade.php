@@ -21,7 +21,7 @@
                                     <h1 class="text-2xl tracking-widest truncate font-bold gap-2 capitalize">
                                         {{ $service->name }}
                                     </h1>
-                                    <div class="max-h-full truncate text-xs bg-blue-500">
+                                    <div class="max-h-full truncate text-xs">
                                         {!! $service->description !!}
                                     </div>
                                 </div>
