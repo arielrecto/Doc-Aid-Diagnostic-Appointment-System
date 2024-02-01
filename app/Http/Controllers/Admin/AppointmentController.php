@@ -234,7 +234,8 @@ class AppointmentController extends Controller
 
         $appointment = $reschedule->appointment;
 
-        $user = User::find($appointment->id);
+        $user = User::find($appointment->user->id);
+
 
         $message  = [
             'content' => "Your Appointment Reschedule is Approved",
