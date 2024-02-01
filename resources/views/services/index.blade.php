@@ -11,18 +11,21 @@
                 <div class="grid grid-cols-4 grid-flow-row gap-2 w-full">
                     @foreach ($services as $service)
                     <a href="{{route('service.show', ['service' => $service->id])}}">
-                        <div class="w-full h-64 bg-gray-50 rounded-lg">
+                        <div class="w-full h-96 bg-gray-50 rounded-lg flex flex-col">
                             <div class="w-full h-1/2">
                                 <img src="{{ $service->image }}" alt="" srcset=""
                                     class="h-full w-full object object-center object-cover rounded-t-lg">
                             </div>
-                            <div class="p-2 flex flex-col gap-2">
-                                <h1 class="text-2xl tracking-widest truncate font-bold gap-2 capitalize">
-                                    {{ $service->name }}
-                                </h1>
-                                <p class="min-h-full mex-h-1/2 truncate">
-                                    {!! $service->description !!}
-                                </p>
+                            <div class="p-2 flex flex-col justify-between h-full">
+                                <div class="w-full max-h-5/6 h-auto">
+                                    <h1 class="text-2xl tracking-widest truncate font-bold gap-2 capitalize">
+                                        {{ $service->name }}
+                                    </h1>
+                                    <div class="max-h-full truncate text-xs bg-blue-500">
+                                        {!! $service->description !!}
+                                    </div>
+                                </div>
+
                                 <div class="flex justify-end">
                                     <p class="text-lg text-primary font-bold">₱
                                         {{ $service->price }}</p>
