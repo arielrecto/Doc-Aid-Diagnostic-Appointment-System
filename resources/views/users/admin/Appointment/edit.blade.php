@@ -1,5 +1,16 @@
+@php
+    $services = json_encode(
+        $appointment
+            ->subscribeServices()
+            ->with(['service.days'])
+            ->get(),
+    );
+@endphp
+
 <x-app-layout>
-    <div class="main-screen">
+
+
+    <div class="main-screen" x-data="appointmentAction">
         <x-admin.sidebar-new />
 
         <div class="main-content w-5/6 md:w-full">
@@ -34,13 +45,21 @@
 
                     <div class="flex flex-col gap-2 bg-white rounded-lg shadow-md p-4">
                         <h1 class="page-title">Reschedule</h1>
-                        <form action="{{ route('admin.appointment.update', ['appointment' => $appointment->id]) }}" method="post">
+                        <form action="{{ route('admin.appointment.update', ['appointment' => $appointment->id]) }}"
+                            method="post">
                             @method('put')
                             @csrf
                             <input type="hidden" name="appointment_id" value="{{ $appointment->id }}">
                             <div class="flex flex-col gap-2">
                                 <label for="" class="c-input-label">Date:</label>
-                                <input type="date" name="date" class="c-input">
+                                <input type="date" name="date" class="c-input" x-model="sDate"
+                                    @change="changeDate">
+
+
+                                <template x-if="'service_error' in error">
+                                    <p class="text-xs text-error" x-text="error.service_error"></p>
+
+                                </template>
                             </div>
                             <label for="" class="c-input-label">Setup Time:</label>
                             <div class="grid grid-cols-2 grid-flow-row gap-2">
@@ -61,9 +80,12 @@
 
                             </textarea>
                             </div>
-                            <div class="w-full flex items-center p-2 justify-end">
-                                <button class="btn-generic">Submit</button>
-                            </div>
+                            <template x-if="displaySubmitButton">
+                                <div class="w-full flex items-center p-2 justify-end">
+                                    <button class="btn-generic">Submit</button>
+                                </div>
+                            </template>
+
 
                         </form>
                     </div>
@@ -325,12 +347,12 @@
                                     <!-- row 1 -->
                                     <tr class="">
                                         {{-- <th{{ $s_service->service->id }}< /th> --}}
-                                            <th><img src="{{ $s_service->service->image }}" alt=""
-                                                    srcset="" class="object object-center h-10 w-10"></th>
-                                            <td class="text-xs md:text-sm">{{ $s_service->service->name }}</td>
-                                            <td>{!! $s_service->service->description !!}</td>
-                                            <td>&#8369 {{ $s_service->service->init_payment }}</td>
-                                            <td>&#8369 {{ $s_service->service->price }}</td>
+                                        <th><img src="{{ $s_service->service->image }}" alt=""
+                                                srcset="" class="object object-center h-10 w-10"></th>
+                                        <td class="text-xs md:text-sm">{{ $s_service->service->name }}</td>
+                                        <td>{!! $s_service->service->description !!}</td>
+                                        <td>&#8369 {{ $s_service->service->init_payment }}</td>
+                                        <td>&#8369 {{ $s_service->service->price }}</td>
 
                                     </tr>
                                 </tbody>
@@ -339,11 +361,75 @@
                     </div>
 
                 </div>
-
-
             </div>
         </div>
     </div>
 
+
+    @push('js')
+        <script>
+            const appointmentAction = () => ({
+                sDate: null,
+                services: {!! $services !!},
+                error: {},
+                displaySubmitButton : true,
+                changeDate() {
+                    const date = new Date(this.sDate)
+                    console.log(date.getDay());
+                    let daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+                    const dayOfWeek = daysOfWeek[date.getDay()];
+
+
+                    const servicesAvailability = this.services.filter((s_service) => {
+                        const isAvailable = s_service.service.days.some((day) => day.name === dayOfWeek);
+                        return isAvailable;
+                    });
+
+                    console.log(servicesAvailability);
+
+                    if (servicesAvailability.length !== this.services.length) {
+
+                        const unavailableServices = this.services.filter(data => !servicesAvailability.some(s => s
+                            .name === data.name));
+                        const errorMessages = unavailableServices.map(data => {
+                            const serviceAvailableDay = data.service.days.map(day => day.name).join(', ');
+                            console.log(data);
+                            return `Service: ${data.service.name} is not available on ${dayOfWeek} ${this.sDate}. Service available days are ${serviceAvailableDay}`;
+                        });
+
+                        this.error = {
+                            'service_error': errorMessages.join(' | ')
+                        };
+
+                        this.displaySubmitButton = false
+
+                        return
+                    }
+
+
+                    this.displaySubmitButton = true
+
+                    this.error = {}
+
+                    // console.log(dayOfWeek);
+                    // const serviceIsAvailable = services.map((service){
+                    //     service.days.filter(item => item.name === dayOfWeek);
+                    // });
+
+                    // if (serviceIsAvailable.length === 0) {
+
+                    //     const serviceAvailableDay = data.days.map(day => day.name).join(', ');
+                    //     this.error = {
+                    //         'service_error': `Service: ${data.name} is not available on the ${dayOfWeek} ${this.sDate}, Service available days is ${serviceAvailableDay}`
+                    //     }
+
+                    //     console.log(this.error);
+
+                    //     return
+                    // }
+                }
+            })
+        </script>
+    @endpush
 
 </x-app-layout>

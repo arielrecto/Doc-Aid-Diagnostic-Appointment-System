@@ -1,3 +1,12 @@
+@php
+    $services = json_encode(
+        $appointment
+            ->subscribeServices()
+            ->with(['service.days'])
+            ->get(),
+    );
+@endphp
+
 <x-app-layout>
     <div class="main-screen">
         <x-patient-siderbar />
@@ -42,7 +51,7 @@
                             <label for="" class="text-gray-500 text-sm">Date</label>
                             <h1 class="font-semibold flex gap-4 text-xs lg:text-base">
                                 {{ date('M-d-Y', strtotime($appointment->date)) }}
-                                    {{-- <span x-data="appointmentShow">
+                                {{-- <span x-data="appointmentShow">
                                         <button id="resched-modal-trigger" @click="openReschedModal">
                                             <i class="fi fi-rr-edit text-accent"></i>
                                         </button>
@@ -227,8 +236,8 @@
                     <h1 class="page-title">Payment Status</h1>
                     <div class="flex justify-between">
                         <h1 class="text-lg font-bold"> <span class="text-sm md:text-base font-thin">Referrence Number
-                            :</span>{{ $appointment->receipt_number }}</h1>
-                            <button @click="toggle = !toggle" class="btn-generic">open</button>
+                                :</span>{{ $appointment->receipt_number }}</h1>
+                        <button @click="toggle = !toggle" class="btn-generic">open</button>
                     </div>
 
 
@@ -276,7 +285,7 @@
                 </div>
 
 
-                <div class="flex flex-col gap-2 bg-white rounded-lg shadow-md p-4" x-data="{toggle : false}">
+                <div class="flex flex-col gap-2 bg-white rounded-lg shadow-md p-4" x-data="{ toggle: false }">
 
                     <div class="flex justify-between">
                         <h1 class="page-title">Services Availed</h1>
@@ -320,14 +329,19 @@
 
                 </div>
 
-                <div class="flex flex-col gap-2 bg-white rounded-lg shadow-md p-4" >
+                <div class="flex flex-col gap-2 bg-white rounded-lg shadow-md p-4" x-data="appointmentAction">
                     <h1 class="page-title">Reschedule Request</h1>
-                    <form action="{{route('patient.appointment.reschedule.store')}}" method="post">
+                    <form action="{{ route('patient.appointment.reschedule.store') }}" method="post">
                         @csrf
-                        <input type="hidden" name="appointment_id" value="{{$appointment->id}}">
+                        <input type="hidden" name="appointment_id" value="{{ $appointment->id }}">
                         <div class="flex flex-col gap-2">
                             <label for="" class="c-input-label">Date:</label>
-                            <input type="date" name="date" class="c-input">
+                            <input type="date" name="date" x-model="sDate" @change="changeDate"
+                                class="c-input">
+                            <template x-if="'service_error' in error">
+                                <p class="text-xs text-error" x-text="error.service_error"></p>
+
+                            </template>
                         </div>
                         <label for="" class="c-input-label">Setup Time:</label>
                         <div class="grid grid-cols-2 grid-flow-row gap-2">
@@ -348,15 +362,84 @@
 
                             </textarea>
                         </div>
-                        <div class="w-full flex items-center p-2 justify-end">
-                            <button class="btn-generic">Submit</button>
-                        </div>
+                        <template x-if="displaySubmitButton">
+                            <div class="w-full flex items-center p-2 justify-end">
+                                <button class="btn-generic">Submit</button>
+                            </div>
+                        </template>
 
                     </form>
                 </div>
             </div>
         </div>
     </div>
+
+
+    @push('js')
+        <script>
+            const appointmentAction = () => ({
+                sDate: null,
+                services: {!! $services !!},
+                error: {},
+                displaySubmitButton: true,
+                changeDate() {
+                    const date = new Date(this.sDate)
+                    console.log(date.getDay());
+                    let daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+                    const dayOfWeek = daysOfWeek[date.getDay()];
+
+
+                    const servicesAvailability = this.services.filter((s_service) => {
+                        const isAvailable = s_service.service.days.some((day) => day.name === dayOfWeek);
+                        return isAvailable;
+                    });
+
+                    console.log(servicesAvailability);
+
+                    if (servicesAvailability.length !== this.services.length) {
+
+                        const unavailableServices = this.services.filter(data => !servicesAvailability.some(s => s
+                            .name === data.name));
+                        const errorMessages = unavailableServices.map(data => {
+                            const serviceAvailableDay = data.service.days.map(day => day.name).join(', ');
+                            console.log(data);
+                            return `Service: ${data.service.name} is not available on ${dayOfWeek} ${this.sDate}. Service available days are ${serviceAvailableDay}`;
+                        });
+
+                        this.error = {
+                            'service_error': errorMessages.join(' | ')
+                        };
+
+                        this.displaySubmitButton = false
+
+                        return
+                    }
+
+
+                    this.displaySubmitButton = true
+
+                    this.error = {}
+
+                    // console.log(dayOfWeek);
+                    // const serviceIsAvailable = services.map((service){
+                    //     service.days.filter(item => item.name === dayOfWeek);
+                    // });
+
+                    // if (serviceIsAvailable.length === 0) {
+
+                    //     const serviceAvailableDay = data.days.map(day => day.name).join(', ');
+                    //     this.error = {
+                    //         'service_error': `Service: ${data.name} is not available on the ${dayOfWeek} ${this.sDate}, Service available days is ${serviceAvailableDay}`
+                    //     }
+
+                    //     console.log(this.error);
+
+                    //     return
+                    // }
+                }
+            })
+        </script>
+    @endpush
 
 
 </x-app-layout>

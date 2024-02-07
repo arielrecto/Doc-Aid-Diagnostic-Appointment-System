@@ -47,12 +47,12 @@
             font-size: smaller;
         }
 
-        .content {
+        /* .content {
             width: 100vw;
             text-align: justify;
             white-space: pre-line;
             padding: 4rem;
-        }
+        } */
 
         .main {
             width: 100vw;
@@ -73,25 +73,26 @@
     <div class="main">
         <div class="header">
             <div class="header-content">
-                <img src="data:image/jpeg;base64,{{ base64_encode(file_get_contents(public_path('image/logo.png'))) }}"
-                    alt="" srcset="" class="header-logo">
+                {{-- <img src="data:image/jpeg;base64,{{ base64_encode(file_get_contents(public_path('image/logo.png'))) }}"
+                    alt="" srcset="" class="header-logo"> --}}
                 <div class="header-title">
                     <h1>Doc Aid Diagnostic and Medical Center</h1>
-                    <p>adawda adasda asdsad asd asd asda sada as d</p>
+                    {{-- <p>adawda adasda asdsad asd asd asda sada as d</p> --}}
+                    <div class="content">
+                        @if (isset($subject))
+                            <div class="subject-section">
+                                <h1 class="subject-content">
+                                    <span>Subject : </span> {{ $subject }}
+                                </h1>
+                            </div>
+                        @endif
+                        <p>
+                            {{ $slot }}
+                        </p>
+                    </div>
                 </div>
+
             </div>
-        </div>
-        <div class="content">
-            @if (isset($subject))
-                <div class="subject-section">
-                    <h1 class="subject-content">
-                        <span>Subject : </span> {{ $subject }}
-                    </h1>
-                </div>
-            @endif
-            <p>
-                {{ $slot }}
-            </p>
         </div>
     </div>
 

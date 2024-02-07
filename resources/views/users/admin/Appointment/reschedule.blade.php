@@ -52,7 +52,7 @@
                                 top-0 left-0 z-10" id="reject-modal">
                                     <form class="w-full flex flex-col gap-4 p-5 bg-white
                                     shadow-sm border h-full rounded-lg" action="{{route('admin.appointment.reschedule.reject')}}"
-                                        method="post" x-show="toggle">
+                                        method="post" x-show="toggle" @click.outside="toggle = false">
                                         @method('put')
                                         <h1 class="text-lg font-bold text-center">Please select your preferred date and time</h1>
                                         <div class="flex flex-col gap-2">
@@ -73,8 +73,15 @@
                                         <h1 class="text-lg font-bold text-primary">
                                             Remark
                                         </h1>
+                                        <div class="flex overflow-x-auto gap-2">
+                                            <template x-for="message in defaultMessages">
+                                                <button @click.prevent="selectMessage(message)" class="w-auto h-auto text-xs p-2 rounded-lg bg-gray-100  border-2 border-gray-200">
+                                                    <span x-text="message"></span>
+                                                </button>
+                                            </template>
+                                        </div>
                                         <input type="hidden" name="reschedule_id" value="{{$reschedule->id}}">
-                                        <textarea class="textarea textarea-accent w-full" name="remark" placeholder="Remark"></textarea>
+                                        <textarea class="textarea textarea-accent w-full" name="remark" x-model="description" placeholder="Remark"></textarea>
                                         @csrf
                                         <button class="btn-generic">
                                             <i class="fi fi-rr-square-x hover:font-bold"></i> submit
@@ -382,6 +389,11 @@
             toggle: false,
             description: null,
             cleanupUI: null,
+            defaultMessages : [
+                'The schedule is not available',
+                'there\'s no vacant',
+                'The Date is Holiday',
+            ],
 
             init() {
                 const button = document.getElementById("reject-modal-trigger");
@@ -395,7 +407,11 @@
                     this.spawnModal(button, tooltip);
                 });
             },
+            selectMessage(message){
 
+                console.log(message);
+                this.description = message
+            },
             spawnModal(button, tooltip) {
                 const {
                     computePosition,

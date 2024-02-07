@@ -94,6 +94,7 @@ class AppointmentController extends Controller
     public function edit(string $id)
     {
         $appointment = Appointment::find($id);
+
         return view('users.admin.Appointment.edit', compact(['appointment']));
     }
 

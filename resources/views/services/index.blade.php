@@ -8,7 +8,7 @@
         <div class="w-full flex justify-center">
             <div class="w-5/6 flex gap-2 p-2 mt-20 overflow-y-hidden">
 
-                <div class="grid grid-cols-4 grid-flow-row gap-2 w-full">
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 grid-flow-row gap-2 w-full">
                     @foreach ($services as $service)
                     <a href="{{route('service.show', ['service' => $service->id])}}">
                         <div class="w-full h-96 bg-gray-50 rounded-lg flex flex-col">

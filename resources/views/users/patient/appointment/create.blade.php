@@ -128,21 +128,25 @@
                                                                     <h1 class="text-xs w-1/2">Selected Time & Slot</h1>
                                                                     <p
                                                                         class="text-gray-400 w-full flex items-center gap-2">
-                                                                    <span x-text="serviceData.selectedSlot.duration">
+                                                                        <span
+                                                                            x-text="serviceData.selectedSlot.duration">
 
-                                                                    </span>
-                                                                    <template x-if="!dropDownToggle">
-                                                                        <button class="btn btn-xs btn-accent" @click.prevent="dropDownToggle = true">
-                                                                            change
-                                                                        </button>
-                                                                    </template>
+                                                                        </span>
+                                                                        <template x-if="!dropDownToggle">
+                                                                            <button class="btn btn-xs btn-accent"
+                                                                                @click.prevent="reSelectSlot(serviceData, serviceData.selectedSlot)">
+                                                                                change
+                                                                            </button>
+                                                                        </template>
                                                                     </p>
 
 
                                                                 </div>
                                                             </template>
 
-                                                            <div class="flex flex-col gap-2" x-show="dropDownToggle" x-transition.duration.700ms>
+                                                            <div class="flex flex-col gap-2"
+                                                                x-show="serviceData.selectedSlot === undefined"
+                                                                x-transition.duration.700ms>
                                                                 <h1
                                                                     class="w-full text-center text-sm text-gray-500 font-semibold">
                                                                     Service Time Slot</h1>
@@ -484,19 +488,40 @@
                         this.sDetailID = id;
                         this.sPreview = this.selectedService.find(item => item.id === id);
                     },
-                    reSelectSlot(e, _slot) {
-                        e.preventDefault()
-                        // this.selectedService = {
-                        //     ...this.selectedService,
-                        //     time_slot: this.selectedService.time_slot.map((item) =>
-                        //         item = item.duration === _slot.duration ?
-                        //         item = {
-                        //             ...item,
-                        //             slot: item.slot + 1
-                        //         } : item
+                    reSelectSlot(service, _slot) {
+                        console.log(service, );
+                        service = {
+                            ...service,
+                            time_slot: {
+                                ...service.time_slot,
+                               slots : service.time_slot.slots.map((item) => {
+                                        if (item.duration === _slot.duration) {
 
-                        //     )
-                        // }
+                                            // timeData = {
+                                            //     ...item,
+                                            //     slot: `${item.slot + 1}`
+                                            // }
+                                            item.slot = `${item.slot + 1}`;
+                                            return item
+                                        }
+
+                                        return item
+                                    }
+                                )
+                            }
+                        }
+
+
+                        delete service['selectedSlot']
+
+                        console.log(service);
+
+                        const serviceList = this.selectedServices.filter(item => item.id !== service.id)
+
+                        this.selectedServices = [
+                            ...serviceList,
+                            service
+                        ]
                         // this.selectedTimeSlot = null;
                         // this.toggleTimeSlot = true;
                     },
@@ -512,18 +537,18 @@
                         console.log(dayOfWeek);
                         const serviceIsAvailable = data.days.filter(item => item.name === dayOfWeek);
 
-                       if(serviceIsAvailable.length === 0){
+                        if (serviceIsAvailable.length === 0) {
 
                             const serviceAvailableDay = data.days.map(day => day.name).join(', ');
                             this.error = {
-                                'service_error' : `Service: ${data.name} is not available on the ${dayOfWeek} ${this.sDate}, Service available days is ${serviceAvailableDay}`
+                                'service_error': `Service: ${data.name} is not available on the ${dayOfWeek} ${this.sDate}, Service available days is ${serviceAvailableDay}`
                             }
 
                             console.log(this.error);
 
                             return
-                       }
-                       this.error = {}
+                        }
+                        this.error = {}
 
 
                         const service = {
