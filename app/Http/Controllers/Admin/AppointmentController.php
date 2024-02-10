@@ -136,7 +136,10 @@ class AppointmentController extends Controller
 
          $message  = [
             'content' => "Your Appointment is Reschedule by {$user->name}, Date: {$request->date}, Time : {$request->start_time} - {$request->end_time}",
-            'date' =>  'Date: ' . now()->format('F-d-Y')
+            'date' =>  'Date: ' . now()->format('F-d-Y'),
+            'services' => "Services : {$appointment->servicesName()}",
+            'patient' => "Patient : {$appointment->patient}",
+            'appointment_date' => "Appointment Date: {$appointment->date}"
         ];
 
 
@@ -170,9 +173,15 @@ class AppointmentController extends Controller
         $user = User::find($appointment->user_id);
 
 
+
+
+
         $message  = [
             'content' => "Your Appointment is Approved",
-            'date' =>  'Date: ' . now()->format('F-d-Y')
+            'date' =>  'Date: ' . now()->format('F-d-Y'),
+            'services' => "Services : {$appointment->servicesName()}",
+            'patient' => "Patient : {$appointment->patient}",
+            'appointment_date' => "Appointment Date: {$appointment->date}"
         ];
 
         $user->notify(new AppointmentStatusNotification($message));
@@ -191,7 +200,10 @@ class AppointmentController extends Controller
 
         $message  = [
             'content' => "Your Appointment is Rejected, Remark: {$request->remark}",
-            'date' =>  'Date: ' . now()->format('F-d-Y')
+            'date' =>  'Date: ' . now()->format('F-d-Y'),
+            'services' => "Services : {$appointment->servicesName()}",
+            'patient' => "Patient : {$appointment->patient}",
+            'appointment_date' => "Appointment Date: {$appointment->date}"
         ];
 
         $user->notify(new AppointmentStatusNotification($message));
@@ -240,7 +252,10 @@ class AppointmentController extends Controller
 
         $message  = [
             'content' => "Your Appointment Reschedule is Approved",
-            'date' =>  'Date: ' . now()->format('F-d-Y')
+            'date' =>  'Date: ' . now()->format('F-d-Y'),
+            'services' => "Services : {$appointment->servicesName()}",
+            'patient' => "Patient : {$appointment->patient}",
+            'appointment_date' => "Appointment Date: {$appointment->date}"
         ];
 
         $user->notify(new AppointmentStatusNotification($message));
@@ -248,7 +263,7 @@ class AppointmentController extends Controller
 
         $appointment->update([
             'status' => AppointmentStatus::APPROVED->value,
-            'date' => $reschedule->date
+            'date' => $reschedule->date,
         ]);
 
         $subscribeService = $appointment->subscribeServices->first();
@@ -286,7 +301,10 @@ class AppointmentController extends Controller
 
         $message  = [
             'content' => "Your Appointment Reschedule is Rejected, but Admin{$admin->name} is set new reschedule Date: {$request->date}  Remark: {$request->remark}",
-            'date' =>  'Date: ' . now()->format('F-d-Y')
+            'date' =>  'Date: ' . now()->format('F-d-Y'),
+            'services' => "Services : {$appointment->servicesName()}",
+            'patient' => "Patient : {$appointment->patient}",
+            'appointment_date' => "Appointment Date: {$appointment->date}"
         ];
 
         $user->notify(new AppointmentStatusNotification($message));

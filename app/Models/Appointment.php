@@ -77,4 +77,24 @@ class Appointment extends Model
     public function rescheduleRequest(){
         return $this->hasOne(AppointmentReschedule::class);
     }
+    public function servicesName():string{
+
+        $services = $this->subscribeServices()->get();
+
+        $services_array = [];
+
+
+
+
+        foreach ($services as $s_service) {
+            $services_array[] = $s_service->service->name;
+        }
+
+
+
+        $services_name = implode(" | ", $services_array);
+
+
+        return $services_name;
+    }
 }

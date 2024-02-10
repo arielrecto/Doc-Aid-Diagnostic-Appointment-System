@@ -38,6 +38,9 @@ class AppointmentStatusNotification extends Notification
     {
         return (new MailMessage)
             ->line($this->message['content'])
+            ->line($this->message['patient'])
+            ->line($this->message['appointment_date'])
+            ->line($this->message['services'])
             // ->action('Notification Action', url('/'))
             ->line($this->message['date']);
     }
