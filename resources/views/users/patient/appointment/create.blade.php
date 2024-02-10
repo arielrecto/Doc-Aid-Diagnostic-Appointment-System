@@ -277,6 +277,7 @@
 
                                                     <div class="w-full p-2 flex flex-col">
                                                         <label for="" class="text-xs">Upload Receipt</label>
+                                                        <p class="text-xs text-primary"><span class="text-error">*</span> The Amount of payment must be Exceed the minimum downpayment to process your appointment</p>
                                                         <div class="w-full h-24 flex gap-2">
                                                             <template x-if="image !== null">
                                                                 <div class="h-full w-24 relative">
@@ -685,7 +686,7 @@
                         this.showFields = false
 
                         this.error = {
-                            'date': 'The Fields Didn\'t show becuase the selected Date is past'
+                            'date': 'The Fields Didn\'t show because the selected Date is past'
                         }
                     },
                     dTotalCompareToInitPayment() {

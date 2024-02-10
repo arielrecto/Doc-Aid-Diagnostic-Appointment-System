@@ -344,7 +344,7 @@
 
 
                         @foreach ($appointment->subscribeServices as $s_service)
-                            <table class="table w-[64rem] lg:w-full">
+                            <table class="table w-[64rem] lg:w-full table-fixed">
                                 <!-- head -->
                                 <thead class="capitalize">
                                     <tr>
