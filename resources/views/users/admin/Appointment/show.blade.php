@@ -127,10 +127,17 @@
                                         shadow-sm border h-full rounded-lg"
                                             action="{{ route('admin.appointment.reject', ['id' => $appointment->id]) }}"
                                             method="post" x-show="toggle">
+                                            <div class="flex overflow-x-auto gap-2">
+                                                <template x-for="message in defaultMessages">
+                                                    <button @click.prevent="selectMessage(message)" class="w-auto h-auto text-xs p-2 rounded-lg bg-gray-100  border-2 border-gray-200">
+                                                        <span x-text="message"></span>
+                                                    </button>
+                                                </template>
+                                            </div>
                                             <h1 class="text-lg font-bold text-primary">
                                                 Remark
                                             </h1>
-                                            <textarea class="textarea textarea-accent w-full" name="remark" placeholder="Remark"></textarea>
+                                            <textarea class="textarea textarea-accent w-full" name="remark" placeholder="Remark" x-model="description"></textarea>
                                             @csrf
                                             <button class="btn btn-error btn-sm uppercase shadow border">
                                                 <i class="fi fi-rr-square-x hover:font-bold"></i> reject
@@ -575,6 +582,11 @@
                 toggle: false,
                 description: null,
                 cleanupUI: null,
+                defaultMessages: [
+                    'The schedule is not available',
+                    'there\'s no vacant',
+                    'The Date is Holiday',
+                ],
 
                 init() {
                     const button = document.getElementById("reject-modal-trigger");
@@ -587,6 +599,12 @@
                     this.$watch("toggle", () => {
                         this.spawnModal(button, tooltip);
                     });
+                },
+
+                selectMessage(message) {
+
+                    console.log(message);
+                    this.description = message
                 },
 
                 spawnModal(button, tooltip) {
